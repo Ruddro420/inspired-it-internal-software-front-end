@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Login } from "@/components/app_components/Login";
 
 const Home = () => {
 
@@ -7,21 +7,21 @@ const Home = () => {
         fetch('http://localhost:3000/setCookie', {
             method: 'GET',
             credentials: 'include' // Send cookies along with the request
-          })
-        .then(res=> res.json())
-        .then(data=> {
-            console.log(data)
         })
-        .catch(err=> {
-            console.log(err)
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     return (
         <div>
-            Home
+            <Login />
 
-            <Button onClick={handleGetCookie}>Get Cookie</Button>
+            {/*  <Button onClick={handleGetCookie}>Get Cookie</Button> */}
         </div>
     );
 };

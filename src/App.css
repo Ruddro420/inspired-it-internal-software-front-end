@@ -1,11 +1,11 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin-top: 1px;
-  margin: 5px auto;
+  margin: 0px;
   /* padding: 0.2rem; */
-  text-align: center;
+  /* text-align: ; */
   font-family: "Inter", sans-serif;
-  border: 1px solid rgb(231, 230, 230);
+  border: none;
   border-radius: 0.5rem;
 }
 
