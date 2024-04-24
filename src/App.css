@@ -1,0 +1,16 @@
+#root {
+  max-width: 1280px;
+  margin-top: 1px;
+  margin: 5px auto;
+  /* padding: 0.2rem; */
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  border: 1px solid rgb(231, 230, 230);
+  border-radius: 0.5rem;
+}
+
+
+nav .active{
+  color:  black;
+  font-weight: 500;
+}
