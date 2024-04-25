@@ -1,20 +1,22 @@
 import {
   Bell,
   CircleUser,
+  Dot,
   Home,
   Menu,
+  Minus,
   Package2,
   PersonStanding,
-
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
+  Plus,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,14 +24,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Link, Outlet } from "react-router-dom"
-import { useState } from "react"
-
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link, Outlet } from "react-router-dom";
+import { useState } from "react";
 
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState();
+  const [navOn, setNavOn] = useState(false);
+
+  const navHandler = () => {
+    setNavOn(!navOn);
+  };
+
   return (
     <>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -49,7 +56,11 @@ const Dashboard = () => {
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                 <Link
                   to="/dashboard"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-success ${selectedMenu === 'dashboard' ? 'bg-primary text-primary-foreground' : ''}`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-success ${
+                    selectedMenu === "dashboard"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
                   onClick={() => setSelectedMenu("dashboard")}
                 >
                   <Home className="h-4 w-4" />
@@ -57,16 +68,57 @@ const Dashboard = () => {
                 </Link>
                 <Link
                   to="/dashboard/teachers"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-success ${selectedMenu === 'teachers' ? 'bg-primary text-primary-foreground' : ''}`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-success ${
+                    selectedMenu === "teachers"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
                   onClick={() => setSelectedMenu("teachers")}
                 >
                   <PersonStanding className="h-4 w-4" />
                   Teachers
                 </Link>
+                {/* student  */}
 
+                <button onClick={navHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      onClick={navHandler}
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-success `}
+                      //onClick={() => setSelectedMenu("teachers")}
+                    >
+                      <PersonStanding className="h-4 w-4" />
+                      Students
+                    </a>
+                    {navOn ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+
+                {navOn ? (
+                  <div>
+                    <Link
+                      to="/dashboard/teachers"
+                      className={`flex items-center rounded-lg px-3 py-2 ml-3 text-muted-foreground transition-all hover:text-success ${
+                        selectedMenu === "teachers"
+                          ? "bg-primary text-primary-foreground"
+                          : ""
+                      }`}
+                      //onClick={() => setSelectedMenu("teachers")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Add Student
+                    </Link>
+                  </div>
+                ) : (
+                  ""
+                )}
               </nav>
             </div>
-
           </div>
         </div>
         <div className="flex flex-col">
@@ -126,7 +178,11 @@ const Dashboard = () => {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full"
+                >
                   <CircleUser className="h-5 w-5" />
                   <span className="sr-only">Toggle user menu</span>
                 </Button>
