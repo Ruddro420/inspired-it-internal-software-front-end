@@ -56,7 +56,7 @@ const Dashboard = () => {
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                 <Link
                   to="/dashboard"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-success ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary ${
                     selectedMenu === "dashboard"
                       ? "bg-primary text-primary-foreground"
                       : ""
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 </Link>
                 <Link
                   to="/dashboard/teachers"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-success ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:bg-primary ${
                     selectedMenu === "teachers"
                       ? "bg-primary text-primary-foreground"
                       : ""
@@ -80,12 +80,12 @@ const Dashboard = () => {
                 </Link>
                 {/* student  */}
 
-                <button onClick={navHandler}>
+                <button className="" onClick={navHandler}>
                   <div className="flex items-center justify-between">
                     <a
-                      onClick={navHandler}
+                      //onClick={navHandler}
                       href="#"
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-success `}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                       //onClick={() => setSelectedMenu("teachers")}
                     >
                       <PersonStanding className="h-4 w-4" />
@@ -100,17 +100,29 @@ const Dashboard = () => {
                 </button>
 
                 {navOn ? (
-                  <div>
+                  <div className="bg-[#f2f2f2]">
                     <Link
-                      to="/dashboard/teachers"
+                      to="/dashboard/students"
                       className={`flex items-center rounded-lg px-3 py-2 ml-3 text-muted-foreground transition-all hover:text-success ${
-                        selectedMenu === "teachers"
+                        selectedMenu === "students"
                           ? "bg-primary text-primary-foreground"
                           : ""
                       }`}
-                      //onClick={() => setSelectedMenu("teachers")}
+                      onClick={() => setSelectedMenu("students")}
                     >
-                      <Dot className="h-8 w-8" />
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      View Student
+                    </Link>
+                    <Link
+                      to="/dashboard/add-students"
+                      className={`flex items-center rounded-lg px-3 py-2 ml-3 text-muted-foreground transition-all hover:text-success ${
+                        selectedMenu === "add-students"
+                          ? "bg-primary text-primary-foreground"
+                          : ""
+                      }`}
+                      onClick={() => setSelectedMenu("add-students")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
                       Add Student
                     </Link>
                   </div>

@@ -1,23 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
 import { ThemeProvider } from "@/components/theme/theme-provider.jsx"
-import Home from './routes/Home.jsx';
 import Dashboard from './routes/Dashboard.jsx';
-import Orders from './routes/Orders.jsx';
-import Customers from './routes/Customers.jsx';
-import Analytics from './routes/Analytics.jsx';
-import Admin from './routes/Authentication/Admin.jsx';
-import Staff from './routes/Authentication/Staff.jsx';
 import Teachers from './routes/Page/Teachers/Teachers.jsx';
 import { Login } from './components/app_components/Login.jsx';
 import DashboardContent from './routes/Page/Dashboard/DashboardContent.jsx';
 import AddTeacher from './routes/Page/Teachers/AddTeacher.jsx';
+import Students from './routes/Page/Students/Students.jsx';
+import AddStudents from './routes/Page/Students/AddStudents.jsx';
 
 
 const router = createBrowserRouter([
@@ -36,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/add-teachers',
         element: <AddTeacher />
+      },
+      {
+        path: '/dashboard/students',
+        element: <Students />
+      },
+      {
+        path: '/dashboard/add-students',
+        element: <AddStudents />
       },
       /*       {
               path: '/dashboard',
