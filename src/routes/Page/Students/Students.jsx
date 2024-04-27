@@ -139,7 +139,7 @@ export default function Students() {
                                                 Ranpur , Bangladesh
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
-                                                Assistant Teacher
+                                                Student
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
                                                 Bangla

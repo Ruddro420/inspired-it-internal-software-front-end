@@ -8,6 +8,7 @@ import {
   Package2,
   PersonStanding,
   Plus,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -88,7 +89,8 @@ const Dashboard = () => {
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                       //onClick={() => setSelectedMenu("teachers")}
                     >
-                      <PersonStanding className="h-4 w-4" />
+                      {/* <PersonStanding className="h-4 w-4" /> */}
+                      <Users className="h-4 w-4" />
                       Students
                     </a>
                     {navOn ? (
@@ -100,10 +102,10 @@ const Dashboard = () => {
                 </button>
 
                 {navOn ? (
-                  <div className="bg-[#f2f2f2]">
+                  <div className="">
                     <Link
                       to="/dashboard/students"
-                      className={`flex items-center rounded-lg px-3 py-2 ml-3 text-muted-foreground transition-all hover:text-success ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-success ${
                         selectedMenu === "students"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -115,7 +117,7 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-students"
-                      className={`flex items-center rounded-lg px-3 py-2 ml-3 text-muted-foreground transition-all hover:text-success ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-success ${
                         selectedMenu === "add-students"
                           ? "bg-primary text-primary-foreground"
                           : ""

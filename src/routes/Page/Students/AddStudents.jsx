@@ -62,16 +62,12 @@ const AddStudents = () => {
                         Section
                         <Select>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select a fruit" />
+                                <SelectValue placeholder="Select Section" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">Banana</SelectItem>
-                                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                                    <SelectItem value="grapes">Grapes</SelectItem>
-                                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                                    <SelectLabel>Select Section</SelectLabel>
+                                    <SelectItem value="apple">2020-21</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -86,16 +82,13 @@ const AddStudents = () => {
                         Gender
                         <Select>
                             <SelectTrigger >
-                                <SelectValue placeholder="Select a fruit" />
+                                <SelectValue placeholder="Select Gender" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">Banana</SelectItem>
-                                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                                    <SelectItem value="grapes">Grapes</SelectItem>
-                                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                                    <SelectLabel>Select Gender</SelectLabel>
+                                    <SelectItem value="apple">Male</SelectItem>
+                                    <SelectItem value="apple">Female</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
