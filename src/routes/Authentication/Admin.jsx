@@ -19,7 +19,7 @@ const Admin = () => {
     }
 
     const handleLogin = () => {
-      fetch('http://192.168.0.103:5000/admin_login', {
+      fetch('http://192.168.0.146:5000/admin_login', {
         method: 'POST',
         credentials: 'include', // Send cookies along with the request
         headers: {
@@ -38,7 +38,7 @@ const Admin = () => {
 
 
     const handleLogout = () => {
-      fetch('http://192.168.0.103:5000​/admin_logout', {
+      fetch('http://192.168.0.146:5000/admin_logout', {
         method: 'GET',
         credentials: 'include', // Send cookies along with the request
       })
@@ -91,12 +91,8 @@ const Admin = () => {
               Login
             </Button>
                 Or
-            <Link to="/staff_login">
             <Button onClick={handleLogout}>Logout</Button>
-            <Button variant="outline" className="w-full">
-            Staff Login
-          </Button>
-            </Link>
+          
           </div>
         </CardContent>
       </Card>

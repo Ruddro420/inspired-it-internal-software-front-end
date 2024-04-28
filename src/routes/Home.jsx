@@ -20,8 +20,6 @@ const Home = () => {
     return (
         <div>
             <Login />
-
-            {/*  <Button onClick={handleGetCookie}>Get Cookie</Button> */}
         </div>
     );
 };
