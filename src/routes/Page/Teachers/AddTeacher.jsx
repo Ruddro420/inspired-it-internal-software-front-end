@@ -5,14 +5,10 @@ import {  teacherAdd } from '../../../lib/api'
 const AddTeacher = () => {
     const handleForm = (e) => {
         e.preventDefault()
-        const form = e.target.form
-        const image = e.target.form.file.files[0]
-        const reader = new FileReader()
-
-        reader.onload = (e) => {
-            const imageData = e.target.result;
-            const base64Data = imageData.split(',')[1];
-            const byteArray = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+           // const imageData = e.target.result;
+            //const base64Data = imageData.split(',')[1];
+            //const byteArray = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+            const form = e.target.form
             const data = {
                 name: form.name.value,
                 password: form.password.value,
@@ -37,13 +33,6 @@ const AddTeacher = () => {
             .then(res=>res.json())
             .then(data=>{console.log(data)})
             .catch(err=>{console.log(err)})
-        }
-
-
-        reader.readAsDataURL(image)
-
-       
-
     }
 
     return (
@@ -94,7 +83,7 @@ const AddTeacher = () => {
                         </label>
                         <label htmlFor="Image" className="md:col-span-1">
                             Image
-                            <Input name="file" type="file" id="image" required/>
+                            <Input name="file" type="file" id="image"/>
                         </label>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 mt-5">
