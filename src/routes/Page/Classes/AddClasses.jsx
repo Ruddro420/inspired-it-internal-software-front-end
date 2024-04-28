@@ -18,17 +18,17 @@ const AddClasses = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 mt-3 gap-4">
           <label htmlFor="Name" className="md:col-span-1">
             Name
-            <Input type="text" id="name" placeholder="Name" />
+            <Input type="text" name="name" placeholder="Name" />
           </label>
           <label htmlFor="Tuition Fee" className="md:col-span-1">
             Tuition Fee
-            <Input type="number" id="tuitionFee" placeholder="Tuition Fee" />
+            <Input type="number" name="fee" placeholder="Tuition Fee" />
           </label>
           <label htmlFor="Assign Teacher" className="md:col-span-1">
             Assign Teacher
             <Input
               type="text"
-              id="assignTeacher"
+              name="assignTeacher"
               placeholder="Assign Teacher"
             />
           </label>

@@ -18,29 +18,29 @@ const AddStudents = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
                     <label htmlFor="Name" className="md:col-span-1">
                         Name
-                        <Input type="text" id="name" required placeholder="Name" />
+                        <Input type="text" name="name" required placeholder="Name" />
                     </label>
                     <label htmlFor="Mobile Number" className="md:col-span-1">
                         Mobile Number
-                        <Input type="number" id="mobileNumber" required placeholder="Mobile Number" />
+                        <Input type="number" name="phone" required placeholder="Mobile Number" />
                     </label>
                     <label htmlFor="Present Address" className="md:col-span-1">
                         Present Address
-                        <Input type="text" required id="presentAddress" placeholder="Present Address" />
+                        <Input type="text" required name="present_address" placeholder="Present Address" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:mt-5">
                     <label htmlFor="Permanent Address" className="md:col-span-1">
                         Permanent Address
-                        <Input type="text" required id="permanentAddress" placeholder="Permanent Address" />
+                        <Input type="text" required name="present_address" placeholder="Permanent Address" />
                     </label>
                     <label htmlFor="Email" className="md:col-span-1">
                         Email
-                        <Input type="email" required id="email" placeholder="Email" />
+                        <Input type="email" required name="email" placeholder="Email" />
                     </label>
                     <label htmlFor="Date of Birth" className="md:col-span-1">
                         Date of Birth
-                        <Input type="date" required id="DateOfBirth" />
+                        <Input type="date" required name="date_of_birth" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
@@ -74,7 +74,7 @@ const AddStudents = () => {
                     </label>
                     <label htmlFor="Image" className="md:col-span-1">
                         Upload File
-                        <Input type="file" required id="image" />
+                        <Input type="file" required name="image" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
@@ -87,62 +87,62 @@ const AddStudents = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Select Gender</SelectLabel>
-                                    <SelectItem value="apple">Male</SelectItem>
-                                    <SelectItem value="apple">Female</SelectItem>
+                                    <SelectItem value="male">Male</SelectItem>
+                                    <SelectItem value="female">Female</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                     </label>
                     <label htmlFor="Roll" className="md:col-span-1">
                         Roll
-                        <Input type="number" required id="roll" placeholder="Roll" />
+                        <Input type="number" required name="roll" placeholder="Roll" />
                     </label>
                     <label htmlFor="Blood Group" className="md:col-span-1">
                         Blood Group
-                        <Input type="text" required id="BloodGroup" placeholder="Blood Group" />
+                        <Input type="text" required name="blood_group" placeholder="Blood Group" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-                    <label htmlFor="Address" className="md:col-span-1">
+                    {/* <label htmlFor="Address" className="md:col-span-1">
                         Address
-                        <Input type="text" required id="address" placeholder="Address" />
-                    </label>
+                        <Input type="text" required name="address" placeholder="Address" />
+                    </label> */}
                     <label htmlFor="Birth Certificate Number" className="md:col-span-1">
                         Birth Certificate Number
-                        <Input type="number" required id="birthCertificateNumber" placeholder="Birth Certificate Number" />
+                        <Input type="number" required name="birth_certificate_number" placeholder="Birth Certificate Number" />
                     </label>
                     <label htmlFor="Parents Name" className="md:col-span-1">
                         Parents Name
-                        <Input type="text" required id="parentsName" placeholder="Parents Name" />
+                        <Input type="text" required name="parent_name" placeholder="Parents Name" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
                     <label htmlFor="Parents Phone" className="md:col-span-1">
                         Parents Phone
-                        <Input type="number" required id="parentsPhone" placeholder="Parents Phone" />
+                        <Input type="number" required name="parent_phone" placeholder="Parents Phone" />
                     </label>
                     <label htmlFor="Local Guardians" className="md:col-span-1">
                         Local Guardians
-                        <Input type="text" required id="localGuardians" placeholder="Local Guardians" />
+                        <Input type="text" required name="local_guardian" placeholder="Local Guardians" />
                     </label>
                     <label htmlFor="Local Guardians Phone Number" className="md:col-span-1">
-                        Local Guardians Phone Number
-                        <Input type="number" required id="localGuardiansPhoneNumber" placeholder="Local Guardians Phone Number" />
+                        Local Guardian&apos;s Phone Number
+                        <Input type="number" required name="local_guardian_phone" placeholder="Local Guardians Phone Number" />
                     </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
                     <label htmlFor="Group" className="md:col-span-1">
                         Group
-                        <Input type="text" required id="group" placeholder="Group" />
+                        <Input type="text" required name="group" placeholder="Group" />
                     </label>
                     <label htmlFor="Session" className="md:col-span-1">
                         Session
-                        <Input type="number" required id="session" placeholder="Session" />
+                        <Input type="number" required name="session" placeholder="Session" />
                     </label>
-                    <label htmlFor="Discount Fee" className="md:col-span-1">
+                    {/* <label htmlFor="Discount Fee" className="md:col-span-1">
                         Discount Fee
-                        <Input type="number" required id="discountFee" placeholder="Discount Fee" />
-                    </label>
+                        <Input type="number" required name="discountFee" placeholder="Discount Fee" />
+                    </label> */}
                 </div>
                 <Button size="sm" className="h-8 gap-1 mt-5">
                     Add Student
