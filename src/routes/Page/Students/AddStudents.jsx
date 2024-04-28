@@ -145,7 +145,7 @@ const AddStudents = () => {
                     </label>
                 </div>
                 <Button size="sm" className="h-8 gap-1 mt-5">
-                    Add Students
+                    Add Student
                 </Button>
             </form>
         </div>

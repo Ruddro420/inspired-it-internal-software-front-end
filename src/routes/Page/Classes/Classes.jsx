@@ -103,11 +103,11 @@ export default function Class() {
                                                 <span className="sr-only">Image</span>
                                             </TableHead>
                                             <TableHead>Name</TableHead>
-                                            <TableHead>Phone</TableHead>
+                                            <TableHead>Tuition Fee</TableHead>
                                             <TableHead className="hidden md:table-cell">
-                                                Address
+                                                Assigned Teacher
                                             </TableHead>
-                                            <TableHead className="hidden md:table-cell">
+                                            {/* <TableHead className="hidden md:table-cell">
                                                 Designation
                                             </TableHead>
                                             <TableHead className="hidden md:table-cell">
@@ -115,35 +115,44 @@ export default function Class() {
                                             </TableHead>
                                             <TableHead>
                                                 <span className="sr-only">Actions</span>
-                                            </TableHead>
+                                            </TableHead> */}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         <TableRow>
                                             <TableCell className="hidden sm:table-cell">
-                                                <img
+                                                {/* <img
+                                                    alt="Product image"
+                                                    className="aspect-square rounded-md object-cover"
+                                                    height="64"
+                                                    src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+                                                    width="64"
+                                                /> */}
+                                            </TableCell>
+                                            <TableCell className="font-medium">
+                                              Bangla
+                                            </TableCell>
+                                            <TableCell>
+                                                1000
+                                            </TableCell>
+                                            <div className="flex items-center">
+                                            <img
                                                     alt="Product image"
                                                     className="aspect-square rounded-md object-cover"
                                                     height="64"
                                                     src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
                                                     width="64"
                                                 />
-                                            </TableCell>
-                                            <TableCell className="font-medium">
-                                                Laser Lemonade
-                                            </TableCell>
-                                            <TableCell>
-                                                01755232541
-                                            </TableCell>
                                             <TableCell className="hidden md:table-cell">
-                                                Ranpur , Bangladesh
+                                            Laser Lemonade
                                             </TableCell>
-                                            <TableCell className="hidden md:table-cell">
+                                            </div>
+                                            {/* <TableCell className="hidden md:table-cell">
                                                 Staff
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
                                                 Bangla
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>

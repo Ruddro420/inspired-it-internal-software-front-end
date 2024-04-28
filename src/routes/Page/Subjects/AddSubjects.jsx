@@ -26,7 +26,9 @@ const AddSubjects = () => {
           </label>
          
         </div>
-        
+        <Button size="sm" className="h-8 gap-1 mt-5">
+                    Add Subject
+                </Button>
       </form>
     </div> 
     );

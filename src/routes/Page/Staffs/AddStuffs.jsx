@@ -96,6 +96,9 @@ const AddStuffs = () => {
               <Input type="text" id="bloodGroup" placeholder="Blood Group" required />
             </label>
           </div>
+          <Button size="sm" className="h-8 gap-1 mt-5">
+                    Add Staff
+                </Button>
         </form>
         
       </div> 
