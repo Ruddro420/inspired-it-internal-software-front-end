@@ -38,12 +38,26 @@ const Dashboard = () => {
   const [staffNav, setStaffNav] = useState(false);
   const [subjectNav, setSubjectNav] = useState(false);
   const [classNav, setClassNav] = useState(false);
+  const [noticeNav, setNoticeNav] = useState(false);
+  const [feeNav, setFeeNav] = useState(false);
+  const [resultNav, setResultNav] = useState(false);
+  const [idCardNav, setIdCardNav] = useState(false);
+  const [salaryNav, setSalaryNav] = useState(false);
+  const [reportNav, setReportNav] = useState(false);
+  const [examNav, setExamNav] = useState(false);
 
   const closeAllMenus = () => {
     setStudentNav(false);
     setStaffNav(false);
     setSubjectNav(false);
     setClassNav(false);
+    setNoticeNav(false);
+    setFeeNav(false);
+    setResultNav(false);
+    setSalaryNav(false);
+    setReportNav(false);
+    setExamNav(false);
+    setIdCardNav(false);
   };
 
   const studentNavHandler = () => {
@@ -62,12 +76,43 @@ const Dashboard = () => {
     closeAllMenus();
     setClassNav(!classNav);
   };
+  const navMenuHandler = () => {
+    closeAllMenus();
+  };
+  // const noticeNavHandler = () => {
+  //   closeAllMenus();
+  //   setNoticeNav(!noticeNav);
+  // };
+  // const feeNavHandler = () => {
+  //   closeAllMenus();
+  //   setFeeNav(!feeNav);
+  // };
+  // const resultNavHandler = () => {
+  //   closeAllMenus();
+  //   setResultNav(!resultNav);
+  // };
+  // const idCardNavHandler = () => {
+  //   closeAllMenus();
+  //   setIdCardNav(!idCardNav);
+  // };
+  // const salaryNavHandler = () => {
+  //   closeAllMenus();
+  //   setSalaryNav(!salaryNav);
+  // };
+  // const reportNavHandler = () => {
+  //   closeAllMenus();
+  //   setReportNav(!reportNav);
+  // };
+  // const examNavHandler = () => {
+  //   closeAllMenus();
+  //   setExamNav(!examNav);
+  // };
 
   return (
     <>
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
-          <div className="flex h-full  max-h-screen flex-col gap-2">
+          <div className="flex h-full   max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <Package2 className="h-6 w-6" />
@@ -99,7 +144,10 @@ const Dashboard = () => {
                       ? "bg-primary text-primary-foreground"
                       : ""
                   }`}
-                  onClick={() => setSelectedMenu("teachers")}
+                  onClick={() => {
+                    setSelectedMenu("teachers");
+                    navMenuHandler();
+                  }}
                 >
                   <PersonStanding className="h-4 w-4" />
                   Teachers
@@ -108,16 +156,16 @@ const Dashboard = () => {
                 {/* student  */}
 
                 <button
-                  className=""
+                  className="text-muted-foreground "
                   onClick={() => {
                     studentNavHandler();
                   }}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between rounded-lg  ">
                     <a
                       //onClick={navHandler}
                       href="#"
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all  `}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                       //onClick={() => setSelectedMenu("teachers")}
                     >
                       {/* <PersonStanding className="h-4 w-4" /> */}
@@ -177,7 +225,7 @@ const Dashboard = () => {
                       <Users className="h-4 w-4" />
                       Staff
                     </a>
-                    {studentNav ? (
+                    {staffNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
@@ -323,6 +371,8 @@ const Dashboard = () => {
                   ""
                 )}
 
+                {/* section */}
+
                 <Link
                   to="/dashboard/sections"
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
@@ -330,11 +380,112 @@ const Dashboard = () => {
                       ? "bg-primary text-primary-foreground"
                       : ""
                   }`}
-                  onClick={() => setSelectedMenu("sections")}
+                  onClick={() => {
+                    setSelectedMenu("sections");
+                    navMenuHandler();
+                  }}
                 >
                   {/* <PersonStanding className="h-4 w-4" /> */}
                   <LayoutPanelTop className="h-4 w-4" />
                   Section
+                </Link>
+
+                {/* notices */}
+                <Link
+                  to="/dashboard/notices"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "notices"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("notices");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Notice
+                </Link>
+
+                {/* fee */}
+                <Link
+                  to="/dashboard/fees"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "fees"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("fees");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Fee
+                </Link>
+                {/* result */}
+                <Link
+                  to="/dashboard/results"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "result"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("results");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Results
+                </Link>
+                {/* id card */}
+                <Link
+                  to="/dashboard/id-cards"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "id-card"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("id-cards");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Id Card Generate
+                </Link>
+                {/* salary */}
+                <Link
+                  to="/dashboard/salaries"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "salaries"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("salaries");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Salaries
+                </Link>
+                {/* Exam */}
+                <Link
+                  to="/dashboard/exams"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "exams"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedMenu("exams");
+                    navMenuHandler();
+                  }}
+                >
+                  <PersonStanding className="h-4 w-4" />
+                  Exam
                 </Link>
               </nav>
             </div>
