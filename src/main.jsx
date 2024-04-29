@@ -20,6 +20,17 @@ import DashboardContent from './routes/Page/Dashboard/DashboardContent.jsx';
 import AddTeacher from './routes/Page/Teachers/AddTeacher.jsx';
 import AuthProvider from './Providers/AuthProvider.jsx';
 import PrivateRoute from './routes/PrivateRoute';
+import Students from './routes/Page/Students/Students';
+import AddStudents from './routes/Page/Students/AddStudents';
+import Staffs from './routes/Page/Staffs/Staffs';
+import AddStuffs from './routes/Page/Staffs/AddStuffs';
+import Subjects from './routes/Page/Subjects/Subjects';
+import AddSubjects from './routes/Page/Subjects/AddSubjects';
+import AddClasses from './routes/Page/Classes/AddClasses';
+import Notices from './routes/Page/Notices/Notices';
+import AddNotices from './routes/Page/Notices/AddNotices';
+import Fees from './routes/Page/Fees/Fees';
+import AddFees from './routes/Page/Fees/AddFees';
 
 
 const router = createBrowserRouter([
@@ -39,10 +50,54 @@ const router = createBrowserRouter([
         path: '/dashboard/add-teachers',
         element: <AddTeacher />
       },
-      // {
-      //   path: '/admin_login',
-      //   element: <Admin/>
-      // },
+      {
+        path: '/dashboard/students',
+        element: <Students />
+      },
+      {
+        path: '/dashboard/add-students',
+        element: <AddStudents />
+      },
+      {
+        path: '/dashboard/stuffs',
+        element: <Staffs/>
+      },
+      {
+        path: '/dashboard/add-staffs',
+        element: <AddStuffs />
+      },
+      {
+        path: '/dashboard/subjects',
+        element: <Subjects/>
+      },
+      {
+        path: '/dashboard/add-subjects',
+        element: <AddSubjects />
+      },
+      {
+        path: '/dashboard/classes',
+        element: <AddClasses/>
+      },
+      {
+        path: '/dashboard/add-classes',
+        element: <AddClasses />
+      },
+      {
+        path: '/dashboard/notices',
+        element: <Notices/>
+      },
+      {
+        path: '/dashboard/add-notices',
+        element: <AddNotices />
+      },
+      {
+        path: '/dashboard/fees',
+        element: <Fees/>
+      },
+      {
+        path: '/dashboard/add-fees',
+        element: <AddFees/>
+      },
       /*       {
               path: '/dashboard',
               element: <Dashboard/>
