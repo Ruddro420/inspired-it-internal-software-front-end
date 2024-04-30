@@ -1,8 +1,10 @@
 import {
   Bell,
+  BookOpen,
   CircleUser,
   Dot,
   Home,
+  LayoutPanelTop,
   Menu,
   Minus,
   Package2,
@@ -33,12 +35,35 @@ import { AuthContext } from "@/Providers/AuthProvider"
 
 
 const Dashboard = () => {
-  const [selectedMenu, setSelectedMenu] = useState();
   const { changeUserState, admin, AdminLogout } = useContext(AuthContext)
-  const [navOn, setNavOn] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState();
+  const [studentNav, setStudentNav] = useState(false);
+  const [staffNav, setStaffNav] = useState(false);
+  const [subjectNav, setSubjectNav] = useState(false);
+  const [classNav, setClassNav] = useState(false);
 
-  const navHandler = () => {
-    setNavOn(!navOn);
+  const closeAllMenus = () => {
+    setStudentNav(false);
+    setStaffNav(false);
+    setSubjectNav(false);
+    setClassNav(false);
+  };
+
+  const studentNavHandler = () => {
+    closeAllMenus();
+    setStudentNav(!studentNav);
+  };
+  const staffNavHandler = () => {
+    closeAllMenus();
+    setStaffNav(!staffNav);
+  };
+  const subjectNavHandler = () => {
+    closeAllMenus();
+    setSubjectNav(!subjectNav);
+  };
+  const classNavHandler = () => {
+    closeAllMenus();
+    setClassNav(!classNav);
   };
   const navigate = useNavigate()
 
@@ -59,7 +84,7 @@ const Dashboard = () => {
     <>
       <div className="sidebar grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
-          <div className="flex h-full max-h-screen flex-col gap-2">
+          <div className="flex h-full  max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <Package2 className="h-6 w-6" />
@@ -74,7 +99,7 @@ const Dashboard = () => {
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                 <NavLink
                   to="/dashboard"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white ${
                     selectedMenu === "dashboard"
                       ? "bg-primary text-primary-foreground"
                       : ""
@@ -86,7 +111,7 @@ const Dashboard = () => {
                 </NavLink>
                 <NavLink
                   to="/dashboard/teachers"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:bg-primary ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                     selectedMenu === "teachers"
                       ? "bg-primary text-primary-foreground"
                       : ""
@@ -98,7 +123,12 @@ const Dashboard = () => {
                 </NavLink>
                 {/* student  */}
 
-                <button className="" onClick={navHandler}>
+                <button
+                  className=""
+                  onClick={() => {
+                    studentNavHandler();
+                  }}
+                >
                   <div className="flex items-center justify-between">
                     <a
                       //onClick={navHandler}
@@ -110,7 +140,7 @@ const Dashboard = () => {
                       <Users className="h-4 w-4" />
                       Students
                     </a>
-                    {navOn ? (
+                    {studentNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
@@ -118,11 +148,11 @@ const Dashboard = () => {
                   </div>
                 </button>
 
-                {navOn ? (
+                {studentNav ? (
                   <div className="">
                     <Link
                       to="/dashboard/students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "students"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -134,7 +164,7 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "add-students"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -151,7 +181,7 @@ const Dashboard = () => {
 
                 {/* staff */}
 
-                <button className="" onClick={navHandler}>
+                <button className="" onClick={staffNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       //onClick={navHandler}
@@ -163,7 +193,7 @@ const Dashboard = () => {
                       <Users className="h-4 w-4" />
                       Staff
                     </a>
-                    {navOn ? (
+                    {studentNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
@@ -171,11 +201,11 @@ const Dashboard = () => {
                   </div>
                 </button>
 
-                {navOn ? (
+                {staffNav ? (
                   <div className="">
                     <Link
                       to="/dashboard/stuffs"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "staffs"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -187,7 +217,7 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-staffs"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "add-staffs"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -204,7 +234,7 @@ const Dashboard = () => {
 
                 {/* subject */}
 
-                <button className="" onClick={navHandler}>
+                <button className="" onClick={subjectNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       //onClick={navHandler}
@@ -213,10 +243,11 @@ const Dashboard = () => {
                       //onClick={() => setSelectedMenu("teachers")}
                     >
                       {/* <PersonStanding className="h-4 w-4" /> */}
-                      <Users className="h-4 w-4" />
+                      {/* <Users className="h-4 w-4" />? */}
+                      <BookOpen className="h-4 w-4" />
                       Subject
                     </a>
-                    {navOn ? (
+                    {subjectNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
@@ -224,11 +255,11 @@ const Dashboard = () => {
                   </div>
                 </button>
 
-                {navOn ? (
+                {subjectNav ? (
                   <div className="">
                     <Link
                       to="/dashboard/subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "subjects"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -240,7 +271,7 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "add-subjects"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -257,7 +288,7 @@ const Dashboard = () => {
 
                 {/* class */}
 
-                <button className="" onClick={navHandler}>
+                <button className="" onClick={classNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       //onClick={navHandler}
@@ -269,7 +300,7 @@ const Dashboard = () => {
                       <Users className="h-4 w-4" />
                       Class
                     </a>
-                    {navOn ? (
+                    {classNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
@@ -277,11 +308,11 @@ const Dashboard = () => {
                   </div>
                 </button>
 
-                {navOn ? (
+                {classNav ? (
                   <div className="">
                     <Link
                       to="/dashboard/classes"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "classes"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -293,7 +324,7 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-classes"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:bg-primary ${
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
                         selectedMenu === "add-classes"
                           ? "bg-primary text-primary-foreground"
                           : ""
@@ -307,7 +338,20 @@ const Dashboard = () => {
                 ) : (
                   ""
                 )}
-                
+
+                <Link
+                  to="/dashboard/sections"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
+                    selectedMenu === "sections"
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedMenu("sections")}
+                >
+                  {/* <PersonStanding className="h-4 w-4" /> */}
+                  <LayoutPanelTop className="h-4 w-4" />
+                  Section
+                </Link>
               </nav>
             </div>
           </div>

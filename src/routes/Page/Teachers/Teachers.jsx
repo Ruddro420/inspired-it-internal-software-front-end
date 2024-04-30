@@ -1,7 +1,7 @@
 import {
     File,
     ListFilter,
-    MoreHorizontal,
+    // MoreHorizontal,
     PlusCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,7 @@ import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
+    // DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -25,7 +25,7 @@ import {
 import {
     Table,
     TableBody,
-    TableCell,
+    // TableCell,
     TableHead,
     TableHeader,
     TableRow,
@@ -56,6 +56,7 @@ export default function Teachers() {
           })
           .then(res=>res.json())
           .then(data=> {
+            console.log(data)
             setTeachers(data)
           })
           .catch(err=> {

@@ -1,36 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useEffect, useState } from "react";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectGroup,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+import { useEffect,  } from "react";
 import { useForm } from "react-hook-form";
 
 const AddClasses = () => {
   const {
     register,
     handleSubmit,
-    setValue,
+    // setValue,
     // reset
 } = useForm()
 
-const [sections, setSections] = useState([])
+// const [sections, setSections] = useState([])
 
   const onSubmit = (data) => {
-    // reset()
-    const _class = {...data, sectionId: parseInt(data.sectionId)}
     fetch('http://localhost:5000/class_add', {
       method: 'POST',
       credentials: 'include', 
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(_class)
+      body: JSON.stringify(data)
   })
   .then(res=> res.json())
   .then(data=> {
@@ -39,21 +37,21 @@ const [sections, setSections] = useState([])
   .catch(err=> {
     console.log(err)
   })
-  console.log(_class)
+  console.log(data)
   }
 
   useEffect(() => {
-    fetch("http://localhost:5000/sections", {
-      method: 'GET',
-      credentials: 'include', 
-    })
-    .then(res=> res.json())
-    .then(data=> {
-      setSections(data)
-    })
-    .catch(err=> {
-      console.log(err)
-    })
+    // fetch("http://localhost:5000/sections", {
+    //   method: 'GET',
+    //   credentials: 'include', 
+    // })
+    // .then(res=> res.json())
+    // .then(data=> {
+    //   setSections(data)
+    // })
+    // .catch(err=> {
+    //   console.log(err)
+    // })
   }, [])
 
 
@@ -74,7 +72,7 @@ const [sections, setSections] = useState([])
             Tuition Fee
             <Input {...register("fee", { required: true })} type="number" name="fee" placeholder="Tuition Fee" />
           </label>
-          <label htmlFor="Assign Teacher" className="md:col-span-1">
+          {/* <label htmlFor="Assign Teacher" className="md:col-span-1">
             Section
             <Select onValueChange={(value) => setValue("sectionId", value)} required>
                         <SelectTrigger>
@@ -90,7 +88,7 @@ const [sections, setSections] = useState([])
                             </SelectGroup>
                         </SelectContent>
                 </Select>
-          </label>
+          </label> */}
         </div>
 
         <Button type="submit" className="mt-3">Add</Button>

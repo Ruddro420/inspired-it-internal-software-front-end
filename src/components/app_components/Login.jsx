@@ -44,7 +44,6 @@ export function Login() {
         if(!data.errors){
           navigate('/dashboard')
         }
-        
 
       })
       .catch((err) => {

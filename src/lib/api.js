@@ -38,4 +38,15 @@ const teacherAdd = ( data ) => {
 })
 }
 
-export {adminLogin, adminLogout, checkAdminLogin, teacherAdd}
+const studentAdd = ( data ) => {
+  return fetch(api_key+'student_add',  {
+    method: 'POST',
+    credentials: 'include', 
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({...data})
+})
+}
+
+export {adminLogin, adminLogout, checkAdminLogin, teacherAdd, studentAdd}
