@@ -1,13 +1,10 @@
 import {
-    File,
     MoreHorizontal,
-    PlusCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -35,66 +32,38 @@ import {
     TooltipProvider,
 
 } from "@/components/ui/tooltip"
-import { Link } from "react-router-dom"
-
-export default function Class() {
+const ViewAccounts = () => {
     return (
         <TooltipProvider>
             <main className="">
                 <Tabs defaultValue="all">
-                    <div className="flex items-center">
-                        <div className="ml-auto flex items-center gap-2">
-                            <Button size="sm" variant="outline" className="h-8 gap-1">
-                                <File className="h-3.5 w-3.5" />
-                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Export
-                                </span>
-                            </Button>
-                            <Button size="sm" className="h-8 gap-1">
-                                <PlusCircle className="h-3.5 w-3.5" />
-                                <Link to='/dashboard/add-classes' className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Add Classes
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
                     <TabsContent value="all">
                         <Card x-chunk="dashboard-06-chunk-0">
                             <CardHeader>
-                                <CardTitle>Classes</CardTitle>
-                                <CardDescription>
-                                    Manage your classes here.
-                                </CardDescription>
+                                <CardTitle>View Account Details</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Name</TableHead>
-                                            <TableHead>Tuition Fee</TableHead>
+                                            <TableHead>Name Of Head</TableHead>
+                                            <TableHead>Type</TableHead>
                                             <TableHead className="hidden md:table-cell">
-                                                Assigned Teacher
+                                                Date
                                             </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         <TableRow>
                                             <TableCell className="font-medium">
-                                                Bangla
+                                                Salary
                                             </TableCell>
                                             <TableCell>
-                                                1000 ৳
+                                                Income
                                             </TableCell>
                                             <div className="flex items-center">
-                                                <img
-                                                    alt="Product image"
-                                                    className="aspect-square rounded-md object-cover"
-                                                    height="64"
-                                                    src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
-                                                    width="64"
-                                                />
-                                                <TableCell className="hidden md:table-cell">
-                                                    Laser Lemonade
+                                                <TableCell>
+                                                    29.04.2024
                                                 </TableCell>
                                             </div>
                                             <TableCell>
@@ -125,6 +94,7 @@ export default function Class() {
                 </Tabs>
             </main>
         </TooltipProvider>
+    );
+};
 
-    )
-}
+export default ViewAccounts;

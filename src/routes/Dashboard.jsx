@@ -1,7 +1,11 @@
 import {
+  Album,
   Bell,
   BookOpen,
+  BriefcaseBusiness,
+  CalendarCheck,
   CircleUser,
+  DiamondPercent,
   Dot,
   Home,
   LayoutPanelTop,
@@ -35,6 +39,7 @@ import { useState } from "react";
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState();
   const [studentNav, setStudentNav] = useState(false);
+  const [teachersNav, setTeachersNav] = useState(false);
   const [staffNav, setStaffNav] = useState(false);
   const [subjectNav, setSubjectNav] = useState(false);
   const [classNav, setClassNav] = useState(false);
@@ -46,8 +51,11 @@ const Dashboard = () => {
   const [reportNav, setReportNav] = useState(false);
   const [examNav, setExamNav] = useState(false);
 
+  const [accountsNav, setAccountsNav] = useState(false);
+
   const closeAllMenus = () => {
     setStudentNav(false);
+    setTeachersNav(false);
     setStaffNav(false);
     setSubjectNav(false);
     setClassNav(false);
@@ -58,11 +66,16 @@ const Dashboard = () => {
     setReportNav(false);
     setExamNav(false);
     setIdCardNav(false);
+    setAccountsNav(false);
   };
 
   const studentNavHandler = () => {
     closeAllMenus();
     setStudentNav(!studentNav);
+  };
+  const teachersNavHandler = () => {
+    closeAllMenus();
+    setTeachersNav(!teachersNav);
   };
   const staffNavHandler = () => {
     closeAllMenus();
@@ -75,6 +88,10 @@ const Dashboard = () => {
   const classNavHandler = () => {
     closeAllMenus();
     setClassNav(!classNav);
+  };
+  const accountNavHandler = () => {
+    closeAllMenus();
+    setAccountsNav(!accountsNav);
   };
   const navMenuHandler = () => {
     closeAllMenus();
@@ -127,155 +144,79 @@ const Dashboard = () => {
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                 <Link
                   to="/dashboard"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white ${
-                    selectedMenu === "dashboard"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white ${selectedMenu === "dashboard"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => setSelectedMenu("dashboard")}
                 >
                   <Home className="h-4 w-4" />
                   Dashboard
                 </Link>
-                <Link
-                  to="/dashboard/teachers"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "teachers"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedMenu("teachers");
-                    navMenuHandler();
-                  }}
-                >
-                  <PersonStanding className="h-4 w-4" />
-                  Teachers
-                </Link>
-
-                {/* student  */}
-
-                <button
-                  className="text-muted-foreground "
-                  onClick={() => {
-                    studentNavHandler();
-                  }}
-                >
-                  <div className="flex items-center justify-between rounded-lg  ">
-                    <a
-                      //onClick={navHandler}
-                      href="#"
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                      //onClick={() => setSelectedMenu("teachers")}
-                    >
-                      {/* <PersonStanding className="h-4 w-4" /> */}
-                      <Users className="h-4 w-4" />
-                      Students
-                    </a>
-                    {studentNav ? (
-                      <Minus className="mt-2 h-4" />
-                    ) : (
-                      <Plus className="mt-2 h-4" />
-                    )}
-                  </div>
-                </button>
-
-                {studentNav ? (
-                  <div className="">
-                    <Link
-                      to="/dashboard/students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "students"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("students")}
-                    >
-                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      View Student
-                    </Link>
-                    <Link
-                      to="/dashboard/add-students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-students"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("add-students")}
-                    >
-                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      Add Student
-                    </Link>
-                  </div>
-                ) : (
-                  ""
-                )}
-
-                {/* staff */}
-
-                <button className="" onClick={staffNavHandler}>
+                {/* class start*/}
+                <button className="" onClick={classNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
-                      //onClick={navHandler}
                       href="#"
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                      //onClick={() => setSelectedMenu("teachers")}
                     >
-                      {/* <PersonStanding className="h-4 w-4" /> */}
-                      <Users className="h-4 w-4" />
-                      Staff
+                      <CalendarCheck className="h-4 w-4" />
+                      Classes
                     </a>
-                    {staffNav ? (
+                    {classNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
                     )}
                   </div>
                 </button>
-
-                {staffNav ? (
+                {classNav ? (
                   <div className="">
                     <Link
-                      to="/dashboard/stuffs"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "staffs"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("staffs")}
+                      to="/dashboard/classes"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "classes"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("classes")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      View Staff
+                      View Classes
                     </Link>
                     <Link
-                      to="/dashboard/add-staffs"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-staffs"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("add-staffs")}
+                      to="/dashboard/add-classes"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-classes"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("add-classes")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      Add Staff
+                      Add Classes
+                    </Link>
+                    <Link
+                      to="/dashboard/sections"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "sections"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("sections")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      Add Sections
                     </Link>
                   </div>
                 ) : (
                   ""
                 )}
-
-                {/* subject */}
-
+                {/* class End*/}
+                {/* Subject */}
                 <button className="" onClick={subjectNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
-                      //onClick={navHandler}
                       href="#"
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                      //onClick={() => setSelectedMenu("teachers")}
                     >
-                      {/* <PersonStanding className="h-4 w-4" /> */}
-                      {/* <Users className="h-4 w-4" />? */}
                       <BookOpen className="h-4 w-4" />
                       Subject
                     </a>
@@ -286,16 +227,14 @@ const Dashboard = () => {
                     )}
                   </div>
                 </button>
-
                 {subjectNav ? (
                   <div className="">
                     <Link
                       to="/dashboard/subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "subjects"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "subjects"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
                       onClick={() => setSelectedMenu("subjects")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
@@ -303,11 +242,10 @@ const Dashboard = () => {
                     </Link>
                     <Link
                       to="/dashboard/add-subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-subjects"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-subjects"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
                       onClick={() => setSelectedMenu("add-subjects")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
@@ -317,87 +255,241 @@ const Dashboard = () => {
                 ) : (
                   ""
                 )}
+                {/* Subject End */}
 
-                {/* class */}
-
-                <button className="" onClick={classNavHandler}>
-                  <div className="flex items-center justify-between">
+                {/* Student Start  */}
+                <button
+                  className="text-muted-foreground "
+                  onClick={() => {
+                    studentNavHandler();
+                  }}
+                >
+                  <div className="flex items-center justify-between rounded-lg  ">
                     <a
-                      //onClick={navHandler}
                       href="#"
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                      //onClick={() => setSelectedMenu("teachers")}
                     >
-                      {/* <PersonStanding className="h-4 w-4" /> */}
                       <Users className="h-4 w-4" />
-                      Class
+                      Students
                     </a>
-                    {classNav ? (
+                    {studentNav ? (
                       <Minus className="mt-2 h-4" />
                     ) : (
                       <Plus className="mt-2 h-4" />
                     )}
                   </div>
                 </button>
-
-                {classNav ? (
+                {studentNav ? (
                   <div className="">
                     <Link
-                      to="/dashboard/classes"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "classes"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("classes")}
+                      to="/dashboard/students"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "students"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("students")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      View Class
+                      View Student
                     </Link>
                     <Link
-                      to="/dashboard/add-classes"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-classes"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
-                      onClick={() => setSelectedMenu("add-classes")}
+                      to="/dashboard/add-students"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-students"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("add-students")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      Add Class
+                      Add Student
+                    </Link>
+                    <Link
+                      to="/dashboard/id-cards"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "id-cards"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("id-cards")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      Students Id Card
+                    </Link>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {/* Student End */}
+
+                {/* Teachers Start  */}
+                <button
+                  className="text-muted-foreground "
+                  onClick={() => {
+                    teachersNavHandler();
+                  }}
+                >
+                  <div className="flex items-center justify-between rounded-lg  ">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <BriefcaseBusiness className="h-4 w-4" />
+                      Teachers
+                    </a>
+                    {teachersNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {teachersNav ? (
+                  <div className="">
+                    <Link
+                      to="/dashboard/teachers"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "teachers"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("teachers")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      View Teachers
+                    </Link>
+                    <Link
+                      to="/dashboard/add-teachers"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-teachers"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("add-teachers")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      Add Teachers
+                    </Link>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {/* Teachers End */}
+
+                {/* Office Staffs Start */}
+                <button className="" onClick={staffNavHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                 
+                    >
+                      <Album className="h-4 w-4" />
+                      Office Staffs
+                    </a>
+                    {staffNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {staffNav ? (
+                  <div className="">
+                    <Link
+                      to="/dashboard/stuffs"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "staffs"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("staffs")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      View Staff
+                    </Link>
+                    <Link
+                      to="/dashboard/add-staffs"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-staffs"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("add-staffs")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      Add Staff
                     </Link>
                   </div>
                 ) : (
                   ""
                 )}
 
-                {/* section */}
+                {/* Accounts Start */}
+                <button className="" onClick={accountNavHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <DiamondPercent className="h-4 w-4" />
+                      Accounts
+                    </a>
+                    {accountsNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {accountsNav ? (
+                  <div className="">
+                    <Link
+                      to="/dashboard/add-accounts"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "add-accounts"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("add-accounts")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      Add Accounts
+                    </Link>
+                    <Link
+                      to="/dashboard/view-accounts-report"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "view-accounts-report"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
+                      onClick={() => setSelectedMenu("view-accounts-report")}
+                    >
+                      <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
+                      View Reports
+                    </Link>
+                  </div>
+                ) : (
+                  ""
+                )}
 
-                <Link
+
+
+                {/* section */}
+                {/* <Link
                   to="/dashboard/sections"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "sections"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "sections"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("sections");
                     navMenuHandler();
                   }}
                 >
-                  {/* <PersonStanding className="h-4 w-4" /> */}
                   <LayoutPanelTop className="h-4 w-4" />
                   Section
-                </Link>
+                </Link> */}
 
                 {/* notices */}
-                <Link
+                {/* <Link
                   to="/dashboard/notices"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "notices"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "notices"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("notices");
                     navMenuHandler();
@@ -405,16 +497,15 @@ const Dashboard = () => {
                 >
                   <PersonStanding className="h-4 w-4" />
                   Notice
-                </Link>
+                </Link> */}
 
                 {/* fee */}
-                <Link
+                {/* <Link
                   to="/dashboard/fees"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "fees"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "fees"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("fees");
                     navMenuHandler();
@@ -422,15 +513,14 @@ const Dashboard = () => {
                 >
                   <PersonStanding className="h-4 w-4" />
                   Fee
-                </Link>
+                </Link> */}
                 {/* result */}
-                <Link
+               {/*  <Link
                   to="/dashboard/results"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "result"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "result"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("results");
                     navMenuHandler();
@@ -438,31 +528,15 @@ const Dashboard = () => {
                 >
                   <PersonStanding className="h-4 w-4" />
                   Results
-                </Link>
-                {/* id card */}
-                <Link
-                  to="/dashboard/id-cards"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "id-card"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    setSelectedMenu("id-cards");
-                    navMenuHandler();
-                  }}
-                >
-                  <PersonStanding className="h-4 w-4" />
-                  Id Card Generate
-                </Link>
+                </Link> */}
+                
                 {/* salary */}
-                <Link
+                {/* <Link
                   to="/dashboard/salaries"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "salaries"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "salaries"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("salaries");
                     navMenuHandler();
@@ -470,15 +544,14 @@ const Dashboard = () => {
                 >
                   <PersonStanding className="h-4 w-4" />
                   Salaries
-                </Link>
+                </Link> */}
                 {/* Exam */}
-                <Link
+                {/* <Link
                   to="/dashboard/exams"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                    selectedMenu === "exams"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "exams"
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                    }`}
                   onClick={() => {
                     setSelectedMenu("exams");
                     navMenuHandler();
@@ -486,7 +559,7 @@ const Dashboard = () => {
                 >
                   <PersonStanding className="h-4 w-4" />
                   Exam
-                </Link>
+                </Link> */}
               </nav>
             </div>
           </div>
