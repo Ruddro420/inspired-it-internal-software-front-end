@@ -34,6 +34,7 @@ import AddExams from "./routes/Page/Exam/AddExams";
 import AddSections from "./routes/Page/Sections/AddSections";
 import AddAccounts from "./routes/Page/Accounts/AddAccounts";
 import ViewAccountReport from "./routes/Page/Accounts/ViewAccountReport";
+import ClassView from "./routes/Page/Classes/ClassView";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/add-classes",
         element: <AddClasses />,
+      },
+      {
+        path: "/dashboard/class-view",
+        element: <ClassView />,
       },
       {
         path: "/dashboard/notices",
