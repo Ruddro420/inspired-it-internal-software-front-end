@@ -21,6 +21,19 @@ import AddNotices from "./routes/Page/Notices/AddNotices";
 import Fees from "./routes/Page/Fees/Fees";
 import AddFees from "./routes/Page/Fees/AddFees";
 import Sections from "./routes/Page/Sections/Sections";
+import Results from "./routes/Page/Result/Results";
+import AddResults from "./routes/Page/Result/AddResults";
+import IdCards from "./routes/Page/IdCard/IdCards";
+import AddIdCards from "./routes/Page/IdCard/AddIdCards";
+import Salaries from "./routes/Page/Salary/Salaries";
+import AddSalaries from "./routes/Page/Salary/AddSalaries";
+import Reports from "./routes/Page/Report/Reports";
+import AddReports from "./routes/Page/Report/AddReports";
+import Exams from "./routes/Page/Exam/Exams";
+import AddExams from "./routes/Page/Exam/AddExams";
+import AddSections from "./routes/Page/Sections/AddSections";
+import AddAccounts from "./routes/Page/Accounts/AddAccounts";
+import ViewAccountReport from "./routes/Page/Accounts/ViewAccountReport";
 import PrivateRoute from "./routes/PrivateRoute";
 import AuthProvider from "./Providers/AuthProvider";
 
@@ -93,6 +106,71 @@ const router = createBrowserRouter([
         path: "/dashboard/sections",
         element: <Sections />,
       },
+      {
+        path: "/dashboard/add-fees",
+        element: <AddFees />,
+      },
+      {
+        path: "/dashboard/sections",
+        element: <Sections />,
+      },
+      {
+        path: "/dashboard/add-sections",
+        element: <AddSections />,
+      },
+      {
+        path: "/dashboard/add-fees",
+        element: <AddFees />,
+      },
+      {
+        path: "/dashboard/results",
+        element: <Results />,
+      },
+      {
+        path: "/dashboard/add-results",
+        element: <AddResults />,
+      },
+      {
+        path: "/dashboard/id-cards",
+        element: <IdCards />,
+      },
+      {
+        path: "/dashboard/add-cards",
+        element: <AddIdCards />,
+      },
+      {
+        path: "/dashboard/salaries",
+        element: <Salaries />,
+      },
+      {
+        path: "/dashboard/add-salaries",
+        element: <AddSalaries />,
+      },
+      {
+        path: "/dashboard/reports",
+        element: <Reports />,
+      },
+      {
+        path: "/dashboard/add-reports",
+        element: <AddReports />,
+      },
+      {
+        path: "/dashboard/exams",
+        element: <Exams />,
+      },
+      {
+        path: "/dashboard/add-exams",
+        element: <AddExams />,
+      },
+      {
+        path: "/dashboard/add-accounts",
+        element: <AddAccounts />,
+      },
+      {
+        path: "/dashboard/view-accounts-report",
+        element: <ViewAccountReport />,
+      },
+
       /*       {
               path: '/dashboard',
               element: <Dashboard/>
@@ -122,7 +200,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
-  },
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

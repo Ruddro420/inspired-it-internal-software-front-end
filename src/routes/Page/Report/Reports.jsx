@@ -3,17 +3,17 @@ import {
     ListFilter,
     MoreHorizontal,
     PlusCircle,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import {
+  } from "lucide-react"
+  import { Button } from "@/components/ui/button"
+  import {
     Card,
     CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import {
+  } from "@/components/ui/card"
+  import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -21,29 +21,29 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
+  } from "@/components/ui/dropdown-menu"
+  import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import {
+  } from "@/components/ui/table"
+  import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "@/components/ui/tabs"
-import {
-
+  } from "@/components/ui/tabs"
+  import {
+  
     TooltipProvider,
-
-} from "@/components/ui/tooltip"
-import { Link } from "react-router-dom"
-
-export default function Fees() {
+  
+  } from "@/components/ui/tooltip"
+  import { Link } from "react-router-dom"
+  
+  export default function Reports() {
     return (
         <TooltipProvider>
             <main className="">
@@ -81,8 +81,8 @@ export default function Fees() {
                             </Button>
                             <Button size="sm" className="h-8 gap-1">
                                 <PlusCircle className="h-3.5 w-3.5" />
-                                <Link to='/dashboard/add-fees' className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Add Fee
+                                <Link to='/dashboard/add-teachers' className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                    Add Teachers
                                 </Link>
                             </Button>
                         </div>
@@ -90,9 +90,9 @@ export default function Fees() {
                     <TabsContent value="all">
                         <Card x-chunk="dashboard-06-chunk-0">
                             <CardHeader>
-                                <CardTitle>Staffs</CardTitle>
+                                <CardTitle>Teachers</CardTitle>
                                 <CardDescription>
-                                    Manage your staffs here.
+                                    Manage your teachers here.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -139,7 +139,7 @@ export default function Fees() {
                                                 Ranpur , Bangladesh
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
-                                                Staff
+                                                Assistant Teacher
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
                                                 Bangla
@@ -179,6 +179,7 @@ export default function Fees() {
                 </Tabs>
             </main>
         </TooltipProvider>
-
+  
     )
-}
+  }
+  

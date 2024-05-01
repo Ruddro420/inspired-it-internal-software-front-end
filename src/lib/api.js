@@ -45,7 +45,7 @@ const studentAdd = ( data ) => {
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({...data})
+    body: JSON.stringify(data)
 })
 }
 
