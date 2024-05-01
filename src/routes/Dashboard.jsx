@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/Providers/AuthProvider"
 
 
@@ -69,31 +69,44 @@ const Dashboard = () => {
     setAccountsNav(false);
   };
 
-  const studentNavHandler = () => {
+  const studentNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setStudentNav(!studentNav);
   };
-  const teachersNavHandler = () => {
+  const teachersNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setTeachersNav(!teachersNav);
   };
-  const staffNavHandler = () => {
+  const staffNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setStaffNav(!staffNav);
   };
-  const subjectNavHandler = () => {
+  const subjectNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setSubjectNav(!subjectNav);
   };
-  const classNavHandler = () => {
+  const classNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setClassNav(!classNav);
   };
-  const accountNavHandler = () => {
+  const accountNavHandler = (e) => {
+    const id = e.target.parentNode.parentNode.id
+    localStorage.setItem('navItem', id)
     closeAllMenus();
     setAccountsNav(!accountsNav);
   };
-  const navMenuHandler = () => {
+  const navMenuHandler = (e) => {
+    localStorage.setItem('navItem', e.target.id)
     closeAllMenus();
   };
   // const noticeNavHandler = () => {
@@ -138,6 +151,15 @@ const Dashboard = () => {
           console.log(err)
       })
   }
+
+  useEffect(() => {
+    const navItem = localStorage.getItem("navItem")
+    if(navItem) {
+      
+      document.getElementById(navItem).click()
+      localStorage.setItem("navItem", navItem)
+    }
+  }, [])
   return (
     <>
       <div className="sidebar grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -155,23 +177,20 @@ const Dashboard = () => {
             </div>
             <div className="flex-1">
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                <NavLink
+                <Link id="dash"
                   to="/dashboard"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white ${
-                    selectedMenu === "dashboard"
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }`}
-                  onClick={() => {
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white`}
+                  onClick={(e) => {
                     setSelectedMenu("dashboard");
-                    navMenuHandler();
+                    navMenuHandler(e);
+                    
                   }}
                 >
                   <Home className="h-4 w-4" />
                   Dashboard
-                </NavLink>
+                </Link>
                 {/* class start*/}
-                <button className="text-black" onClick={classNavHandler}>
+                <button id="classes"  className="text-black" onClick={classNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -189,48 +208,38 @@ const Dashboard = () => {
                 </button>
                 {classNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
+                
                       to="/dashboard/classes"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "classes"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("classes")}
                     >
                       <Dot className="h-8 w-8" />
                       View Classes
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-classes"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-classes"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-classes")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Classes
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-sections"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "sections"
-                        ? "bg-primary text-primary-foreground"
-                        : ""
-                        }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Sections
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
                 )}
                 {/* class End*/}
                 {/* Subject */}
-                <button className="" onClick={subjectNavHandler}>
+                <button id="sub" className="" onClick={subjectNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -248,30 +257,22 @@ const Dashboard = () => {
                 </button>
                 {subjectNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
                       to="/dashboard/subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "subjects"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("subjects")}
                     >
                       <Dot className="h-8 w-8" />
                       View Subject
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-subjects"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-subjects")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Subject
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
@@ -279,11 +280,9 @@ const Dashboard = () => {
                 {/* Subject End */}
 
                 {/* Student Start  */}
-                <button
+                <button id="std"
                   className="text-muted-foreground "
-                  onClick={() => {
-                    studentNavHandler();
-                  }}
+                  onClick={studentNavHandler}
                 >
                   <div className="flex items-center justify-between rounded-lg  ">
                     <a
@@ -302,42 +301,30 @@ const Dashboard = () => {
                 </button>
                 {studentNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
                       to="/dashboard/students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "students"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("students")}
                     >
                       <Dot className="h-8 w-8" />
                       View Student
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-students"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-students"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-students")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Student
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/id-cards"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "id-cards"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("id-cards")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
                       Students Id Card
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
@@ -345,7 +332,7 @@ const Dashboard = () => {
                 {/* Student End */}
 
                 {/* Teachers Start  */}
-                <button
+                <button id="teacher"
                   className="text-muted-foreground "
                   onClick={() => {
                     teachersNavHandler();
@@ -368,30 +355,22 @@ const Dashboard = () => {
                 </button>
                 {teachersNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
                       to="/dashboard/teachers"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "teachers"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("teachers")}
                     >
                       <Dot className="h-8 w-8" />
                       View Teachers
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-teachers"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-teachers"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-teachers")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Teachers
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
@@ -399,7 +378,7 @@ const Dashboard = () => {
                 {/* Teachers End */}
 
                 {/* Office Staffs Start */}
-                <button className="" onClick={staffNavHandler}>
+                <button id="staff" className="" onClick={staffNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -417,37 +396,29 @@ const Dashboard = () => {
                 </button>
                 {staffNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
                       to="/dashboard/stuffs"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "staffs"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("staffs")}
                     >
                       <Dot className="h-8 w-8" />
                       View Staff
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/add-staffs"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-staffs"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-staffs")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Staff
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
                 )}
 
                 {/* Accounts Start */}
-                <button className="" onClick={accountNavHandler}>
+                <button id="acc" className="" onClick={accountNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -465,30 +436,22 @@ const Dashboard = () => {
                 </button>
                 {accountsNav ? (
                   <div className="">
-                    <Link
+                    <NavLink
                       to="/dashboard/add-accounts"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "add-accounts"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-accounts")}
                     >
                       <Dot className="h-8 w-8" />
                       Add Accounts
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to="/dashboard/view-accounts-report"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "view-accounts-report"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("view-accounts-report")}
                     >
                       <Dot className="h-8 w-8" />
                       View Reports
-                    </Link>
+                    </NavLink>
                   </div>
                 ) : (
                   ""
@@ -610,20 +573,20 @@ const Dashboard = () => {
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
                 <nav className="grid gap-2 text-lg font-medium">
-                  <Link
+                  <NavLink
                     to="/dashboard"
                     className="flex items-center gap-2 text-lg font-semibold"
                   >
                     <Package2 className="h-6 w-6" />
                     <span className="sr-only">Acme Inc</span>
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     to="/dashboard"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   >
                     <Home className="h-5 w-5" />
                     Dashboard
-                  </Link>
+                  </NavLink>
                 </nav>
                 <div className="mt-auto">
                   <Card>

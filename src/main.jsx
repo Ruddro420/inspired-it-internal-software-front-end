@@ -37,6 +37,7 @@ import ViewAccountReport from "./routes/Page/Accounts/ViewAccountReport";
 import PrivateRoute from "./routes/PrivateRoute";
 import AuthProvider from "./Providers/AuthProvider";
 import ClassView from "./routes/Page/Classes/ClassView";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -213,6 +214,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
      <AuthProvider> 
       <RouterProvider router={router} />
+      <Toaster />
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>

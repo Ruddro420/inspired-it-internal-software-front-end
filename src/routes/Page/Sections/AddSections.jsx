@@ -62,7 +62,7 @@ const AddSections = () => {
     <div style={{ overflow: "hidden" }}>
       <h1 className="text-2xl font-bold mb-3">Add Sections</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <label htmlFor="name" className="md:col-span-1">
             Name
             <Input

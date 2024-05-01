@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/select";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddClasses = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,7 +35,10 @@ const AddClasses = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        toast.success('Successfully created!');
+        setTimeout(()=>{
+          navigate('/dashboard/classes')
+        },1000)
       })
       .catch((err) => {
         console.log(err);
@@ -99,7 +105,7 @@ const AddClasses = () => {
         </div>
 
         <Button type="submit" className="mt-3">
-          Add
+          Add Class
         </Button>
       </form>
     </div>

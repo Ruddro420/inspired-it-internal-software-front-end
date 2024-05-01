@@ -40,12 +40,13 @@ const AddStudents = () => {
 
     useEffect(() => {
 
-      fetch("http://localhost:5000/sections", {
+      fetch("http://localhost:5000/classes", {
         method: 'GET',
         credentials: 'include', 
       })
       .then(res=> res.json())
       .then(data=> {
+        console.log(data)
         setSections(data)
       })
       .catch(err=> {
@@ -115,9 +116,9 @@ const AddStudents = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Select Class</SelectLabel>
-                                   {
-                                    sections.map(sec=>  <SelectItem key={sec.id} value={`${sec.classId}|${sec.id}`}>{sec.class.name} - {sec.name}</SelectItem>)
-                                   }
+                                   {/* {
+                                    sections?.map(sec=>  <SelectItem key={sec.id} value={`${sec.classId}|${sec.id}`}>{sec.class.name} - {sec.name}</SelectItem>)
+                                   } */}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>

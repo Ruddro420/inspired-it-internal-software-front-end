@@ -1,4 +1,11 @@
-import { Edit, Eye, File, MoreHorizontal, PlusCircle, Trash } from "lucide-react";
+import {
+  Edit,
+  Eye,
+  File,
+  MoreHorizontal,
+  PlusCircle,
+  Trash,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,28 +34,45 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { TbH1 } from "react-icons/tb";
 
 export default function Class() {
+  const [classes, setClasses] = useState([]);
 
-  const [classes, setClasses] = useState([])
-
-    useEffect(() => {
-      fetch("http://localhost:5000/classes", {
-        method: 'GET',
-        credentials: 'include', 
+  useEffect(() => {
+    fetch("http://localhost:5000/classes", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setClasses(data);
       })
-      .then(res=> res.json())
-      .then(data=> {
-        // console.log(data)
-        setClasses(data)
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  /* Delete Classes */
+  const deleteHandler = (id) => {
+    axios
+      .delete(`http://localhost:5000/class/${id}`, {
+        withCredentials: true,
       })
-      .catch(err=> {
-        console.log(err)
+      .then((response) => {
+        const cls = classes.filter((item) => item.id != id);
+        setClasses(cls);
+        toast.success("Delete Successfully !");
+        return response.data;
       })
-    }, [])
-
-
-
+      .catch((error) => {
+        // Handle error
+        console.error("Error fetching data:", error);
+      });
+  };
 
   return (
     <TooltipProvider>
@@ -92,48 +116,84 @@ export default function Class() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                  {
-                    classes.map(cls => <TableRow key={cls.id}>
-                      <TableCell className="font-medium">
-                        <div className="">{cls.name}</div>
-                      </TableCell>
-                      <TableCell className="font-medium">{cls.sections.length == 0 ? <Badge variant="destructive">No section added!</Badge> : <span>{cls.sections.map(sc=><Badge key={sc.id}>{sc.name}</Badge>)} </span> }</TableCell>
-                      <TableCell><div className="font-bold text-md">{cls.fee} ৳</div></TableCell>
-                      {/* <TableCell className="hidden md:table-cell">
+                    {classes.length == 0
+                      ? <h1>No Data Found</h1>
+                      : classes.map((cls) => (
+                          <TableRow key={cls.id}>
+                            <TableCell className="font-medium">
+                              <div className="">{cls.name}</div>
+                            </TableCell>
+                            <TableCell className="font-medium">
+                              {cls.sections.length == 0 ? (
+                                <Badge variant="destructive">
+                                  No section added!
+                                </Badge>
+                              ) : (
+                                <span>
+                                  {cls.sections.map((sc) => (
+                                    <Badge key={sc.id}>{sc.name}</Badge>
+                                  ))}{" "}
+                                </span>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="font-bold text-md">
+                                {cls.fee} ৳
+                              </div>
+                            </TableCell>
+                            {/* <TableCell className="hidden md:table-cell">
                         Laser Lemonade
                       </TableCell> */}
-                      <TableCell>
-                        <div className="block lg:hidden">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <Link to={`/dashboard/class-view/${cls.id}`}><DropdownMenuItem >View</DropdownMenuItem></Link>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Delete</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                        </div>
-                        <div className="hidden lg:block">
-                          <div className="flex items-center justify-center gap-3">
-                          <Link to={`/dashboard/class-view/${cls.id}`}><Button ><Eye size={20} className="mr-2"/> View</Button></Link>
-                          <Button ><Edit size={20} className="mr-2"/> Edit</Button>
-                          <Button variant="destructive"><Trash size={20} className="mr-2"/> Delete</Button>
-                          </div>
-                        </div>
-                      </TableCell>
-                    </TableRow> )
-                  }
-                    
+                            <TableCell>
+                              <div className="block lg:hidden">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      aria-haspopup="true"
+                                      size="icon"
+                                      variant="ghost"
+                                    >
+                                      <MoreHorizontal className="h-4 w-4" />
+                                      <span className="sr-only">
+                                        Toggle menu
+                                      </span>
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>
+                                      Actions
+                                    </DropdownMenuLabel>
+                                    <Link
+                                      to={`/dashboard/class-view/${cls.id}`}
+                                    >
+                                      <DropdownMenuItem>View</DropdownMenuItem>
+                                    </Link>
+                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                              <div className="hidden lg:block">
+                                <div className="flex items-center justify-center gap-3">
+                                  <Link to={`/dashboard/class-view/${cls.id}`}>
+                                    <Button>
+                                      <Eye size={20} className="mr-2" /> View
+                                    </Button>
+                                  </Link>
+                                  <Button>
+                                    <Edit size={20} className="mr-2" /> Edit
+                                  </Button>
+                                  <Button
+                                    onClick={() => deleteHandler(cls.id)}
+                                    variant="destructive"
+                                  >
+                                    <Trash size={20} className="mr-2" /> Delete
+                                  </Button>
+                                </div>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                   </TableBody>
                 </Table>
               </CardContent>
