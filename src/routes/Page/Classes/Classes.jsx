@@ -1,4 +1,4 @@
-import { File, MoreHorizontal, PlusCircle } from "lucide-react";
+import { Edit, Eye, File, MoreHorizontal, PlusCircle, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,8 +25,31 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Class() {
+
+  const [classes, setClasses] = useState([])
+
+    useEffect(() => {
+      fetch("http://localhost:5000/classes", {
+        method: 'GET',
+        credentials: 'include', 
+      })
+      .then(res=> res.json())
+      .then(data=> {
+        // console.log(data)
+        setClasses(data)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+    }, [])
+
+
+
+
   return (
     <TooltipProvider>
       <main className="">
@@ -63,20 +86,24 @@ export default function Class() {
                       <TableHead>Class Name</TableHead>
                       <TableHead>Section</TableHead>
                       <TableHead>Tuition Fee</TableHead>
-                      <TableHead className="hidden md:table-cell">
+                      {/* <TableHead className="hidden md:table-cell">
                         Assigned Teacher
-                      </TableHead>
+                      </TableHead> */}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">Class One</TableCell>
-                      <TableCell className="font-medium">A</TableCell>
-                      <TableCell>1000 ৳</TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        Laser Lemonade
+                  {
+                    classes.map(cls => <TableRow key={cls.id}>
+                      <TableCell className="font-medium">
+                        <div className="">{cls.name}</div>
                       </TableCell>
+                      <TableCell className="font-medium">{cls.sections.length == 0 ? <Badge variant="destructive">No section added!</Badge> : <span>{cls.sections.map(sc=><Badge key={sc.id}>{sc.name}</Badge>)} </span> }</TableCell>
+                      <TableCell><div className="font-bold text-md">{cls.fee} ৳</div></TableCell>
+                      {/* <TableCell className="hidden md:table-cell">
+                        Laser Lemonade
+                      </TableCell> */}
                       <TableCell>
+                        <div className="block lg:hidden">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
@@ -90,13 +117,23 @@ export default function Class() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <Link to='/dashboard/class-view'><DropdownMenuItem >View</DropdownMenuItem></Link>
+                            <Link to={`/dashboard/class-view/${cls.id}`}><DropdownMenuItem >View</DropdownMenuItem></Link>
                             <DropdownMenuItem>Edit</DropdownMenuItem>
                             <DropdownMenuItem>Delete</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
+                        </div>
+                        <div className="hidden lg:block">
+                          <div className="flex items-center justify-center gap-3">
+                          <Link to={`/dashboard/class-view/${cls.id}`}><Button ><Eye size={20} className="mr-2"/> View</Button></Link>
+                          <Button ><Edit size={20} className="mr-2"/> Edit</Button>
+                          <Button variant="destructive"><Trash size={20} className="mr-2"/> Delete</Button>
+                          </div>
+                        </div>
                       </TableCell>
-                    </TableRow>
+                    </TableRow> )
+                  }
+                    
                   </TableBody>
                 </Table>
               </CardContent>

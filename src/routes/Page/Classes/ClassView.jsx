@@ -21,13 +21,37 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const ClassView = () => {
+    const location = useLocation()
+    const param = location.pathname.split('/')[3]
+
+    const [_class, setClass] = useState(null)
+
+    useEffect(()=>{
+      fetch("http://localhost:5000/class/"+param, {
+      method: 'GET',
+      credentials: 'include', 
+    })
+    .then(res=> res.json())
+    .then(data=> {
+      console.log(data)
+      setClass(data)
+    })
+    .catch(err=> {
+      console.log(err)
+    })
+    }, [param])
+
+
   return (
     <div>
-      <main className="flex flex-1 flex-col gap-4">
+      {
+        _class && <main className="flex flex-1 flex-col gap-4">
         <h1 className="text-2xl font-bold mb-3 border-2 p-3 rounded">
-          Class One
+          {_class.name}
         </h1>
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <Card x-chunk="dashboard-01-chunk-0">
@@ -38,7 +62,7 @@ const ClassView = () => {
               <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">45,231.89</div>
+              <div className="text-2xl font-bold">{_class.teachers.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -49,7 +73,7 @@ const ClassView = () => {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
+              <div className="text-2xl font-bold">+{_class.student.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
@@ -60,7 +84,7 @@ const ClassView = () => {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
+              <div className="text-2xl font-bold">+{_class.sections.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-3">
@@ -194,7 +218,8 @@ const ClassView = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          <TableRow>
+                          {
+                            _class.teachers.map(t=><TableRow key={t.teacher.id}>
                             <TableCell className="hidden sm:table-cell">
                               <img
                                 alt="Product image"
@@ -205,14 +230,14 @@ const ClassView = () => {
                               />
                             </TableCell>
                             <TableCell className="font-medium">
-                              Laser Lemonade
+                              {t.teacher.name}
                             </TableCell>
-                            <TableCell>3342</TableCell>
+                            <TableCell>{t.teacher.id}</TableCell>
                             <TableCell className="hidden md:table-cell">
-                              Ranpur , Bangladesh
+                              {t.teacher.present_address}
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
-                              Bangla
+                              {t.teacher.department}
                             </TableCell>
                             <TableCell>
                               <DropdownMenu>
@@ -234,7 +259,8 @@ const ClassView = () => {
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>
-                          </TableRow>
+                          </TableRow>)
+                          }
                         </TableBody>
                       </Table>
                     </CardContent>
@@ -245,6 +271,7 @@ const ClassView = () => {
           </TooltipProvider>
         </div>
       </main>
+      }
     </div>
   );
 };

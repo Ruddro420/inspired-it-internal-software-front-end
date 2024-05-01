@@ -34,12 +34,14 @@ import AddExams from "./routes/Page/Exam/AddExams";
 import AddSections from "./routes/Page/Sections/AddSections";
 import AddAccounts from "./routes/Page/Accounts/AddAccounts";
 import ViewAccountReport from "./routes/Page/Accounts/ViewAccountReport";
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthProvider from "./Providers/AuthProvider";
 import ClassView from "./routes/Page/Classes/ClassView";
 
 const router = createBrowserRouter([
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <PrivateRoute><Dashboard /></PrivateRoute>,
     children: [
       {
         path: "/dashboard/",
@@ -86,7 +88,7 @@ const router = createBrowserRouter([
         element: <AddClasses />,
       },
       {
-        path: "/dashboard/class-view",
+        path: "/dashboard/class-view/:id",
         element: <ClassView />,
       },
       {
@@ -203,13 +205,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
-  },
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+     <AuthProvider> 
       <RouterProvider router={router} />
+      </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

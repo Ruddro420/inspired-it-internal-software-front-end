@@ -3,16 +3,13 @@ import {
   Bell,
   BookOpen,
   BriefcaseBusiness,
-  CalendarCheck,
   CircleUser,
   DiamondPercent,
   Dot,
   Home,
-  LayoutPanelTop,
   Menu,
   Minus,
   Package2,
-  PersonStanding,
   Plus,
   Users,
 } from "lucide-react";
@@ -33,10 +30,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/Providers/AuthProvider"
+
 
 const Dashboard = () => {
+  const { changeUserState, admin, AdminLogout } = useContext(AuthContext)
   const [selectedMenu, setSelectedMenu] = useState();
   const [studentNav, setStudentNav] = useState(false);
   const [teachersNav, setTeachersNav] = useState(false);
@@ -124,10 +124,23 @@ const Dashboard = () => {
   //   closeAllMenus();
   //   setExamNav(!examNav);
   // };
-
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    AdminLogout()
+      .then(res=> res.json())
+      .then(data=> {
+          console.log(data)
+          changeUserState(null)
+          localStorage.removeItem('status')
+          navigate('/')
+      })
+      .catch(err=> {
+          console.log(err)
+      })
+  }
   return (
     <>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      <div className="sidebar grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full   max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -142,7 +155,7 @@ const Dashboard = () => {
             </div>
             <div className="flex-1">
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                <Link
+                <NavLink
                   to="/dashboard"
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white ${
                     selectedMenu === "dashboard"
@@ -156,7 +169,7 @@ const Dashboard = () => {
                 >
                   <Home className="h-4 w-4" />
                   Dashboard
-                </Link>
+                </NavLink>
                 {/* class start*/}
                 <button className="text-black" onClick={classNavHandler}>
                   <div className="flex items-center justify-between">
@@ -201,12 +214,11 @@ const Dashboard = () => {
                       Add Classes
                     </Link>
                     <Link
-                      to="/dashboard/sections"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${
-                        selectedMenu === "sections"
-                          ? "bg-primary text-primary-foreground"
-                          : ""
-                      }`}
+                      to="/dashboard/add-sections"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary ${selectedMenu === "sections"
+                        ? "bg-primary text-primary-foreground"
+                        : ""
+                        }`}
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
@@ -638,6 +650,7 @@ const Dashboard = () => {
                 </div>
               </form>
             </div>
+            {admin ? admin.email: ''}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -655,7 +668,7 @@ const Dashboard = () => {
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </header>

@@ -1,7 +1,7 @@
 import {
     File,
     ListFilter,
-    MoreHorizontal,
+    // MoreHorizontal,
     PlusCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,7 @@ import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
+    // DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -25,7 +25,7 @@ import {
 import {
     Table,
     TableBody,
-    TableCell,
+    // TableCell,
     TableHead,
     TableHeader,
     TableRow,
@@ -42,8 +42,30 @@ import {
 
 } from "@/components/ui/tooltip"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import TableRowCustom from "@/components/app_components/TableRowCustom"
 
 export default function Teachers() {
+
+    const [teachers, setTeachers] = useState([])
+
+    useEffect(() => {
+        fetch('http://localhost:5000/teachers', {
+            method: 'GET',
+            credentials: 'include', 
+          })
+          .then(res=>res.json())
+          .then(data=> {
+            console.log(data)
+            setTeachers(data)
+          })
+          .catch(err=> {
+            console.log(err)
+          })
+    }, [])
+
+    
+
     return (
         <TooltipProvider>
             <main className="">
@@ -119,52 +141,9 @@ export default function Teachers() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        <TableRow>
-                                            <TableCell className="hidden sm:table-cell">
-                                                <img
-                                                    alt="Product image"
-                                                    className="aspect-square rounded-md object-cover"
-                                                    height="64"
-                                                    src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
-                                                    width="64"
-                                                />
-                                            </TableCell>
-                                            <TableCell className="font-medium">
-                                                Laser Lemonade
-                                            </TableCell>
-                                            <TableCell>
-                                                01755232541
-                                            </TableCell>
-                                            <TableCell className="hidden md:table-cell">
-                                                Ranpur , Bangladesh
-                                            </TableCell>
-                                            <TableCell className="hidden md:table-cell">
-                                                Assistant Teacher
-                                            </TableCell>
-                                            <TableCell className="hidden md:table-cell">
-                                                Bangla
-                                            </TableCell>
-                                            <TableCell>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button
-                                                            aria-haspopup="true"
-                                                            size="icon"
-                                                            variant="ghost"
-                                                        >
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                            <span className="sr-only">Toggle menu</span>
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuItem>View</DropdownMenuItem>
-                                                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                                                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
+                                       {
+                                        teachers.map(teacher=> <TableRowCustom key={teacher.id} teacher={teacher}/>)
+                                       }
                                     </TableBody>
                                 </Table>
                             </CardContent>
