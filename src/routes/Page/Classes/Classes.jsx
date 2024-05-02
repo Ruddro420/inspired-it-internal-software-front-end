@@ -117,7 +117,7 @@ export default function Class() {
                   </TableHeader>
                   <TableBody>
                     {classes.length == 0
-                      ? <h1>No Data Found</h1>
+                      ? <h1 className="bg-[black] p-2 text-[white] rounded mb-2">No Data Found</h1>
                       : classes.map((cls) => (
                           <TableRow key={cls.id}>
                             <TableCell className="font-medium">
@@ -129,11 +129,11 @@ export default function Class() {
                                   No section added!
                                 </Badge>
                               ) : (
-                                <span>
+                                <div className="flex items-center gap-1 flex-wrap">
                                   {cls.sections.map((sc) => (
                                     <Badge key={sc.id}>{sc.name}</Badge>
-                                  ))}{" "}
-                                </span>
+                                  ))}
+                                </div>
                               )}
                             </TableCell>
                             <TableCell>

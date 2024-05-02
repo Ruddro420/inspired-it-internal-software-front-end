@@ -207,7 +207,7 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {classNav ? (
-                  <div className="">
+                  <div className="fadeInDown">
                     <NavLink
                 
                       to="/dashboard/classes"
@@ -246,7 +246,7 @@ const Dashboard = () => {
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                     >
                       <BookOpen className="h-4 w-4" />
-                      Subject
+                      Subject / Courses
                     </a>
                     {subjectNav ? (
                       <Minus className="mt-2 h-4" />
@@ -256,15 +256,15 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {subjectNav ? (
-                  <div className="">
-                    <NavLink
+                  <div className="fadeInDown">
+                  {/*   <NavLink
                       to="/dashboard/subjects"
                       className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("subjects")}
                     >
                       <Dot className="h-8 w-8" />
                       View Subject
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink
                       to="/dashboard/add-subjects"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
@@ -300,7 +300,7 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {studentNav ? (
-                  <div className="">
+                  <div className="fadeInDown">
                     <NavLink
                       to="/dashboard/students"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
@@ -334,9 +334,7 @@ const Dashboard = () => {
                 {/* Teachers Start  */}
                 <button id="teacher"
                   className="text-muted-foreground "
-                  onClick={() => {
-                    teachersNavHandler();
-                  }}
+                  onClick={ teachersNavHandler}
                 >
                   <div className="flex items-center justify-between rounded-lg  ">
                     <a
@@ -354,7 +352,7 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {teachersNav ? (
-                  <div className="">
+                  <div className="fadeInDown">
                     <NavLink
                       to="/dashboard/teachers"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
@@ -395,7 +393,7 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {staffNav ? (
-                  <div className="">
+                  <div className="fadeInDown">
                     <NavLink
                       to="/dashboard/stuffs"
                       className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
@@ -435,7 +433,7 @@ const Dashboard = () => {
                   </div>
                 </button>
                 {accountsNav ? (
-                  <div className="">
+                  <div className="fadeInDown">
                     <NavLink
                       to="/dashboard/add-accounts"
                       className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}

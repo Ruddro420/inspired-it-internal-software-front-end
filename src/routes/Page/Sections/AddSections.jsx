@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const AddSections = () => {
   const {
@@ -34,7 +35,8 @@ const AddSections = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
+        toast.success('Successfuly added!')
       })
       .catch((err) => {
         console.log(err);
@@ -50,6 +52,7 @@ const AddSections = () => {
     .then(res=> res.json())
     .then(data=> {
       setClasses(data)
+
     })
     .catch(err=> {
       console.log(err)
@@ -57,10 +60,15 @@ const AddSections = () => {
   }, [])
 
 
+  console.log(classes);
+
 
   return (
     <div style={{ overflow: "hidden" }}>
       <h1 className="text-2xl font-bold mb-3">Add Sections</h1>
+      {
+        classes.length == 0 && <h1 className="bg-[#FF9E00] p-2 text-[white] rounded mb-2">Please Add Classes First</h1>
+      }
       <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <label htmlFor="name" className="md:col-span-1">
@@ -70,13 +78,14 @@ const AddSections = () => {
               type="text"
               id="name"
               placeholder="Name"
+              disabled={classes.length === 0 ? true : false}
             />
           </label>
 
         
          <label htmlFor="Class">
                         Class
-                        <Select onValueChange={(value) => setValue("classId", value)} id="Class">
+                        <Select onValueChange={(value) => setValue("classId", value)} id="Class" disabled={classes.length === 0 ? true : false}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Class" />
                             </SelectTrigger>
@@ -92,7 +101,7 @@ const AddSections = () => {
                     </label>
        
         </div>
-        <Button size="sm" className="h-8 gap-1 mt-5">
+        <Button size="sm" className="h-8 gap-1 mt-5" disabled={classes.length === 0 ? true : false}>
           Add Section
         </Button>
       </form>

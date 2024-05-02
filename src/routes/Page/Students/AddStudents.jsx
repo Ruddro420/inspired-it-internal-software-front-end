@@ -24,13 +24,21 @@ const AddStudents = () => {
         // reset
     } = useForm()
 
-    const [sections, setSections] = useState([])
+
     const [students, setStudents] = useState([])
+    const [cands, setCandS] = useState([])
 
     const onSubmit = (data) => {
-        let Id = data.classId.split('|')
-
-        let _data = {...data, password: "123", classId: parseInt(Id[0]), sectionId: parseInt(Id[1]), id_no: parseInt(data.id_no)}
+        let _data
+        let Id
+        if(data.classId.includes('|')) {
+             Id = data.classId.split('|')
+            _data = {...data, password: "123", classId: parseInt(Id[0]), sectionId: parseInt(Id[1]), id_no: parseInt(data.id_no)}
+        } else {
+             
+            _data = {...data, password: "123", classId: parseInt(data.classId), id_no: parseInt(data.id_no)}
+        }
+        console.log(data)
         console.log(_data)
         studentAdd(_data)
              .then(res=>res.json())
@@ -46,8 +54,26 @@ const AddStudents = () => {
       })
       .then(res=> res.json())
       .then(data=> {
-        console.log(data)
-        setSections(data)
+        let d = []
+        for(let i=0; i<data.length; i++) {
+            if(data[i].sections.length != 0) {
+                for(let j=0; j<data[i].sections.length; j++) {
+                    d.push({
+                        name: data[i].name + '-' + data[i].sections[j].name,
+                        value: data[i].sections[j].classId + '|' + data[i].sections[j].id,
+                    })
+                }
+            } else {
+                d.push({
+                    name: data[i].name,
+                    value: (data[i].id).toString()
+                })
+            }
+            
+        }
+        setCandS(d)
+        // console.log(data)
+        // setSections(data)
       })
       .catch(err=> {
         console.log(err)
@@ -116,9 +142,9 @@ const AddStudents = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Select Class</SelectLabel>
-                                   {/* {
-                                    sections?.map(sec=>  <SelectItem key={sec.id} value={`${sec.classId}|${sec.id}`}>{sec.class.name} - {sec.name}</SelectItem>)
-                                   } */}
+                                   {
+                                    cands.map(cs=>  <SelectItem key={cs.name} value={cs.value}>{cs.name}</SelectItem>)
+                                   }
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -211,7 +237,7 @@ const AddStudents = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
                     <label htmlFor="Parents Phone" className="md:col-span-1">
                         Parents Phone
-                        <Input {...register("parent_phone", { required: true })} type="number" required name="parent_phone" placeholder="Parents Phone" />
+                        <Input {...register("parent_phone", { required: true })} type="text" required name="parent_phone" placeholder="Parents Phone" />
                     </label>
                     <label htmlFor="Local Guardians" className="md:col-span-1">
                         L-Guardian Name
@@ -219,7 +245,7 @@ const AddStudents = () => {
                     </label>
                     <label htmlFor="Local Guardians Phone Number" className="md:col-span-1">
                         L Guardian&apos;s Phone
-                        <Input {...register("local_guardian_phone", { required: true })} type="number" required name="local_guardian_phone" placeholder="Local Guardians Phone Number" />
+                        <Input {...register("local_guardian_phone", { required: true })} type="text" required name="local_guardian_phone" placeholder="Local Guardians Phone Number" />
                     </label>
                 </div>
                 <Button size="sm" className="h-8 gap-1 mt-5">
