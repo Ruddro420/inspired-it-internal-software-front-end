@@ -1,3 +1,4 @@
+import Loading from "@/components/app_components/Loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,14 +18,14 @@ const AddSections = () => {
   const {
     register,
     handleSubmit,
-    // reset
+    reset,
     setValue
   } = useForm();
 
   const [classes, setClasses] = useState([])
 
   const onSubmit = (data) => {
-    // reset()
+     reset()
     fetch("http://localhost:5000/section_add", {
       method: "POST",
       credentials: "include",
@@ -36,7 +37,8 @@ const AddSections = () => {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        toast.success('Successfuly added!')
+        toast.success('Successfully added!')
+        setValue('classId',"")
       })
       .catch((err) => {
         console.log(err);
@@ -64,7 +66,9 @@ const AddSections = () => {
 
 
   return (
-    <div style={{ overflow: "hidden" }}>
+   <>
+    {
+      classes.length == 0 ? <Loading/> :  <div style={{ overflow: "hidden" }}>
       <h1 className="text-2xl font-bold mb-3">Add Sections</h1>
       {
         classes.length == 0 && <h1 className="bg-[#FF9E00] p-2 text-[white] rounded mb-2">Please Add Classes First</h1>
@@ -79,13 +83,14 @@ const AddSections = () => {
               id="name"
               placeholder="Name"
               disabled={classes.length === 0 ? true : false}
+              required
             />
           </label>
 
         
          <label htmlFor="Class">
                         Class
-                        <Select onValueChange={(value) => setValue("classId", value)} id="Class" disabled={classes.length === 0 ? true : false}>
+                        <Select  onValueChange={(value) => setValue("classId", value)} id="Class" disabled={classes.length === 0 ? true : false} required>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Class" />
                             </SelectTrigger>
@@ -106,6 +111,8 @@ const AddSections = () => {
         </Button>
       </form>
     </div>
+    }
+   </>
   );
 };
 

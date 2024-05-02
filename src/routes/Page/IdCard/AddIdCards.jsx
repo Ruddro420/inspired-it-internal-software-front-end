@@ -15,7 +15,7 @@ const AddIdCards = () => {
             
           </div>
           <Button size="sm" className="h-8 gap-1 mt-5">
-          Add Id Card
+          Generate Id Card
         </Button>
         </form>
       </div> 

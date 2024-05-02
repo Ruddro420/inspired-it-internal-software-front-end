@@ -37,6 +37,7 @@ import { Badge } from "@/components/ui/badge";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { TbH1 } from "react-icons/tb";
+import Loading from "@/components/app_components/Loading";
 
 export default function Class() {
   const [classes, setClasses] = useState([]);
@@ -75,7 +76,9 @@ export default function Class() {
   };
 
   return (
-    <TooltipProvider>
+    <>
+    {
+      classes.length == 0 ? <Loading/> : <TooltipProvider>
       <main className="">
         <Tabs defaultValue="all">
           <div className="flex items-center">
@@ -202,5 +205,7 @@ export default function Class() {
         </Tabs>
       </main>
     </TooltipProvider>
+    }
+    </>
   );
 }
