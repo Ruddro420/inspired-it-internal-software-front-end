@@ -68,6 +68,18 @@ const sectionAdd = (data) => {
   });
 };
 
+//Add Settings
+const settingsAdd = (data) => {
+  return fetch(api_key + "settings_add", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+};
+
 ////___________________________________________________________________________________________________________________////////
 
 //GET
@@ -133,6 +145,13 @@ const getStudentById = (id) => {
   });
 };
 
+const getSettings = () => {
+  return fetch(api_key + "settings", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 
 
 //----------------------------------------------
@@ -140,6 +159,19 @@ const getStudentById = (id) => {
 
 const studentUpdate = (data, id) => {
   return fetch(api_key + "student_update/"+id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+/* Settings Update */
+
+const settingsUpdate = (data, id) => {
+  return fetch(api_key + "settings_update/"+id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -194,5 +226,7 @@ export {
   deleteStudent,
   dateTime, 
   AdmissionFeeAdd,
-
+  settingsAdd,
+  getSettings,
+  settingsUpdate,
 };

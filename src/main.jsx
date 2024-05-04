@@ -38,6 +38,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import AuthProvider from "./Providers/AuthProvider";
 import ClassView from "./routes/Page/Classes/ClassView";
 import { Toaster } from "react-hot-toast";
+import Settings from "./routes/Page/Settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -175,6 +176,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/view-accounts-report",
         element: <ViewAccountReport />,
+      },
+      {
+        path: "/dashboard/admin-settings",
+        element: <Settings />,
       },
 
       /*       {
