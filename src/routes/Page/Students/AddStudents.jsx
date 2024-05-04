@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AdmissionFeeAdd, dateTime, getClasses, getStudentById, getStudentCount, studentAdd, studentUpdate } from "@/lib/api";
+import { AdmissionFeeAdd, dateTime, getClasses, getSettings, getStudentById, getStudentCount, studentAdd, studentUpdate } from "@/lib/api";
 import {
   CreditCard,
   Search,
@@ -99,6 +99,8 @@ const AddStudents = () => {
   const [isGenerate, setIsGenerate] = useState(false);
   const [isReAdmission, setIsReAdmission] = useState(false)
   const { targetRef } = usePDF();
+
+  const [info, setInfo] = useState([])
 
   const onSubmit = (data) => {
     if(parseInt(fee) == 0) {
@@ -219,6 +221,17 @@ const AddStudents = () => {
       .catch((err) => {
         console.log(err);
       });
+
+
+      getSettings()
+      .then((res) => res.json())
+      .then((data) => {
+       setInfo(data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   }, [setValue, studentCount, isData2]);
 
   const [class_, setCls] = useState("");
@@ -854,9 +867,9 @@ const AddStudents = () => {
 
                         <div className="lg:w-[77%]">
                           <div>
-                            Cantonment Public School & College, Lalmonirhat
+                            {info[0].name}
                           </div>
-                          <div className="text-sm">EIIN: 127500</div>
+                          <div className="text-sm">EIIN: {info[0].eiin}</div>
                           <CardDescription>
                             Date: {dateTime(new Date())}
                           </CardDescription>
