@@ -1,3 +1,4 @@
+import Alert from "@/components/app_components/Alert";
 import Loading from "@/components/app_components/Loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { getClasses, sectionAdd } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -23,37 +25,34 @@ const AddSections = () => {
   } = useForm();
 
   const [classes, setClasses] = useState([])
+  const [isData, setIsData] = useState(false)
 
   const onSubmit = (data) => {
-     reset()
-    fetch("http://localhost:5000/section_add", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({...data, classId: parseInt(data.classId)}),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        toast.success('Successfully added!')
-        setValue('classId',"")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(data);
+     
+     toast.promise(
+      sectionAdd(data)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to create class");
+      }
+      reset()
+      return res.json();
+      }),
+      {
+        loading: 'Creating section...', 
+        success: <b>Successfully created!</b>, 
+        error: <b>Failed to create section.</b>, 
+      }
+    )
+    
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/classes", {
-      method: 'GET',
-      credentials: 'include', 
-    })
+    getClasses()
     .then(res=> res.json())
     .then(data=> {
       setClasses(data)
+      setIsData(true)
 
     })
     .catch(err=> {
@@ -62,18 +61,17 @@ const AddSections = () => {
   }, [])
 
 
-  console.log(classes);
-
 
   return (
    <>
     {
-      classes.length == 0 ? <Loading/> :  <div style={{ overflow: "hidden" }}>
+      !isData ? <Loading/> :  <div style={{ overflow: "hidden" }}>
       <h1 className="text-2xl font-bold mb-3">Add Sections</h1>
-      {
-        classes.length == 0 && <h1 className="bg-[#FF9E00] p-2 text-[white] rounded mb-2">Please Add Classes First</h1>
-      }
+      
       <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
+      {
+        classes.length==0 && <Alert title="You have not added class yet!" subtitle="To create section, create class first!" link="/dashboard/add-classes" linktitle="Add"/>
+      }
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <label htmlFor="name" className="md:col-span-1">
             Name

@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const AddIdCards = () => {
+const AddIdCards = ({generate}) => {
     return (
         <div style={{ overflow: "hidden" }}>
         <h1 className="text-2xl font-bold mb-3">ID Card Generate</h1>
@@ -14,7 +14,7 @@ const AddIdCards = () => {
             </label>
             
           </div>
-          <Button size="sm" className="h-8 gap-1 mt-5">
+          <Button onClick={generate} size="sm" className="h-8 gap-1 mt-5">
           Generate Id Card
         </Button>
         </form>

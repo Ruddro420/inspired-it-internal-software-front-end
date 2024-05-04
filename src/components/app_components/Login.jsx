@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { AuthContext } from "@/Providers/AuthProvider";
 import { Eye, EyeOff } from "lucide-react";
 import {  useEffect, useRef, useState, useContext } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export function Login() {
@@ -38,11 +39,13 @@ export function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        
-        changeUserState(data)
-        localStorage.setItem('status', true)
-        if(!data.errors){
-          navigate('/dashboard')
+        if(data.errors){
+          toast.error(data.errors.err)
+        } else {
+          changeUserState(data)
+          if(!data.errors){
+            navigate('/dashboard')
+          }
         }
 
       })

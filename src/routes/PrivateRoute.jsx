@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/Providers/AuthProvider";
+import Loading from "@/components/app_components/Loading";
 const PrivateRoute = ({ children }) => {
  const [isAdmin, setIsAdmin] = useState(false);
  const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ const PrivateRoute = ({ children }) => {
     }, [CheckAdminLogin])
 
     if (loading) {
-        return <div>Loading ....</div>
+        return <Loading/>
     }
     // console.log("admin", isAdmin)
     if(isAdmin) return children

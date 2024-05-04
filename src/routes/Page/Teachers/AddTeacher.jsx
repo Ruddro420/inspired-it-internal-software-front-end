@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {  teacherAdd } from '../../../lib/api'
+import {  getClasses, teacherAdd } from '../../../lib/api'
 import {
     Select,
     SelectContent,
@@ -11,16 +11,17 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useForm } from "react-hook-form";
-// import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import Loading from "@/components/app_components/Loading";
+import Alert from "@/components/app_components/Alert";
 
 const AddTeacher = () => {
-
     const {
         register,
         handleSubmit,
         setValue,
+        
         // reset
     } = useForm()
 
@@ -41,13 +42,8 @@ const AddTeacher = () => {
             }
           }
       })
-
-      // console.log(selectedClasses)
        
        _data = {...data, classes: {create: selectedClasses}, fixed_salary: parseInt(data.fixed_salary)}
-
-      //  console.log(_data)
-            
             teacherAdd(_data)
             .then(res=>res.json())
             .then(data=>{console.log(data)})
@@ -56,12 +52,10 @@ const AddTeacher = () => {
 
 
     const [classes, setClasses] = useState([])
+    const [isData, setIsData] = useState(false)
 
     useEffect(() => {
-      fetch("http://localhost:5000/classes", {
-        method: 'GET',
-        credentials: 'include', 
-      })
+      getClasses()
       .then(res=> res.json())
       .then(data=> {
         let _data = []
@@ -69,6 +63,7 @@ const AddTeacher = () => {
           _data.push({...data[d], selected: false})
         }
         setClasses(_data)
+        setIsData(true)
       })
       .catch(err=> {
         console.log(err)
@@ -80,14 +75,22 @@ const AddTeacher = () => {
     const handleClassSelect = (id) => {
       classes[id]["selected"] = !classes[id]["selected"]
       setClasses([...classes])
-      // console.log(classes)
     }
 
 
 
     return (
+      <>{
+        !isData ? <Loading/> :
+
         <div style={{ overflow: "hidden" }}>
+         
         <h1 className="text-2xl font-bold mb-3">Add Teacher</h1>
+        <>
+      {
+
+classes.length==0 ? <Alert title="You have not added class yet!" subtitle="To add teachers, create class first!" link="/dashboard/add-classes" linktitle="Add"/>
+:
         <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
             <label htmlFor="Name" className="md:col-span-1">
@@ -105,7 +108,7 @@ const AddTeacher = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
 
-<label htmlFor="Parmanent Address" className="md:col-span-1">
+          <label htmlFor="Parmanent Address" className="md:col-span-1">
             Present Address
               <Input {...register("parmanent_address", { required: true })} type="text" name="parmanent_address" placeholder="Parmanent Address" required />
             </label>
@@ -184,8 +187,11 @@ const AddTeacher = () => {
                     Add Teacher
                 </Button>
         </form>
+}</>
         
       </div> 
+}
+</>
     );
 };
 

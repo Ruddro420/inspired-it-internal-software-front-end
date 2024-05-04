@@ -6,14 +6,6 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -22,14 +14,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-    Table,
-    TableBody,
-    // TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+
 import {
     Tabs,
     TabsContent,
@@ -43,21 +28,23 @@ import {
 } from "@/components/ui/tooltip"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import TableRowCustom from "@/components/app_components/TableRowCustom"
+import Loading from "@/components/app_components/Loading"
+import TeacherTabContent from "@/components/app_components/TeacherTabContent"
+import Alert from "@/components/app_components/Alert"
+import { getTeachers } from "@/lib/api"
 
 export default function Teachers() {
 
     const [teachers, setTeachers] = useState([])
+    const [isData, setIsData] = useState(false)
 
     useEffect(() => {
-        fetch('http://localhost:5000/teachers', {
-            method: 'GET',
-            credentials: 'include', 
-          })
+        getTeachers()
           .then(res=>res.json())
           .then(data=> {
-            console.log(data)
+            // console.log(data)
             setTeachers(data)
+            setIsData(true)
           })
           .catch(err=> {
             console.log(err)
@@ -67,14 +54,16 @@ export default function Teachers() {
     
 
     return (
+        <>
+        { !isData ? <Loading/> :
         <TooltipProvider>
             <main className="">
                 <Tabs defaultValue="all">
                     <div className="flex items-center">
                         <TabsList>
                             <TabsTrigger value="all">All</TabsTrigger>
-                            <TabsTrigger value="active">Present</TabsTrigger>
-                            <TabsTrigger value="draft">Leave</TabsTrigger>
+                            <TabsTrigger value="present">Present</TabsTrigger>
+                            <TabsTrigger value="leave">Leave</TabsTrigger>
                         </TabsList>
                         <div className="ml-auto flex items-center gap-2">
                             <DropdownMenu>
@@ -109,55 +98,23 @@ export default function Teachers() {
                             </Button>
                         </div>
                     </div>
-                    <TabsContent value="all">
-                        <Card x-chunk="dashboard-06-chunk-0">
-                            <CardHeader>
-                                <CardTitle>Teachers</CardTitle>
-                                <CardDescription>
-                                    Manage your teachers here.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead className="hidden w-[100px] sm:table-cell">
-                                                <span className="sr-only">Image</span>
-                                            </TableHead>
-                                            <TableHead>Name</TableHead>
-                                            <TableHead>Phone</TableHead>
-                                            <TableHead className="hidden md:table-cell">
-                                                Address
-                                            </TableHead>
-                                            <TableHead className="hidden md:table-cell">
-                                                Designation
-                                            </TableHead>
-                                            <TableHead className="hidden md:table-cell">
-                                                Department
-                                            </TableHead>
-                                            <TableHead>
-                                                <span className="sr-only">Actions</span>
-                                            </TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                       {
-                                        teachers.map(teacher=> <TableRowCustom key={teacher.id} teacher={teacher}/>)
-                                       }
-                                    </TableBody>
-                                </Table>
-                            </CardContent>
-                            <CardFooter>
-                                <div className="text-xs text-muted-foreground">
-                                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                                    products
-                                </div>
-                            </CardFooter>
-                        </Card>
-                    </TabsContent>
+                    {
+                        teachers.length == 0 ? <Alert title="You have not added any Teacher yet!" subtitle="Here you can manage teachers!" link="/dashboard/add-teachers" linktitle="Add"/> : <div>
+                        <TabsContent value="all">
+                            <TeacherTabContent title="All Teachers" description="Manage all teachers here." teachers={teachers}/>
+                        </TabsContent>
+                        <TabsContent value="present">
+                        <TeacherTabContent title="Present Teachers" description="Manage all present teachers here." teachers={teachers}/>
+                        </TabsContent>
+                        <TabsContent value="leave">
+                        <TeacherTabContent title="Teachers who have left" description="Manage all left teachers here." teachers={teachers}/>
+                        </TabsContent>
+                        </div>
+                    }
                 </Tabs>
             </main>
-        </TooltipProvider>
+        </TooltipProvider>}
+        </>
 
     )
 }

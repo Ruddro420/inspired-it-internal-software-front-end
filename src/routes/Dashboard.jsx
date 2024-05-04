@@ -315,7 +315,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("add-students")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Student
+                      Admission
                     </NavLink>
                     <NavLink
                       to="/dashboard/id-cards"
@@ -323,7 +323,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("id-cards")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
-                      Students Id Card
+                      Generate ID Card
                     </NavLink>
                   </div>
                 ) : (
@@ -607,7 +607,7 @@ const Dashboard = () => {
             <div className="w-full flex-1">
               <form>
                 <div className="relative">
-                  <h1>Welcome To SMS</h1>
+                  <h1>Welcome To Student Management System</h1>
                 </div>
               </form>
             </div>

@@ -1,3 +1,4 @@
+import Alert from "@/components/app_components/Alert";
 import Loading from "@/components/app_components/Loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getClasses, getTeachers } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,6 +21,8 @@ const AddSubjects = () => {
 
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
+  const [isData, setIsData] = useState(false)
+  const [isData2, setIsData2] = useState(false)
 
   const onSubmit = (data) => {
     reset();
@@ -52,48 +56,46 @@ const AddSubjects = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/classes", {
-      method: "GET",
-      credentials: "include",
-    })
+    getClasses()
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
+        setIsData(true)
       })
       .catch((err) => {
         console.log(err);
       });
 
-    fetch("http://localhost:5000/teachers", {
-      method: "GET",
-      credentials: "include",
-    })
+    getTeachers()
       .then((res) => res.json())
       .then((data) => {
         setTeachers(data);
+        setIsData2(true)
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  console.log(classes, teachers);
   return (
     <>
-      {classes.length == 0 || teachers.length == 0 ? (
+      {!isData || !isData2 ? (
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
           <h1 className="text-2xl font-bold mb-3">Add Subjects</h1>
-          {(classes.length == 0 || teachers.length == 0) && (
-            <h1 className="bg-[#FF9E00] p-2 text-[white] rounded mb-2">
-              Please Add Teachers and Class First
-            </h1>
-          )}
+          
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="border p-5 rounded"
           >
+
+{classes.length == 0 && 
+            <Alert title="You have not added any class yet!" subtitle="To create section, create class first!" link="/dashboard/add-classes" linktitle="Add"/>
+          }
+          {
+            teachers.length == 0 && <Alert title="You have not added any Teacher yet!" subtitle="To create subject, add teacher first!" link="/dashboard/add-teachers" linktitle="Add"/>
+          }
             <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
                 Subject name

@@ -8,13 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
+import { classAdd } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const AddClasses = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -22,45 +22,24 @@ const AddClasses = () => {
     // reset
   } = useForm();
 
-  // const [sections, setSections] = useState([])
+  // const [isClick, setIsClick] = useState(false)
 
   const onSubmit = (data) => {
-    fetch("http://localhost:5000/class_add", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        toast.success('Successfully created!');
-        setTimeout(()=>{
-          navigate('/dashboard/classes')
-        },1000)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(data);
+    toast.promise(
+      classAdd(data)
+      .then((res) => {
+      return res.json();
+      }).then((d) => {
+        throw new Error(d.err);
+      }),
+      {
+        loading: 'Creating class...', 
+        success: <b>Successfully created!</b>, 
+        error: (error)=> <b>{error.message}</b>, 
+      }
+    )
   };
 
-  useEffect(() => {
-    // fetch("http://localhost:5000/sections", {
-    //   method: 'GET',
-    //   credentials: 'include',
-    // })
-    // .then(res=> res.json())
-    // .then(data=> {
-    //   setSections(data)
-    // })
-    // .catch(err=> {
-    //   console.log(err)
-    // })
-  }, []);
-
-  // console.log(sections)
 
   // For Class Data
   const className = [
