@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -32,6 +31,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import generatePDF, { Margin,  usePDF } from "react-to-pdf";
+
 
 const AddStudents = () => {
   const { register, handleSubmit, setValue, reset, watch } = useForm();
