@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { adminLogin, checkAdminLogin } from "@/lib/api";
 import { AuthContext } from "@/Providers/AuthProvider";
 import { Eye, EyeOff } from "lucide-react";
 import {  useEffect, useRef, useState, useContext } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Login() {
   const [eye, setEye] = useState(false);
@@ -25,39 +26,66 @@ export function Login() {
   const passwordRef = useRef(null);
   const navigate = useNavigate()
   const { changeUserState } = useContext(AuthContext)
+  const [isCheck, setIsCheck] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const handleLogin = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    fetch("http://localhost:5000/admin_login", {
-      method: "POST",
-      credentials: "include", // Send cookies along with the request
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    })
+    
+      toast.promise(
+        adminLogin(email, password)
       .then((res) => res.json())
       .then((data) => {
         if(data.errors){
-          toast.error(data.errors.err)
+          throw new Error(data.errors.err)
         } else {
           changeUserState(data)
           if(!data.errors){
             navigate('/dashboard')
           }
         }
-
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }),
+        {
+          loading: "Loggin In....",
+          success: <b>Logged In</b>,
+          error: (error) => { 
+            console.log("error", error)
+            if(error.message == "Failed to fetch")
+              return <b>Unable to connect with server!</b>
+            return <b>{error.message}</b>
+          } ,
+        }
+      );
   };
 
   useEffect(() => {
-      // if(admin)) {
-      //   navigate('/dashboard')
-      // }
+    toast.promise(
+      checkAdminLogin()
+        .then((res) => {
+          return res.json();
+        })
+        .then((d) => {
+          if (!d.loggedIn){ 
+            setIsCheck(true)
+            setLoggedIn(false)
+            throw new Error("Not logged In!");
+            
+          }
+          setLoggedIn(true)
+          // navigate('/dashboard')
+        }),
+      {
+        loading: "Checking....",
+        success: <b>Logged In</b>,
+        error: (error) => { 
+          console.log("error", error)
+          if(error.message == "Failed to fetch")
+            return <b>Unable to connect with server!</b>
+          return <b>{error.message}</b>
+        } ,
+      }
+    );
   }, [])
   return (
     <>
@@ -67,6 +95,8 @@ export function Login() {
           <CardDescription>Login with your email and password!</CardDescription>
         </CardHeader>
         <CardContent>
+          {
+            !loggedIn ? 
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label className="text-left" htmlFor="email">
@@ -79,6 +109,7 @@ export function Login() {
                 ref={emailRef}
                 placeholder="m@example.com"
                 required
+                disabled = {!isCheck}
               />
             </div>
             <div className="grid gap-2">
@@ -96,6 +127,7 @@ export function Login() {
                   placeholder="Password"
                   type={eye ? "text" : "password"}
                   required
+                  disabled = {!isCheck}
                 />
                 <div
                   onClick={handleEye}
@@ -106,11 +138,14 @@ export function Login() {
               </div>
             </div>
             <CardFooter>
-              <Button onClick={handleLogin} type="submit" className="w-full">
+              <Button disabled = {!isCheck} onClick={handleLogin} type="submit" className="w-full">
                 Login
               </Button>
             </CardFooter>
-          </div>
+          </div> : <div>
+            <div className="mb-2 font-medium">Your are already logged in!</div>
+            <Link to="/dashboard"><Button>Go to Dashboard!</Button></Link>
+            </div>}
         </CardContent>
       </Card>
     </>

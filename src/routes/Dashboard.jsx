@@ -626,9 +626,9 @@ const Dashboard = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to='/dashboard/admin-settings'>Settings</Link>
-                </DropdownMenuItem>
+                <Link to='/dashboard/admin-settings'><DropdownMenuItem>
+                  Settings
+                </DropdownMenuItem></Link>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>

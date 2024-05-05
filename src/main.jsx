@@ -24,7 +24,6 @@ import Sections from "./routes/Page/Sections/Sections";
 import Results from "./routes/Page/Result/Results";
 import AddResults from "./routes/Page/Result/AddResults";
 import IdCards from "./routes/Page/IdCard/IdCards";
-import AddIdCards from "./routes/Page/IdCard/AddIdCards";
 import Salaries from "./routes/Page/Salary/Salaries";
 import AddSalaries from "./routes/Page/Salary/AddSalaries";
 import Reports from "./routes/Page/Report/Reports";
@@ -142,10 +141,6 @@ const router = createBrowserRouter([
         element: <IdCards />,
       },
       {
-        path: "/dashboard/add-cards",
-        element: <AddIdCards />,
-      },
-      {
         path: "/dashboard/salaries",
         element: <Salaries />,
       },
@@ -211,7 +206,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

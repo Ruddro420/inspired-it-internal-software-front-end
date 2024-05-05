@@ -7,7 +7,7 @@ const adminLogin = (email, password) => {
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(email, password),
+    body: JSON.stringify({email, password}),
   });
 };
 
@@ -152,6 +152,14 @@ const getSettings = () => {
   });
 };
 
+// get image
+const getImage = (folder, filename) => {
+  return fetch(api_key + `image/${folder}/${filename}`, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 
 
 //----------------------------------------------
@@ -207,6 +215,14 @@ const dateTime = (date) => {
   return d[1] + " " + d[2] + ", " + d[3]
 }
 
+
+// 
+const fetchImageAndConvertToDataURI = async (folder, filename) => {
+  const response = await fetch(api_key + 'image/'+ `${folder}/${filename}`, {credentials: "include"});
+  const blob = await response.blob();
+  return URL.createObjectURL(blob);
+};
+
 export {
   adminLogin,
   adminLogout,
@@ -229,4 +245,6 @@ export {
   settingsAdd,
   getSettings,
   settingsUpdate,
+  getImage,
+  fetchImageAndConvertToDataURI
 };

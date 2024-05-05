@@ -6,6 +6,7 @@ import { MoreHorizontal } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { deleteStudent } from '@/lib/api';
 import { useState } from 'react';
+import ImageView from './Image';
 const StudentTable = ({students}) => {
    const [_students, setStudents] = useState(students)
 
@@ -61,9 +62,10 @@ const StudentTable = ({students}) => {
                                 alt="Product image"
                                 className="aspect-square rounded-md object-cover"
                                 height="64"
-                                src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+                                src={`http://localhost:5000/image/students/${student.id_no}`}
                                 width="64"
                               />
+                              {/* <ImageView imageUrl={`http://localhost:5000/image/students/${student.id_no}`} defaultImageUrl="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"/> */}
                             </TableCell>
                             <TableCell className="font-medium">
                               {student.id_no}

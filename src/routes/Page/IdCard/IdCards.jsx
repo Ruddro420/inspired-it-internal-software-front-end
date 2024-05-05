@@ -1,11 +1,9 @@
-
-import "./Id.css";
-import generatePDF, { Margin, usePDF } from "react-to-pdf";
-import { Earth, Home, Mail, PhoneCall } from "lucide-react";
+import generatePDF, { Margin, Resolution, usePDF } from "react-to-pdf";
+import { Download, Earth, Home, Mail, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { getStudentById } from "@/lib/api";
-import { useState } from "react";
+import { fetchImageAndConvertToDataURI, getStudentById } from "@/lib/api";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -16,13 +14,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useForm } from "react-hook-form";
+
+// const fetchImageAndConvertToDataURI = async (imageUrl) => {
+//   const response = await fetch(imageUrl, {credentials: "include"});
+//   const blob = await response.blob();
+//   return URL.createObjectURL(blob);
+// };
+
 
 export default function IdCards() {
   const { targetRef } = usePDF();
-
+  const { register, setValue, watch } = useForm();
   const [student, setStudent] = useState([]);
+  const [imageDataURI, setImageDataURI] =useState(null);
+  const [studentURI, setStudentURI] = useState(null)
 
-  const findStudent = (e) => {
+  const findStudent = async (e) => {
     e.preventDefault();
     const id = parseInt(document.getElementById("student_id2").value);
     toast.promise(
@@ -35,16 +43,6 @@ export default function IdCards() {
           if (!d) throw new Error("Student not found!");
           if (d.err) throw new Error(d.err);
           setStudent(d);
-
-          setTimeout(() => {
-            generatePDF(targetRef, {
-              filename: `id_card.pdf`,
-              method: open,
-              page: {
-                margin: Margin.SMALL,
-              },
-            });
-          }, 1000);
         }),
       {
         loading: "Generating...",
@@ -52,7 +50,38 @@ export default function IdCards() {
         error: (error) => <b>{error.message}</b>,
       }
     );
+
+    const studentPhotoDataURI = await fetchImageAndConvertToDataURI('students', id.toString());
+    setStudentURI(studentPhotoDataURI)
+
   };
+
+  const downloadIdCard = () => {
+    // setTimeout(() => {
+      const id = parseInt(document.getElementById("student_id2").value);
+      generatePDF(targetRef, {
+        filename: `ID_Card_${id}.pdf`,
+        method: open,
+        resolution: Resolution.HIGH,
+        page: {
+          margin: Margin.SMALL,
+
+        },
+      });
+    // }, 1000);
+  }
+
+
+  useEffect(()=> {
+    const loadImageDataURI = async () => {
+      const dataURI = await fetchImageAndConvertToDataURI('inst', 'logo');
+      setImageDataURI(dataURI);
+    };
+    loadImageDataURI(); 
+  }, [])
+
+  
+
 
   return (
     <>
@@ -63,7 +92,8 @@ export default function IdCards() {
           <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
             <label htmlFor=" ID Card" className="md:col-span-1">
               ID Number
-              <Input
+              <Input 
+               
                 type="number"
                 id="student_id2"
                 placeholder="ID Number"
@@ -73,7 +103,7 @@ export default function IdCards() {
             <label htmlFor=" ID Card" className="md:col-span-1">
               Type
               <Select
-                //onValueChange={(value) => setValue("classId", value)}
+                onValueChange={(value) => setValue("type", value)}
                 id="Type"
                 required
               >
@@ -91,10 +121,10 @@ export default function IdCards() {
                 </SelectContent>
               </Select>
             </label>
-            <label htmlFor=" ID Card" className="md:col-span-1">
+            <label htmlFor="ID Card" className="md:col-span-1">
               Issuer Type
               <Select
-                //onValueChange={(value) => setValue("classId", value)}
+                onValueChange={(value) => setValue("issuer", value)}
                 id="Class"
                 required
               >
@@ -114,9 +144,9 @@ export default function IdCards() {
             <label htmlFor="Issue Date" className="md:col-span-1">
               Issue Date
               <Input
-                //{...register("joining_date", { required: true })}
+                {...register("issue_date", { required: true })}
                 type="date"
-                name="issues_date"
+                name="issue_date"
                 placeholder="Issue Date"
                 required
               />
@@ -124,7 +154,7 @@ export default function IdCards() {
             <label htmlFor="Issue Date" className="md:col-span-1">
               Expiry Date
               <Input
-                //{...register("joining_date", { required: true })}
+                {...register("expiry_date", { required: true })}
                 type="date"
                 name="expiry_date"
                 placeholder="Expiry Date"
@@ -135,36 +165,42 @@ export default function IdCards() {
           <Button size="sm" className="h-8 gap-1 mt-5">
             Generate Id Card
           </Button>
+         
         </form>
+        
+        {student.length !=0 && <Button onClick={downloadIdCard} variant="destructive" size="sm" className="flex gap-2 float-end"><Download size={19}/> Download as PDF</Button>}
+        
       </div>
 
       {student.length !== 0 && (
-        <div ref={targetRef}>
+        <div  ref={targetRef}>
           <div className=" flex justify-center flex-wrap gap-10 mt-10">
-            <div className="shadow-lg p-5 relative h-[700px] w-[500px] border">
+           
+            <div id="id_card" className="shadow-lg p-5 relative h-[700px] w-[500px] border">
               <div className="bg-black h-[40%]"></div>
 
               <div className="h-[250px] w-[250px] border-[10px] border-white bg-black rounded-full absolute top-[21%] left-[25%] overflow-hidden">
                 <img
                   className="h-[250px] w-[250px]"
-                  src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+                  src={studentURI ? studentURI : "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"}
                 />
               </div>
               <div className=" text-center   text-black">
                 <div className="mt-[130px] text-black text-3xl font-bold">
                   {student.name}
                 </div>
-                <div className="mt-3 text-xl">{student.class.name}</div>
+                <div className="mt-1 text-md">{student.class.name}</div>
                 {student.section && (
-                  <div className="mt-3 text-xl">{student.section.name}</div>
+                  <div className="mt-1 text-md">{student.section.name}</div>
                 )}
-                <div className="mt-3 text-xl font-bold">
-                  ID: {student.id_no}
+                <div className="mt-1 text-md ">
+                  ID: <b>{student.id_no}</b>
                 </div>
+                <div>Session: <b>{student.session}</b></div>
                 <div className="mt-14 flex justify-center grayscale">
                   <img
-                    className="h-[60px]"
-                    src="https://i.postimg.cc/8PLTqbPB/image.png"
+                    className="h-[70px]"
+                    src={imageDataURI}
                   />
                 </div>
               </div>
@@ -172,10 +208,10 @@ export default function IdCards() {
 
             <div className="shadow-lg p-5 relative h-[700px] w-[500px] border text-center">
               <div className="uppercase text-center mt-7 font-bold text-3xl">
-                Internship Details
+                {watch("type")} Details
               </div>
 
-              <div className="flex justify-center mt-10 flex-col items-center text-left">
+              <div className="flex justify-center mt-5 flex-col items-center text-left">
                 <table>
                   <tr>
                     <td>Parent</td>
@@ -210,13 +246,23 @@ export default function IdCards() {
                     <td className="pl-5">:</td>
                     <td className="pl-5">{student.permanent_address}</td>
                   </tr>
+                  <tr>
+                    <td>Issue Date</td>
+                    <td className="pl-5">:</td>
+                    <td className="pl-5">{watch('issue_date')}</td>
+                  </tr>
+                  <tr>
+                    <td>Permanent Address</td>
+                    <td className="pl-5">:</td>
+                    <td className="pl-5">{watch('expiry_date')}</td>
+                  </tr>
                 </table>
 
                 <div className="absolute bottom-0   flex flex-col items-center justify-center w-full">
                   <div className="font-bold text-2xl text-center ">
-                    Company Information
+                    Institution Information
                   </div>
-                  <div className="mt-5 grid grid-cols-2 gap-3 text-sm px-3">
+                  <div className="mt-2 grid grid-cols-2 gap-3 text-sm px-3">
                     <div className="flex gap-3 items-center">
                       <div>
                         <Mail size={16} />
@@ -249,7 +295,7 @@ export default function IdCards() {
                   </div>
                   <div className="h-1 bg-black w-[200px] mt-14 mb-2"></div>
 
-                  <div className="font-bold">Founder</div>
+                  <div className="font-bold">{watch("issuer")}</div>
 
                   <div
                     style={{
