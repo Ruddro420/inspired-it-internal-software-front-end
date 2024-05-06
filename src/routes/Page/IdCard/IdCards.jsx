@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
+import QRCode from "react-qr-code";
+
 
 // const fetchImageAndConvertToDataURI = async (imageUrl) => {
 //   const response = await fetch(imageUrl, {credentials: "include"});
@@ -307,10 +309,18 @@ export default function IdCards() {
                     }}
                     className=" w-full bg-black left-0 mt-10 flex justify-center py-3"
                   >
-                    <img
+                    {/* <img
                       className="h-[80px] bg-white"
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png"
-                    />
+                    /> */}
+                    <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }} className="bg-white p-2">
+    <QRCode
+    size={256}
+    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+    value="inspiredIt"
+    viewBox={`0 0 256 256`}
+    />
+</div>
                   </div>
                 </div>
               </div>
