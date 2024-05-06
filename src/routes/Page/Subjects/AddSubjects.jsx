@@ -21,8 +21,8 @@ const AddSubjects = () => {
 
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
-  const [isData, setIsData] = useState(false)
-  const [isData2, setIsData2] = useState(false)
+  const [isData, setIsData] = useState(false);
+  const [isData2, setIsData2] = useState(false);
 
   const onSubmit = (data) => {
     reset();
@@ -60,7 +60,7 @@ const AddSubjects = () => {
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
-        setIsData(true)
+        setIsData(true);
       })
       .catch((err) => {
         console.log(err);
@@ -70,7 +70,7 @@ const AddSubjects = () => {
       .then((res) => res.json())
       .then((data) => {
         setTeachers(data);
-        setIsData2(true)
+        setIsData2(true);
       })
       .catch((err) => {
         console.log(err);
@@ -84,18 +84,27 @@ const AddSubjects = () => {
       ) : (
         <div style={{ overflow: "hidden" }}>
           <h1 className="text-2xl font-bold mb-3">Add Subjects</h1>
-          
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="border p-5 rounded"
           >
-
-{classes.length == 0 && 
-            <Alert title="You have not added any class yet!" subtitle="To create section, create class first!" link="/dashboard/add-classes" linktitle="Add"/>
-          }
-          {
-            teachers.length == 0 && <Alert title="You have not added any Teacher yet!" subtitle="To create subject, add teacher first!" link="/dashboard/add-teachers" linktitle="Add"/>
-          }
+            {classes.length == 0 && (
+              <Alert
+                title="You have not added any class yet!"
+                subtitle="To create section, create class first!"
+                link="/dashboard/add-classes"
+                linktitle="Add"
+              />
+            )}
+            {teachers.length == 0 && (
+              <Alert
+                title="You have not added any Teacher yet!"
+                subtitle="To create subject, add teacher first!"
+                link="/dashboard/add-teachers"
+                linktitle="Add"
+              />
+            )}
             <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
                 Subject name

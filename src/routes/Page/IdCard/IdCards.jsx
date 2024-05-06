@@ -254,7 +254,7 @@ export default function IdCards() {
                     <td className="pl-5">{watch('issue_date')}</td>
                   </tr>
                   <tr>
-                    <td>Permanent Address</td>
+                    <td>Expiry Date</td>
                     <td className="pl-5">:</td>
                     <td className="pl-5">{watch('expiry_date')}</td>
                   </tr>
