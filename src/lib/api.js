@@ -113,6 +113,13 @@ const getTeachers = () => {
   });
 };
 
+const getLastTeacher = () => {
+  return fetch(api_key + "last_teacher", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 // getStudentsCount
 const getTeacherCount = () => {
   return fetch(api_key + "teacher_count", {
@@ -223,6 +230,13 @@ const deleteStudent = (id) => {
   });
 };
 
+const deleteTeacher = (id) => {
+  return fetch(api_key + "teacher/" + id, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+
 
 // get Formatted DateTime
 const dateTime = (date) => {
@@ -252,7 +266,9 @@ export {
   getClasses,
   deleteClass,
   getTeachers,
+  getLastTeacher,
   getTeacherCount,
+  deleteTeacher,
   getStudentById,
   getStudents,
   getStudentCount,

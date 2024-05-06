@@ -625,8 +625,8 @@ const AddStudents = () => {
                               <SelectItem value="b-">B-</SelectItem>
                               <SelectItem value="ab+">AB+</SelectItem>
                               <SelectItem value="ab-">AB-</SelectItem>
-                              <SelectItem value="O+">O+-</SelectItem>
-                              <SelectItem value="O-">O+-</SelectItem>
+                              <SelectItem value="O+">O+</SelectItem>
+                              <SelectItem value="O-">O-</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>

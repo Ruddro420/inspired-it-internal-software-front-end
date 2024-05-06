@@ -6,11 +6,9 @@ import { MoreHorizontal } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { deleteStudent } from '@/lib/api';
 import { useState } from 'react';
-import ImageView from './Image';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 const StudentTable = ({students}) => {
    const [_students, setStudents] = useState(students)
-   const navigate = useNavigate();
 
   const handleDelete = (id) => {
     toast.promise(
@@ -30,11 +28,7 @@ const StudentTable = ({students}) => {
       }
     )
   }
-  /* View Student */
-  const handleView = (id) =>{
-    navigate(`/dashboard/student-profile/${id}`)
-    console.log(id);
-  }
+
     return (
         <div>
              <Table>
@@ -103,7 +97,7 @@ const StudentTable = ({students}) => {
                                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                  <Link to={`/dashboard/student-profile/${student.id_no}`}> <DropdownMenuItem>View</DropdownMenuItem></Link>
                                   <DropdownMenuItem>Edit</DropdownMenuItem>
-                                  <DropdownMenuItem onClick={()=> handleDelete(parseInt(student.id))}>Delete</DropdownMenuItem>
+                                  <DropdownMenuItem onClick={()=> handleDelete(parseInt(student.id_no))}>Delete</DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>

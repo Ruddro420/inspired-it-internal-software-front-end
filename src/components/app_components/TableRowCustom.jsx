@@ -5,7 +5,7 @@ import { MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import PropTypes from 'prop-types'
 
-const TableRowCustom = ({teacher}) => {
+const TableRowCustom = ({teacher, handleDelete}) => {
     const { id_no, name, phone, present_address, designation, department} = teacher
     return (
         <TableRow>
@@ -52,7 +52,7 @@ const TableRowCustom = ({teacher}) => {
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem>View</DropdownMenuItem>
                     <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                    <DropdownMenuItem onClick={()=> handleDelete(id_no)}>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </TableCell>
@@ -62,7 +62,8 @@ const TableRowCustom = ({teacher}) => {
 };
 
 TableRowCustom.propTypes = {
-    teacher: PropTypes.object.isRequired
+    teacher: PropTypes.object.isRequired,
+    handleDelete: PropTypes.func.isRequired
 }
 
 export default TableRowCustom;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getClasses, getTeacherCount, teacherAdd } from "../../../lib/api";
+import { getClasses, getLastTeacher, getTeacherCount, teacherAdd } from "../../../lib/api";
 import {
   Select,
   SelectContent,
@@ -27,15 +27,15 @@ const AddTeacher = () => {
     // reset
   } = useForm();
 
-  // const [imageDataURI, setImageDataURI] =useState(null);
+  const [classes, setClasses] = useState([]);
+  const [isData, setIsData] = useState(false);
+  const [isData2, setIsData2] = useState(false);
+  const [teacherCount, setTeacherCount] = useState(0)
   
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // const handleOpenDialog = () => {
-  //   setIsDialogOpen(true);
-  // };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -85,16 +85,23 @@ const AddTeacher = () => {
 
 
   const onSubmit = (data) => {
+    
+    let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
+    let selectedClasses = classes.filter((cls) => cls.selected == true);
 
-    if(!image) {
-      toast.error("Please select teacher image")
+    if(selectedClasses.length == 0) {
+      toast.error("Please select class to assign!")
       return
     }
 
-    let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
+    if(!image) {
+      toast.error("Please select teacher image.")
+      return
+    }
 
-    let selectedClasses = classes.filter((cls) => cls.selected == true);
+    
 
+   
     selectedClasses = selectedClasses.map((cls) => {
       if (cls.selected)
         return {
@@ -131,10 +138,7 @@ const AddTeacher = () => {
       );
   };
 
-  const [classes, setClasses] = useState([]);
-  const [isData, setIsData] = useState(false);
-  const [isData2, setIsData2] = useState(false);
-  const [teacherCount, setTeacherCount] = useState(0)
+  
 
   useEffect(() => {
     getClasses()
@@ -151,22 +155,40 @@ const AddTeacher = () => {
         console.log(err);
       });
 
-
-
-      getTeacherCount()
+      getLastTeacher()
       .then((res) => res.json())
       .then((data) => {
         //  console.log(data)
-        setTeacherCount(data.count);
         setIsData2(true);
         const year = new Date().getFullYear().toString();
-        let y = `${year[2]}${year[3]}`
-        y = parseInt(y) + 1
-        setValue("id_no", `${y}${(teacherCount + 1).toString().padStart(2, '0')}`);
+        let id 
+        if(data.length != 0) {
+          id = (data[0].id_no)+1
+        } else {
+          id = (parseInt(year[2]+year[3]) + 1) + "01"
+        }
+        setValue("id_no", id.toString());
       })
       .catch((err) => {
         console.log(err);
       });
+
+
+
+      // getTeacherCount()
+      // .then((res) => res.json())
+      // .then((data) => {
+      //   //  console.log(data)
+      //   setTeacherCount(data.count);
+      //   setIsData2(true);
+      //   const year = new Date().getFullYear().toString();
+      //   let y = `${year[2]}${year[3]}`
+      //   y = parseInt(y) + 1
+      //   setValue("id_no", `${y}${(teacherCount + 1).toString().padStart(2, '0')}`);
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
 
   }, [setValue, teacherCount]);
 
