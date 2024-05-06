@@ -113,6 +113,14 @@ const getTeachers = () => {
   });
 };
 
+// getStudentsCount
+const getTeacherCount = () => {
+  return fetch(api_key + "teacher_count", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 // View Students
 const viewStudentsData = () => {
   return fetch(api_key + "students", {
@@ -236,6 +244,7 @@ export {
   getClasses,
   deleteClass,
   getTeachers,
+  getTeacherCount,
   getStudentById,
   getStudents,
   getStudentCount,

@@ -54,6 +54,10 @@ const Settings = () => {
 
 
   const onSubmit = (data) => {
+    if(!image) {
+      toast.error("Please select institution Logo.")
+      return
+    }
     if (settings?.name) {
         toast.promise(
             settingsUpdate(data, settings.id)
@@ -162,13 +166,13 @@ const Settings = () => {
           >
             <div className="flex items-center justify-center">
               <label htmlFor="drop-zone">
-              <div className="h-[100px] w-[200px] flex flex-col items-center justify-center  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+              <div className="py-5 px-10 flex flex-col items-center justify-center  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
               <input onChange={previewFile} id="drop-zone" className="hidden" type="file" accept="image/*"/>
               <img id="logo" className="h-[70px]" src="https://i.postimg.cc/rF77ZXQj/image.png"/>
               </div>
               </label>
             </div>
-            <div className="font-medium text-center">Choose institution logo</div>
+            <div className="font-medium text-center text-gray-600">Choose Institution Logo</div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
               <label htmlFor="Name" className="md:col-span-1">

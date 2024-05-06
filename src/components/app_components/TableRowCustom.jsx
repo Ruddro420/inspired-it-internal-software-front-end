@@ -6,26 +6,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import PropTypes from 'prop-types'
 
 const TableRowCustom = ({teacher}) => {
-    const { image, name, phone, present_address, designation, department} = teacher
+    const { id_no, name, phone, present_address, designation, department} = teacher
     return (
         <TableRow>
                                             
         <TableCell className="hidden sm:table-cell">
-            {
-                image ? <img
-                alt="Product image"
-                className="aspect-square rounded-md object-cover"
-                height="64"
-                src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
-                width="64"
-            /> : <img
-            alt="Product image"
+            
+                <img
+            alt="Teacher Image"
             className="aspect-square rounded-md object-cover"
             height="64"
-            src="https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+            src={`http://localhost:5000/image/teachers/${id_no}`}
             width="64"
         />
-            }
+            
         </TableCell>
         <TableCell className="font-medium">
            {name}

@@ -140,8 +140,29 @@ const AddStudents = () => {
     }
   };
 
+  const [image, setImage] = useState(null)
+
+  //  image upload
+  const previewFile = () => {
+    const preview = document.querySelector('#logo')
+    const file = document.querySelector('input[type=file]').files[0]
+    setImage(file)
+    const reader = new FileReader()
+    console.log(file)
+  
+    reader.addEventListener('load', ()=> {
+      preview.src = reader.result;
+    }, false)
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
 
   const onSubmit = (data) => {
+  
+
     if(parseInt(fee) == 0) {
       toast.error("You have forget to fill addmison fee!")
       return 
@@ -197,6 +218,11 @@ const AddStudents = () => {
         }
       );
 
+      return
+    }
+
+    if(!image) {
+      toast.error("Please select student image")
       return
     }
 
@@ -263,7 +289,7 @@ const AddStudents = () => {
         setStudentCount(data.count);
         setIsData2(true);
         const year = new Date().getFullYear().toString();
-        isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", `${year[2]}${year[3]}0${studentCount + 1}`);
+        isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", `${year[2]}${year[3]}${(studentCount + 1).toString().padStart(2, '0')}`);
       })
       .catch((err) => {
         console.log(err);
@@ -329,6 +355,8 @@ const AddStudents = () => {
           const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
           setValue('date_of_birth', formattedDate);
           setValue("id_no", id)
+          setValue("gender", d.gender)
+          setValue("blood_group", (d.blood_group).toUpperCase())
           setValue("birth_certificate_no", d.birth_certificate_no)
           setValue("parent_name", d.parent_name)
           setValue("parent_phone", d.parent_phone)
@@ -355,24 +383,7 @@ const AddStudents = () => {
       })
   }
 
-  const [image, setImage] = useState(null)
 
-//  image upload
-const previewFile = () => {
-  const preview = document.querySelector('#logo')
-  const file = document.querySelector('input[type=file]').files[0]
-  setImage(file)
-  const reader = new FileReader()
-  console.log(file)
-
-  reader.addEventListener('load', ()=> {
-    preview.src = reader.result;
-  }, false)
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-}
 
 
   return (
@@ -832,21 +843,13 @@ const previewFile = () => {
                         </label>
                         <label htmlFor="Gender" className="md:col-span-1">
                           Gender
-                          <Select
-                            onValueChange={(value) => setValue("gender", value)}
-                            required
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Gender" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Select Gender</SelectLabel>
-                                <SelectItem value="male">Male</SelectItem>
-                                <SelectItem value="female">Female</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
+                          <Input
+                            disabled
+                            {...register("gender", { required: true })}
+                            type="text"
+                            name="gender"
+                            placeholder="Gender"
+                          />
                         </label>
                         <label htmlFor="ID" className="md:col-span-1">
                           Student ID
@@ -860,29 +863,13 @@ const previewFile = () => {
                         </label>
                         <label htmlFor="Blood Group" className="md:col-span-1">
                           Blood Group
-                          <Select
-                            onValueChange={(value) =>
-                              setValue("blood_group", value)
-                            }
-                            required
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Blood Group" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Select Blood Group</SelectLabel>
-                                <SelectItem value="a+">A+</SelectItem>
-                                <SelectItem value="a-">A-</SelectItem>
-                                <SelectItem value="b+">B+</SelectItem>
-                                <SelectItem value="b-">B-</SelectItem>
-                                <SelectItem value="ab+">AB+</SelectItem>
-                                <SelectItem value="ab-">AB-</SelectItem>
-                                <SelectItem value="O+">O+-</SelectItem>
-                                <SelectItem value="O-">O+-</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
+                          <Input
+                            disabled
+                            {...register("blood_group", { required: true })}
+                            type="text"
+                            name="blood_group"
+                            placeholder="Blood Group"
+                          />
                         </label>
                         <label htmlFor="B/C Number" className="md:col-span-1">
                           B/C Number

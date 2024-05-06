@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getClasses, teacherAdd } from "../../../lib/api";
+import { getClasses, getTeacherCount, teacherAdd } from "../../../lib/api";
 import {
   Select,
   SelectContent,
@@ -15,18 +15,83 @@ import { CheckCircle, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "@/components/app_components/Loading";
 import Alert from "@/components/app_components/Alert";
+import axios from "axios";
+import UploadDialog from "@/components/app_components/UploadDialog";
+import toast from "react-hot-toast";
 
 const AddTeacher = () => {
   const {
     register,
     handleSubmit,
     setValue,
-
     // reset
   } = useForm();
 
+  // const [imageDataURI, setImageDataURI] =useState(null);
+  
+
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // const handleOpenDialog = () => {
+  //   setIsDialogOpen(true);
+  // };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  }; 
+  const uploadFile = async (filename) => {
+    setIsDialogOpen(true)
+    const formData = new FormData();
+    const ext = image.name.split(".").pop()
+    const renamedFile = new File([image],`${filename}.${ext}`, {type: image.type})
+    formData.append('image', renamedFile);
+    try {
+      const response = await axios.post('http://localhost:5000/teacher_upload', formData, {
+        withCredentials: true,
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setUploadProgress(progress);
+        }
+      });
+      console.log('File uploaded:', response.data);
+      setIsDialogOpen(false);
+    } catch (error) {
+      setIsDialogOpen(false);
+      console.error('Error uploading file:', error);
+    }
+  };
+
+  const [image, setImage] = useState(null)
+
+  //  image upload
+  const previewFile = () => {
+    const preview = document.querySelector('#logo')
+    const file = document.querySelector('input[type=file]').files[0]
+    setImage(file)
+    const reader = new FileReader()
+    console.log(file)
+  
+    reader.addEventListener('load', ()=> {
+      preview.src = reader.result;
+    }, false)
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+
+
+
   const onSubmit = (data) => {
-    let _data = { ...data, password: "123" };
+
+    if(!image) {
+      toast.error("Please select teacher image")
+      return
+    }
+
+    let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
 
     let selectedClasses = classes.filter((cls) => cls.selected == true);
 
@@ -45,19 +110,31 @@ const AddTeacher = () => {
       ...data,
       classes: { create: selectedClasses },
       fixed_salary: parseInt(data.fixed_salary),
+      id_no: parseInt(data.id_no)
     };
-    teacherAdd(_data)
+    
+
+
+      toast.promise(
+        teacherAdd(_data)
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((d) => {
+        console.log(d)
+        if (d.err) throw new Error(d.err);
+        uploadFile(d.created.id_no.toString())
+      }),
+        {
+          loading: "Adding teacher...",
+          success: <b>Successfully added!</b>,
+          error: (error) => <b>{error.message}</b>,
+        }
+      );
   };
 
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
+  const [isData2, setIsData2] = useState(false);
+  const [teacherCount, setTeacherCount] = useState(0)
 
   useEffect(() => {
     getClasses()
@@ -73,7 +150,25 @@ const AddTeacher = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+
+
+
+      getTeacherCount()
+      .then((res) => res.json())
+      .then((data) => {
+        //  console.log(data)
+        setTeacherCount(data.count);
+        setIsData2(true);
+        const year = new Date().getFullYear().toString();
+        let y = `${year[2]}${year[3]}`
+        y = parseInt(y) + 1
+        setValue("id_no", `${y}${(teacherCount + 1).toString().padStart(2, '0')}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  }, [setValue, teacherCount]);
 
   const handleClassSelect = (id) => {
     classes[id]["selected"] = !classes[id]["selected"];
@@ -82,10 +177,11 @@ const AddTeacher = () => {
 
   return (
     <>
-      {!isData ? (
+      {!isData && isData2 ? (
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
+           <UploadDialog progress={uploadProgress.toString()} isOpen={isDialogOpen} onClose={handleCloseDialog}/>
           <h1 className="text-2xl font-bold mb-3">Add Teacher</h1>
           <>
             {classes.length == 0 ? (
@@ -185,10 +281,17 @@ const AddTeacher = () => {
                       required
                     />
                   </label>
-                  <label htmlFor="Image" className="md:col-span-1">
-                    Image
-                    <Input type="file" name="image" placeholder="Upload file" />
-                  </label>
+                  <label htmlFor="ID" className="md:col-span-1">
+                        Teacher ID
+                        <Input
+                          disabled
+                          {...register("id_no", { required: true })}
+                          type="number"
+                          name="id_no"
+                          placeholder="ID"
+                          required
+                        />
+                      </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
                   <label htmlFor="Gender" className="md:col-span-1">
@@ -263,6 +366,7 @@ const AddTeacher = () => {
                   </label>
                 </div>
 
+              <div className="">
                 <div className="mt-2 font-medium">
                   Select classes to assign:
                 </div>
@@ -282,6 +386,24 @@ const AddTeacher = () => {
                     </div>
                   ))}
                 </div>
+
+
+                <div className="mt-5">
+                      <div className="">
+                        <label htmlFor="drop-zone">
+                          <div className="h-[100px] w-[200px]  flex flex-col items-center justify-center  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                            <Input onChange={previewFile} 
+                            className="hidden" id="drop-zone" 
+                            type="file" 
+                            accept="image/*"/>
+                            <img id="logo" className="h-[70px]" src="https://i.postimg.cc/rF77ZXQj/image.png"/>
+                          </div>
+                        </label>
+                      </div>
+                      <div className="mt-3 text-gray-400 font-medium">Choose Teacher Photo</div>
+                      </div>
+                    </div>
+
                 <Button type="submit" size="sm" className="h-8 gap-1 mt-5">
                   Add Teacher
                 </Button>
