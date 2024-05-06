@@ -161,7 +161,6 @@ const getStudentCount = () => {
 
 //getStudentById
 const getStudentById = (id) => {
-  console.log(id)
   return fetch(api_key + "student/" + id, {
     method: "GET",
     credentials: "include",

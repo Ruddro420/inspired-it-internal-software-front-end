@@ -161,15 +161,12 @@ const AddStudents = () => {
 
 
   const onSubmit = (data) => {
-  
-
     if(parseInt(fee) == 0) {
       toast.error("You have forget to fill addmison fee!")
       return 
     }
-  
+
     let _data;
-    // console.log(data);
     let Id;
     if (data.classId.includes("|")) {
       Id = data.classId.split("|");
@@ -282,23 +279,10 @@ const AddStudents = () => {
         console.log(err);
       });
 
-    // getStudentCount()
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     //  console.log(data)
-    //     setStudentCount(data.count);
-    //     setIsData2(true);
-    //     const year = new Date().getFullYear().toString();
-    //     isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", `${year[2]}${year[3]}${(studentCount + 1).toString().padStart(2, '0')}`);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
       getLastStudent()
       .then((res) => res.json())
       .then((data) => {
-         console.log(data)
+        //  console.log(data)
         // setStudentCount(data.count);
         setIsData2(true);
         const year = new Date().getFullYear().toString();
