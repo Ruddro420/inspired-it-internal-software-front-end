@@ -42,6 +42,7 @@ export default function IdCards() {
         })
         .then((d) => {
           // console.log(d);
+          console.log(d)
           if (!d) throw new Error("Student not found!");
           if (d.err) throw new Error(d.err);
           setStudent(d);
@@ -82,7 +83,7 @@ export default function IdCards() {
     loadImageDataURI(); 
   }, [])
 
-  
+  console.log(student);
 
 
   return (
@@ -115,10 +116,8 @@ export default function IdCards() {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Select Type</SelectLabel>
-                    <SelectItem value="Employee">Employee</SelectItem>
                     <SelectItem value="Student">Student</SelectItem>
                     <SelectItem value="Internship">Internship</SelectItem>
-                    <SelectItem value="Staff">Staff</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

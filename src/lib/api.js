@@ -137,6 +137,13 @@ const getStudents = () => {
   });
 };
 
+const getLastStudent = () => {
+  return fetch(api_key + "last_student", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 // getStudentsCount
 const getStudentCount = () => {
   return fetch(api_key + "student_count", {
@@ -147,6 +154,7 @@ const getStudentCount = () => {
 
 //getStudentById
 const getStudentById = (id) => {
+  console.log(id)
   return fetch(api_key + "student/" + id, {
     method: "GET",
     credentials: "include",
@@ -255,5 +263,6 @@ export {
   getSettings,
   settingsUpdate,
   getImage,
-  fetchImageAndConvertToDataURI
+  fetchImageAndConvertToDataURI,
+  getLastStudent
 };

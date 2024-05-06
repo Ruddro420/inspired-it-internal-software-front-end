@@ -38,6 +38,7 @@ import AuthProvider from "./Providers/AuthProvider";
 import ClassView from "./routes/Page/Classes/ClassView";
 import { Toaster } from "react-hot-toast";
 import Settings from "./routes/Page/Settings/Settings";
+import StudentProfile from "./routes/Page/Profile/StudentProfile";
 
 const router = createBrowserRouter([
   {
@@ -175,6 +176,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/admin-settings",
         element: <Settings />,
+      },
+      {
+        path: "/dashboard/student-profile/:id",
+        element: <StudentProfile />,
       },
 
       /*       {

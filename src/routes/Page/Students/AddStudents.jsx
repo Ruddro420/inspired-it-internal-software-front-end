@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AdmissionFeeAdd, dateTime, fetchImageAndConvertToDataURI, getClasses, getImage, getSettings, getStudentById, getStudentCount, studentAdd, studentUpdate } from "@/lib/api";
+import { AdmissionFeeAdd, dateTime, fetchImageAndConvertToDataURI, getClasses, getImage, getLastStudent, getSettings, getStudentById, getStudentCount, studentAdd, studentUpdate } from "@/lib/api";
 import axios from "axios";
 import {
   CreditCard,
@@ -282,14 +282,33 @@ const AddStudents = () => {
         console.log(err);
       });
 
-    getStudentCount()
+    // getStudentCount()
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     //  console.log(data)
+    //     setStudentCount(data.count);
+    //     setIsData2(true);
+    //     const year = new Date().getFullYear().toString();
+    //     isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", `${year[2]}${year[3]}${(studentCount + 1).toString().padStart(2, '0')}`);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+      getLastStudent()
       .then((res) => res.json())
       .then((data) => {
-        //  console.log(data)
-        setStudentCount(data.count);
+         console.log(data)
+        // setStudentCount(data.count);
         setIsData2(true);
         const year = new Date().getFullYear().toString();
-        isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", `${year[2]}${year[3]}${(studentCount + 1).toString().padStart(2, '0')}`);
+        let id 
+        if(data.length != 0) {
+          id = (data[0].id_no)+1
+        } else {
+          id = year[2]+year[3] + "01"
+        }
+        isReAdmission ? setValue("id_no", document.getElementById('student_id').value) : setValue("id_no", id.toString());
       })
       .catch((err) => {
         console.log(err);

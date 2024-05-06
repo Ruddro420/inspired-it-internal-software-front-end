@@ -30,7 +30,8 @@ const AddClasses = () => {
       .then((res) => {
       return res.json();
       }).then((d) => {
-        throw new Error(d.err);
+        if(d.err)
+         throw new Error(d.err);
       }),
       {
         loading: 'Creating class...', 

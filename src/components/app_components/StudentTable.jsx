@@ -7,8 +7,10 @@ import toast from 'react-hot-toast';
 import { deleteStudent } from '@/lib/api';
 import { useState } from 'react';
 import ImageView from './Image';
+import { Link, useNavigate } from 'react-router-dom';
 const StudentTable = ({students}) => {
    const [_students, setStudents] = useState(students)
+   const navigate = useNavigate();
 
   const handleDelete = (id) => {
     toast.promise(
@@ -27,6 +29,11 @@ const StudentTable = ({students}) => {
         error: <b>Failed to delete.</b>, 
       }
     )
+  }
+  /* View Student */
+  const handleView = (id) =>{
+    navigate(`/dashboard/student-profile/${id}`)
+    console.log(id);
   }
     return (
         <div>
@@ -94,7 +101,7 @@ const StudentTable = ({students}) => {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
                                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem>View</DropdownMenuItem>
+                                 <Link to={`/dashboard/student-profile/${student.id_no}`}> <DropdownMenuItem>View</DropdownMenuItem></Link>
                                   <DropdownMenuItem>Edit</DropdownMenuItem>
                                   <DropdownMenuItem onClick={()=> handleDelete(parseInt(student.id))}>Delete</DropdownMenuItem>
                                 </DropdownMenuContent>
