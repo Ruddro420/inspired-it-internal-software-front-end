@@ -39,7 +39,7 @@ export default function IdCards() {
           return res.json();
         })
         .then((d) => {
-          console.log(d);
+          // console.log(d);
           if (!d) throw new Error("Student not found!");
           if (d.err) throw new Error(d.err);
           setStudent(d);
@@ -213,6 +213,8 @@ export default function IdCards() {
 
               <div className="flex justify-center mt-5 flex-col items-center text-left">
                 <table>
+                  <thead></thead>
+                  <tbody>
                   <tr>
                     <td>Parent</td>
                     <td className="pl-5">:</td>
@@ -256,6 +258,7 @@ export default function IdCards() {
                     <td className="pl-5">:</td>
                     <td className="pl-5">{watch('expiry_date')}</td>
                   </tr>
+                  </tbody>
                 </table>
 
                 <div className="absolute bottom-0   flex flex-col items-center justify-center w-full">

@@ -988,7 +988,7 @@ const previewFile = () => {
                 >
                   <CardHeader className="text-center bg-muted/50">
                     <div className="grid gap-0.5">
-                      <CardTitle className="flex items-center justify-center gap-2 text-lg">
+                      <CardTitle className="flex flex-col items-center justify-center gap-2 text-lg">
                         <div className="">
                           <img alt="logo" className="h-[80px]" src={imageDataURI}/>
                         </div>
@@ -1004,7 +1004,7 @@ const previewFile = () => {
                         </div>
                       </CardTitle>
 
-                      <div className="text-xl mt-2 ml-20 font-bold">
+                      <div className="text-xl mt-2 font-bold">
                         Addmission Payment Receipt
                       </div>
                     </div>
@@ -1137,7 +1137,7 @@ const previewFile = () => {
               <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
                 <CardHeader className="text-center bg-muted/50">
                   <div className="grid gap-0.5">
-                    <CardTitle className="flex items-center justify-center gap-2 text-lg">
+                    <CardTitle className="flex flex-col items-center justify-center gap-2 text-lg">
                       
                     <div className="">
                           <img alt="logo" className="h-[80px]" src={imageDataURI}/>
@@ -1150,7 +1150,7 @@ const previewFile = () => {
                       </div>
                     </CardTitle>
 
-                    <div className="text-xl mt-2 ml-20 font-bold">
+                    <div className="text-xl mt-2 font-bold">
                       Addmission Payment Receipt
                     </div>
                   </div>
