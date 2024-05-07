@@ -22,13 +22,14 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AdmissionFeeAdd, dateTime, fetchImageAndConvertToDataURI, getClasses, getImage, getLastStudent, getSettings, getStudentById, getStudentCount, studentAdd, studentUpdate } from "@/lib/api";
+import { AdmissionFeeAdd, dateTime, fetchImageAndConvertToDataURI, formDate, getClasses, getImage, getLastStudent, getStudentById, getStudentCount, studentAdd, studentReadmission } from "@/lib/api";
+import { AuthContext } from "@/Providers/AuthProvider";
 import axios from "axios";
 import {
   CreditCard,
   Search,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -36,7 +37,7 @@ import generatePDF, { Margin,  usePDF } from "react-to-pdf";
 
 
 const AddStudents = () => {
-  const { register, handleSubmit, setValue, reset, watch } = useForm();
+  const { register, handleSubmit, setValue,  watch } = useForm();
 
   const [studentCount, setStudentCount] = useState(0);
   const [cands, setCandS] = useState([]);
@@ -110,6 +111,8 @@ const AddStudents = () => {
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { admin } = useContext(AuthContext)
 
   // const handleOpenDialog = () => {
   //   setIsDialogOpen(true);
@@ -190,7 +193,7 @@ const AddStudents = () => {
     if(isReAdmission) {
       delete _data.id_no
       toast.promise(
-        studentUpdate(_data, stdId)
+        studentReadmission(_data, stdId)
           .then((res) => {
             return res.json();
           })
@@ -299,23 +302,27 @@ const AddStudents = () => {
       });
 
 
-      getSettings()
-      .then((res) => res.json())
-      .then((data) => {
-       setInfo(data)
-       setIsData3(true)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      // getSettings()
+      // .then((res) => res.json())
+      // .then((data) => {
+      //  setInfo(data)
+      //  setIsData3(true)
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
 
         const loadImageDataURI = async () => {
           const dataURI = await fetchImageAndConvertToDataURI('inst', 'logo');
           setImageDataURI(dataURI);
         };
 
+        if(admin) {
+          setInfo(admin)
+          setIsData3(true)
+        }
         loadImageDataURI()
-  }, [setValue, studentCount, isData2, isReAdmission]);
+  }, [setValue, studentCount, isData2, isReAdmission, admin]);
 
   const [class_, setCls] = useState("");
   const [sec, setSec] = useState("");
@@ -354,9 +361,7 @@ const AddStudents = () => {
           setValue("present_address", d.present_address)
           setValue("permanent_address", d.permanent_address)
           setValue("email", d.email)
-          const date = new Date(d.date_of_birth)
-          const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-          setValue('date_of_birth', formattedDate);
+          setValue('date_of_birth', formDate(d.date_of_birth));
           setValue("id_no", id)
           setValue("gender", d.gender)
           setValue("blood_group", (d.blood_group).toUpperCase())
@@ -985,9 +990,9 @@ const AddStudents = () => {
 
                         <div className="lg:w-[77%]">
                           <div>
-                            {info[0].name}
+                            {admin?.inst_name}
                           </div>
-                          <div className="text-sm">EIIN: {info[0].eiin}</div>
+                          <div className="text-sm">EIIN: {admin?.inst_eiin}</div>
                           <CardDescription>
                             Date: {dateTime(new Date())}
                           </CardDescription>
@@ -1134,8 +1139,8 @@ const AddStudents = () => {
                         </div>
 
                       <div className="">
-                        <div>{info[0].name}</div>
-                        <div className="text-sm">EIIN: {info[0].eiin}</div>
+                        <div>{admin?.inst_name}</div>
+                        <div className="text-sm">EIIN: {admin?.inst_eiin}</div>
                         <CardDescription>Date: {dateTime(new Date())}</CardDescription>
                       </div>
                     </CardTitle>

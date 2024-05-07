@@ -38,6 +38,8 @@ import { AuthContext } from "@/Providers/AuthProvider"
 
 const Dashboard = () => {
   const { changeUserState, admin, AdminLogout } = useContext(AuthContext)
+
+  // console.log(admin)
   const [selectedMenu, setSelectedMenu] = useState();
   const [studentNav, setStudentNav] = useState(false);
   const [teachersNav, setTeachersNav] = useState(false);
@@ -608,7 +610,7 @@ const Dashboard = () => {
             <div className="w-full flex-1">
               <form>
                 <div className="relative">
-                  <h1>Welcome To Student Management System</h1>
+                  {(admin?.info) ? <h1 className="font-bold text-xl">{admin.inst_name}</h1> : ""}
                 </div>
               </form>
             </div>

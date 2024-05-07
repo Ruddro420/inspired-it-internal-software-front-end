@@ -37,11 +37,7 @@ const AuthProvider = ({ children }) => {
     
 
     useEffect(() => {
-    //     fetch('http://localhost:5000/check_admin_login', {
-    //     method: 'GET',
-    //     credentials: 'include', 
-    //   })
-    checkAdminLogin()
+   checkAdminLogin()
         .then(res=> res.json())
         .then(user => {
             setLoading(false)
@@ -56,6 +52,8 @@ const AuthProvider = ({ children }) => {
             console.log(err)
             setAdmin(null)
         })
+
+        
     }, [])
 
 

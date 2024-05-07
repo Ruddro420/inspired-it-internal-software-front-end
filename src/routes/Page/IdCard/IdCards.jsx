@@ -3,7 +3,7 @@ import { Download, Earth, Home, Mail, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { fetchImageAndConvertToDataURI, getStudentById } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import QRCode from "react-qr-code";
-
+import { AuthContext } from "@/Providers/AuthProvider";
 
 // const fetchImageAndConvertToDataURI = async (imageUrl) => {
 //   const response = await fetch(imageUrl, {credentials: "include"});
@@ -24,13 +24,14 @@ import QRCode from "react-qr-code";
 //   return URL.createObjectURL(blob);
 // };
 
-
 export default function IdCards() {
   const { targetRef } = usePDF();
   const { register, setValue, watch } = useForm();
   const [student, setStudent] = useState([]);
-  const [imageDataURI, setImageDataURI] =useState(null);
-  const [studentURI, setStudentURI] = useState(null)
+  const [imageDataURI, setImageDataURI] = useState(null);
+  const [imageDataURI2, setImageDataURI2] = useState(null);
+  const [studentURI, setStudentURI] = useState(null);
+  const { admin } = useContext(AuthContext);
 
   const findStudent = async (e) => {
     e.preventDefault();
@@ -42,7 +43,6 @@ export default function IdCards() {
         })
         .then((d) => {
           // console.log(d);
-          console.log(d)
           if (!d) throw new Error("Student not found!");
           if (d.err) throw new Error(d.err);
           setStudent(d);
@@ -54,37 +54,43 @@ export default function IdCards() {
       }
     );
 
-    const studentPhotoDataURI = await fetchImageAndConvertToDataURI('students', id.toString());
-    setStudentURI(studentPhotoDataURI)
+    const studentPhotoDataURI = await fetchImageAndConvertToDataURI(
+      "students",
+      id.toString()
+    );
+    setStudentURI(studentPhotoDataURI);
 
+    const signatureURI = await fetchImageAndConvertToDataURI(
+      "inst",
+      "signature"
+    );
+    setImageDataURI2(signatureURI);
   };
 
   const downloadIdCard = () => {
     // setTimeout(() => {
-      const id = parseInt(document.getElementById("student_id2").value);
-      generatePDF(targetRef, {
-        filename: `ID_Card_${id}.pdf`,
-        method: open,
-        resolution: Resolution.HIGH,
-        page: {
-          margin: Margin.SMALL,
-
-        },
-      });
+    const id = parseInt(document.getElementById("student_id2").value);
+    generatePDF(targetRef, {
+      filename: `ID_Card_${id}.pdf`,
+      method: open,
+      resolution: Resolution.HIGH,
+      page: {
+        margin: Margin.SMALL,
+      },
+    });
     // }, 1000);
-  }
+  };
 
-
-  useEffect(()=> {
+  useEffect(() => {
     const loadImageDataURI = async () => {
-      const dataURI = await fetchImageAndConvertToDataURI('inst', 'logo');
+      const dataURI = await fetchImageAndConvertToDataURI("inst", "logo");
       setImageDataURI(dataURI);
+      
     };
-    loadImageDataURI(); 
-  }, [])
+    loadImageDataURI();
+  }, []);
 
-  console.log(student);
-
+  // console.log(student);
 
   return (
     <>
@@ -95,8 +101,7 @@ export default function IdCards() {
           <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
             <label htmlFor=" ID Card" className="md:col-span-1">
               ID Number
-              <Input 
-               
+              <Input
                 type="number"
                 id="student_id2"
                 placeholder="ID Number"
@@ -166,24 +171,39 @@ export default function IdCards() {
           <Button size="sm" className="h-8 gap-1 mt-5">
             Generate Id Card
           </Button>
-         
         </form>
-        
-        {student.length !=0 && <Button onClick={downloadIdCard} variant="destructive" size="sm" className="flex gap-2 float-end"><Download size={19}/> Download as PDF</Button>}
-        
+
+        {student.length != 0 && (
+          <Button
+            onClick={downloadIdCard}
+            variant="destructive"
+            size="sm"
+            className="flex gap-2 float-end"
+          >
+            <Download size={19} /> Download as PDF
+          </Button>
+        )}
       </div>
 
       {student.length !== 0 && (
-        <div  ref={targetRef}>
+        <div ref={targetRef}>
           <div className=" flex justify-center flex-wrap gap-10 mt-10">
-           
-            <div id="id_card" className="shadow-lg p-5 relative h-[700px] w-[500px] border">
-              <div className="bg-black h-[40%]"></div>
+            <div
+              id="id_card"
+              className="shadow-lg p-5 relative h-[700px] w-[500px] border"
+            >
+              <div className="bg-black h-[40%] text-5xl font-black justify-center flex items-center text-white">
+                <span className="mb-[150px]"> {admin?.inst_name}</span>
+              </div>
 
               <div className="h-[250px] w-[250px] border-[10px] border-white bg-black rounded-full absolute top-[21%] left-[25%] overflow-hidden">
                 <img
                   className="h-[250px] w-[250px]"
-                  src={studentURI ? studentURI : "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"}
+                  src={
+                    studentURI
+                      ? studentURI
+                      : "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+                  }
                 />
               </div>
               <div className=" text-center   text-black">
@@ -197,12 +217,11 @@ export default function IdCards() {
                 <div className="mt-1 text-md ">
                   ID: <b>{student.id_no}</b>
                 </div>
-                <div>Session: <b>{student.session}</b></div>
+                <div>
+                  Session: <b>{student.session}</b>
+                </div>
                 <div className="mt-14 flex justify-center grayscale">
-                  <img
-                    className="h-[70px]"
-                    src={imageDataURI}
-                  />
+                  <img className="h-[70px]" src={imageDataURI} />
                 </div>
               </div>
             </div>
@@ -216,49 +235,49 @@ export default function IdCards() {
                 <table>
                   <thead></thead>
                   <tbody>
-                  <tr>
-                    <td>Parent</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{student.parent_name}</td>
-                  </tr>
-                  <tr>
-                    <td>Local Guardian</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{student.local_guardian}</td>
-                  </tr>
+                    <tr>
+                      <td>Parent</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.parent_name}</td>
+                    </tr>
+                    <tr>
+                      <td>Local Guardian</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.local_guardian}</td>
+                    </tr>
 
-                  <tr>
-                    <td>Blood Group</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5 uppercase">{student.blood_group}</td>
-                  </tr>
+                    <tr>
+                      <td>Blood Group</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5 uppercase">{student.blood_group}</td>
+                    </tr>
 
-                  <tr>
-                    <td>Mobile Number</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{student.phone}</td>
-                  </tr>
-                  <tr>
-                    <td>Present Address</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{student.present_address}</td>
-                  </tr>
+                    <tr>
+                      <td>Mobile Number</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.phone}</td>
+                    </tr>
+                    <tr>
+                      <td>Present Address</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.present_address}</td>
+                    </tr>
 
-                  <tr>
-                    <td>Permanent Address</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{student.permanent_address}</td>
-                  </tr>
-                  <tr>
-                    <td>Issue Date</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{watch('issue_date')}</td>
-                  </tr>
-                  <tr>
-                    <td>Expiry Date</td>
-                    <td className="pl-5">:</td>
-                    <td className="pl-5">{watch('expiry_date')}</td>
-                  </tr>
+                    <tr>
+                      <td>Permanent Address</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.permanent_address}</td>
+                    </tr>
+                    <tr>
+                      <td>Issue Date</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{watch("issue_date")}</td>
+                    </tr>
+                    <tr>
+                      <td>Expiry Date</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{watch("expiry_date")}</td>
+                    </tr>
                   </tbody>
                 </table>
 
@@ -266,39 +285,41 @@ export default function IdCards() {
                   <div className="font-bold text-2xl text-center ">
                     Institution Information
                   </div>
-                  <div className="mt-2 grid grid-cols-2 gap-3 text-sm px-3">
-                    <div className="flex gap-3 items-center">
-                      <div>
-                        <Mail size={16} />
+                  <div className="flex justify-center w-full items-center">
+                    <div className="mt-2 grid grid-cols-2 gap-3 text-sm px-3 ">
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Mail size={16} />
+                        </div>
+                        <div>{admin?.inst_email}</div>
                       </div>
-                      <div>inspireditbd@gmail.com</div>
-                    </div>
 
-                    <div className="flex gap-3 items-center">
-                      <div>
-                        <Home size={16} />
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Home size={16} />
+                        </div>
+                        <div className="text-[12px] max-w-[170px]">
+                          {admin?.inst_address}
+                        </div>
                       </div>
-                      <div className="text-[12px] max-w-[170px]">
-                        Chartola more, Apex Building, College Rd, Rangpur 5400
-                      </div>
-                    </div>
 
-                    <div className="flex gap-3 items-center">
-                      <div>
-                        <Earth size={16} />
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Earth size={16} />
+                        </div>
+                        <div>{admin?.inst_eiin}</div>
                       </div>
-                      <div>inspireditbd.com</div>
-                    </div>
 
-                    <div className="flex gap-3 items-center">
-                      <div>
-                        <PhoneCall size={16} />
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <PhoneCall size={16} />
+                        </div>
+                        <div>{admin?.inst_phone}</div>
                       </div>
-                      <div>01318-067123</div>
                     </div>
                   </div>
-                  <div className="h-1 bg-black w-[200px] mt-14 mb-2"></div>
-
+                  <img className="h-10 mt-10" src={imageDataURI2} alt="signature"/>
+                  <div className="h-1 bg-black w-[200px]  mb-0"></div>
                   <div className="font-bold">{watch("issuer")}</div>
 
                   <div
@@ -306,20 +327,32 @@ export default function IdCards() {
                       borderTopLeftRadius: "80px",
                       borderTopRightRadius: "80px",
                     }}
-                    className=" w-full bg-black left-0 mt-10 flex justify-center py-3"
+                    className=" w-full bg-black left-0 mt-7 flex justify-center py-3"
                   >
                     {/* <img
                       className="h-[80px] bg-white"
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png"
                     /> */}
-                    <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }} className="bg-white p-2">
-    <QRCode
-    size={256}
-    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-    value="inspiredIt"
-    viewBox={`0 0 256 256`}
-    />
-</div>
+                    <div
+                      style={{
+                        height: "auto",
+                        margin: "0 auto",
+                        maxWidth: 64,
+                        width: "100%",
+                      }}
+                      className="bg-white p-2"
+                    >
+                      <QRCode
+                        size={256}
+                        style={{
+                          height: "auto",
+                          maxWidth: "100%",
+                          width: "100%",
+                        }}
+                        value="inspiredIt"
+                        viewBox={`0 0 256 256`}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

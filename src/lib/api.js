@@ -105,6 +105,13 @@ const getClasses = () => {
   });
 };
 
+const getClassById = (id) => {
+  return fetch(api_key + "class/" + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 //teachers
 const getTeachers = () => {
   return fetch(api_key + "teachers", {
@@ -187,8 +194,30 @@ const getImage = (folder, filename) => {
 //----------------------------------------------
 //UPDATE 
 
+const adminUpdate = (data, id) => {
+  return fetch(api_key + "admin_update/"+id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const studentReadmission = (data, id) => {
+  return fetch(api_key + "readmission/"+id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const studentUpdate = (data, id) => {
-  return fetch(api_key + "student_update/"+id, {
+  return fetch(api_key + "readmission/"+id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -252,6 +281,12 @@ const fetchImageAndConvertToDataURI = async (folder, filename) => {
   return URL.createObjectURL(blob);
 };
 
+
+const formDate = (date) => {
+  date = new Date(date)
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+}
+
 export {
   adminLogin,
   adminLogout,
@@ -279,5 +314,9 @@ export {
   settingsUpdate,
   getImage,
   fetchImageAndConvertToDataURI,
-  getLastStudent
+  getLastStudent,
+  adminUpdate,
+  formDate,
+  getClassById,
+  studentReadmission,
 };

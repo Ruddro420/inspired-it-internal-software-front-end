@@ -23,6 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getClassById } from "@/lib/api";
 
 const ClassView = () => {
     const location = useLocation()
@@ -31,13 +32,10 @@ const ClassView = () => {
     const [_class, setClass] = useState(null)
 
     useEffect(()=>{
-      fetch("http://localhost:5000/class/"+param, {
-      method: 'GET',
-      credentials: 'include', 
-    })
+      getClassById(param)
     .then(res=> res.json())
     .then(data=> {
-      console.log(data)
+      // console.log(data)
       setClass(data)
     })
     .catch(err=> {
