@@ -19,11 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link,  useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { getStudentById } from "@/lib/api";
-import { Item } from "@radix-ui/react-dropdown-menu";
+// import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
 
 const StudentProfile = () => {

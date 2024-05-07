@@ -108,10 +108,17 @@ const Dashboard = () => {
     closeAllMenus();
     setAccountsNav(!accountsNav);
   };
+  const feeHandler = (e) => {
+    localStorage.setItem('navItem', e.target.id)
+    closeAllMenus();
+    setFeeNav(!feeNav);
+
+  };
   const navMenuHandler = (e) => {
     localStorage.setItem('navItem', e.target.id)
     closeAllMenus();
   };
+ 
   // const noticeNavHandler = () => {
   //   closeAllMenus();
   //   setNoticeNav(!noticeNav);
@@ -447,6 +454,45 @@ const Dashboard = () => {
                     </NavLink>
                     <NavLink
                       to="/dashboard/view-accounts-report"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("view-accounts-report")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      View Reports
+                    </NavLink>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {/* Fee Start */}
+                <button id="acc" className="" onClick={feeHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <DiamondPercent className="h-4 w-4" />
+                      Fees
+                    </a>
+                    {feeNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {feeNav ? (
+                  <div className="fadeInDown">
+                    <NavLink
+                      to="/dashboard/add-fees"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("add-accounts")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Add Fees
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/fees"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("view-accounts-report")}
                     >

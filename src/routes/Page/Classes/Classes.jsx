@@ -182,7 +182,7 @@ export default function Class() {
                                         </DropdownMenuItem>
                                       </Link>
                                       <DropdownMenuItem>Edit</DropdownMenuItem>
-                                      <DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => deleteHandler(cls.id)}>
                                         Delete
                                       </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -204,7 +204,7 @@ export default function Class() {
                                       onClick={() => deleteHandler(cls.id)}
                                       variant="destructive"
                                     >
-                                      <Trash size={20} className="mr-2" />{" "}
+                                      <Trash size={20} className="mr-2" />
                                       Delete
                                     </Button>
                                   </div>
