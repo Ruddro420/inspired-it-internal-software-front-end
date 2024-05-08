@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Transactions from "@/components/app_components/Transactions/Transactions";
 
-const AddFees = () => {
+const PaySalary = () => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
@@ -33,7 +33,7 @@ const AddFees = () => {
         setStudent(data);
         setIsData(true);
         if (!data) {
-          toast.error("Student Not Found!");
+          toast.error("Data Not Found!");
         }
       })
       .catch((err) => {
@@ -51,12 +51,15 @@ const AddFees = () => {
     const regularFee = parseFloat(watch("regular_fee")) || 0;
     const fine = parseFloat(watch("fine")) || 0;
     const transportFee = parseFloat(watch("transport_fee")) || 0;
-    const idCardFee = parseFloat(watch("id_card_fee")) || 0;
-    const uniformFee = parseFloat(watch("uniform_fee")) || 0;
+    const bonusFee = parseFloat(watch("bonus_fee")) || 0;
     const othersFee = parseFloat(watch("others_fee")) || 0;
-    const discountFee = parseFloat(watch("discount_fee")) || 0;
 
-    const total = regularFee + fine + transportFee + idCardFee + uniformFee + othersFee - discountFee;
+    const total =
+      regularFee +
+      transportFee +
+      bonusFee +
+      othersFee -
+      fine;
     setTotalFee(total);
   };
 
@@ -72,7 +75,7 @@ const AddFees = () => {
         
       )} */}
       <div style={{ overflow: "hidden" }}>
-        <h1 className="text-2xl font-bold mb-3">Add Fee</h1>
+        <h1 className="text-2xl font-bold mb-3">Add Salaries</h1>
         <form onSubmit={feeDataHandler} className="border p-5 rounded">
           <div className="grid grid-cols-1 md:grid-cols-1  mt-3 gap-4">
             <label htmlFor="Id Number" className="md:col-span-1">
@@ -82,6 +85,7 @@ const AddFees = () => {
                 type="number"
                 id="idNumber"
                 placeholder="Id Number"
+                required
               />
             </label>
           </div>
@@ -96,7 +100,7 @@ const AddFees = () => {
               <form>
                 <div className="border p-5 rounded-xl grid grid-cols-2 gap-3">
                   <label htmlFor="Name" className="md:col-span-1">
-                    Regular Fee
+                    Regular Salary
                     <Input
                       {...register("regular_fee", { required: true })}
                       type="number"
@@ -106,13 +110,12 @@ const AddFees = () => {
                     />
                   </label>
                   <label htmlFor="Mobile Number" className="md:col-span-1">
-                    Fine
+                    Bonus Fee
                     <Input
-                      {...register("fine", { required: true })}
+                      {...register("bonus_fee", { required: true })}
                       type="number"
-                      name="fine"
-                      
-                      placeholder="Fine"
+                      name="bonus_fee"
+                      placeholder="Bonus Fee"
                     />
                   </label>
                   <label htmlFor="Present Address" className="md:col-span-1">
@@ -120,30 +123,8 @@ const AddFees = () => {
                     <Input
                       {...register("transport_fee", { required: true })}
                       type="number"
-                      
                       name="transport_fee"
                       placeholder="Transport Fee"
-                    />
-                  </label>
-
-                  <label htmlFor="Permanent Address" className="md:col-span-1">
-                    ID Card Fee
-                    <Input
-                      {...register("id_card_fee", { required: true })}
-                      type="number"
-                      
-                      name="id_card_fee"
-                      placeholder="ID Card Fee"
-                    />
-                  </label>
-                  <label htmlFor="Email" className="md:col-span-1">
-                    Uniform Fee
-                    <Input
-                      {...register("uniform_fee", { required: true })}
-                      type="number"
-                      
-                      name="uniform_fee"
-                      placeholder="Uniform Fee"
                     />
                   </label>
                   <label htmlFor="Date of Birth" className="md:col-span-1">
@@ -151,19 +132,17 @@ const AddFees = () => {
                     <Input
                       {...register("others_fee", { required: true })}
                       type="number"
-                      
                       name="others_fee"
                       placeholder="Others"
                     />
                   </label>
-                  <label htmlFor="discount_fee" className="md:col-span-1">
-                    Discount Fee
+                  <label htmlFor="discount_fee" className="md:col-span-2">
+                    Fine
                     <Input
-                      {...register("discount_fee", { required: true })}
+                      {...register("fine", { required: true })}
                       type="number"
-                      
-                      name="discount_fee"
-                      placeholder="Discount Fee"
+                      name="fine"
+                      placeholder="Total Fine"
                     />
                   </label>
 
@@ -253,16 +232,18 @@ const AddFees = () => {
                       <div className="font-semibold">Fees Information</div>
                       <dl className="grid gap-3">
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Regular Fee</dt>
+                          <dt className="text-muted-foreground">
+                            Regular Salary
+                          </dt>
                           <dd className="font-semibold">
                             {watch("regular_fee") ? watch("regular_fee") : "00"}{" "}
                             ৳
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Fine</dt>
+                          <dt className="text-muted-foreground">Bonus Fee</dt>
                           <dd className="font-semibold">
-                            {watch("fine") ? watch("fine") : "00"} ৳
+                            {watch("bonus_fee") ? watch("bonus_fee") : "00"} ৳
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
@@ -277,34 +258,15 @@ const AddFees = () => {
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">ID Card Fee</dt>
-                          <dd className="font-semibold">
-                            {watch("id_card_fee") ? watch("id_card_fee") : "00"}{" "}
-                            ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Uniform Fee</dt>
-                          <dd className="font-semibold">
-                            {watch("uniform_fee") ? watch("uniform_fee") : "00"}{" "}
-                            ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
                           <dt className="text-muted-foreground">Others</dt>
                           <dd className="font-semibold">
                             {watch("others_fee") ? watch("others_fee") : "00"} ৳
                           </dd>
                         </div>
                         <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Discount Fee
-                          </dt>
+                          <dt className="text-muted-foreground">Fine</dt>
                           <dd className="font-semibold">
-                            {watch("discount_fee")
-                              ? watch("discount_fee")
-                              : "00"}{" "}
-                            ৳
+                          {watch("fine") ? watch("fine") : "00"} ৳
                           </dd>
                         </div>
                       </dl>
@@ -314,10 +276,7 @@ const AddFees = () => {
                       <dt className="text-muted-foreground font-bold">
                         Total Payable (৳)
                       </dt>
-                      <dd className="font-bold">
-                       {totalFee}
-                        ৳
-                      </dd>
+                      <dd className="font-bold">{totalFee}৳</dd>
                     </div>
                     <div className="flex items-center justify-between mt-3 font-bold">
                       <dt className="text-muted-foreground text-red-700">
@@ -337,4 +296,4 @@ const AddFees = () => {
   );
 };
 
-export default AddFees;
+export default PaySalary;

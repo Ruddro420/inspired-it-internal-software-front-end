@@ -35,6 +35,21 @@ const teacherAdd = (data) => {
   });
 };
 
+/* Add Staff */
+const staffAdd = (data) => {
+  return fetch(api_key + "staff_add", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ ...data }),
+  });
+};
+
+
+/* Add Student */
+
 const studentAdd = (data) => {
   return fetch(api_key + "student_add", {
     method: "POST",
@@ -122,6 +137,15 @@ const getTeachers = () => {
 
 const getLastTeacher = () => {
   return fetch(api_key + "last_teacher", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
+/* Get Last Staff */
+
+const getLastStaff = () => {
+  return fetch(api_key + "last_staff", {
     method: "GET",
     credentials: "include",
   });
@@ -319,4 +343,6 @@ export {
   formDate,
   getClassById,
   studentReadmission,
+  staffAdd,
+  getLastStaff,
 };
