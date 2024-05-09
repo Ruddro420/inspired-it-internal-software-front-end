@@ -256,7 +256,7 @@ const Dashboard = () => {
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                     >
                       <BookOpen className="h-4 w-4" />
-                      Subject / Courses
+                      Subject / Course
                     </a>
                     {subjectNav ? (
                       <Minus className="mt-2 h-4" />

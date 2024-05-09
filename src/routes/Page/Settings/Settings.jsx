@@ -87,24 +87,6 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    // getSettings()
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setSettings(data[0]);
-    //     setIsData(true);
-    //     if (data.length != 0) {
-    //       setValue("name", data[0]?.name || "");
-    //       setValue("phone", data[0]?.phone || "");
-    //       setValue("address", data[0]?.address || "");
-    //       setValue("email", data[0]?.email || "");
-    //       setValue("founding_date", data[0]?.founding_date || "");
-    //       setValue("eiin", data[0]?.eiin || "");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
       if(admin) {
           setValue("inst_name",admin.inst_name);
           setValue("inst_phone", admin.inst_phone);
@@ -279,7 +261,7 @@ const Settings = () => {
               </div>
               </label>
              <div className="mt-3 font-medium text-gray-600">
-              Upload Signature of Head of the institute
+              Signature of the Head of the Institute <div className="font-semibold text-sm">(This signature will be used in ID card also.)</div>
              </div>
             </div>
               <Button type="submit" size="sm" className="h-8 gap-1 mt-5">

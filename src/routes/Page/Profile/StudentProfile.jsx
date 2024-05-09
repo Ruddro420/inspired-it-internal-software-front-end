@@ -230,7 +230,9 @@ const StudentProfile = () => {
                 </div>
 
                 {/* Profile Section */}
-                <div className="md:w-[33%] w-full border rounded-md">
+
+
+                <div className="md:w-[33%] w-full rounded-md">
                   <div>
                     <Card
                       className="overflow-hidden"
@@ -257,6 +259,40 @@ const StudentProfile = () => {
                       </CardHeader>
                       <CardContent className="p-6 text-sm">
                         <div className="grid gap-3">
+                          
+                          <ul className="grid gap-3">
+                          {
+                              (student.group != "na") && <li className="flex items-center justify-between">
+                              <span className="text-muted-foreground">
+                                Group
+                              </span>
+                              <span>
+                                {student.group}
+                              </span>
+                            </li>
+                            }
+
+                            {
+                              (student.section) && <li className="flex items-center justify-between">
+                              <span className="text-muted-foreground">
+                                Section
+                              </span>
+                              <span>
+                                {student.section}
+                              </span>
+                            </li>
+                            }
+
+                         
+                            <li className="flex items-center justify-between font-semibold">
+                              <span className="text-muted-foreground">
+                                Session
+                              </span>
+                              <span>{student.session}</span>
+                            </li>
+                          </ul>
+
+                          <Separator className="my-2" />
                           <div className="font-semibold">Personal Details</div>
                           <ul className="grid gap-3">
                             <li className="flex items-center justify-between">
@@ -271,8 +307,14 @@ const StudentProfile = () => {
                               </span>
                               <span>{student.phone}</span>
                             </li>
+                            <li className="flex items-center justify-between">
+                              <span className="text-muted-foreground">
+                                Gender
+                              </span>
+                              <span className="uppercase">{student.gender}</span>
+                            </li>
                           </ul>
-                          <Separator className="my-2" />
+
                           <ul className="grid gap-3">
                             <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
@@ -280,59 +322,23 @@ const StudentProfile = () => {
                               </span>
                               <span>{student.date_of_birth}</span>
                             </li>
-                            <li className="flex items-center justify-between">
-                              <span className="text-muted-foreground">
-                                Group
-                              </span>
-                              <span>
-                                {student.group
-                                  ? student.group 
-                                  : "No Group"}
-                              </span>
-                            </li>
+                           
                             <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 B/C Number
                               </span>
                               <span>{student.birth_certificate_no}</span>
                             </li>
-                            <li className="flex items-center justify-between font-semibold">
-                              <span className="text-muted-foreground">
-                                Gender
-                              </span>
-                              <span>{student.gender }</span>
-                            </li>
-                            <li className="flex items-center justify-between font-semibold">
-                              <span className="text-muted-foreground">
-                                Session
-                              </span>
-                              <span>{student.session}</span>
-                            </li>
-                            <li className="flex items-center justify-between font-semibold">
+                            
+                            <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Blood Group
                               </span>
-                              <span>{student.blood_group }</span>
+                              <span className="uppercase">{student.blood_group }</span>
                             </li>
                           </ul>
                         </div>
-                        <Separator className="my-4" />
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="grid gap-3">
-                            <div className="font-semibold">Present Address</div>
-                            <address className="grid gap-0.5 not-italic text-muted-foreground">
-                              <span>{student.present_address}</span>
-                            </address>
-                          </div>
-                          <div className="grid auto-rows-max gap-3">
-                            <div className="font-semibold">
-                              Permanent Address
-                            </div>
-                            <div className="text-muted-foreground">
-                              <span>{student.permanent_address}</span>
-                            </div>
-                          </div>
-                        </div>
+                      
                         <Separator className="my-4" />
                         <div className="grid gap-3">
                           <div className="font-semibold">
@@ -372,10 +378,29 @@ const StudentProfile = () => {
                           </dl>
                         </div>
                         <Separator className="my-4" />
+                        <ul className="grid gap-3">
+                        <li className="flex items-center justify-between font-semibold">
+                              <span className="text-muted-foreground">
+                              Present Address
+                              </span>
+                              <span>{student.present_address }</span>
+                            </li>
+
+                            <li className="flex items-center justify-between font-semibold">
+                              <span className="text-muted-foreground">
+                              Permanent Address
+                              </span>
+                              <span>{student.permanent_address }</span>
+                            </li>
+
+                        </ul>
+                        <Separator className="my-4" />
                       </CardContent>
                     </Card>
                   </div>
                 </div>
+
+
               </div>
             </div>
           </div>

@@ -47,6 +47,7 @@ export default function Class() {
     getClasses()
       .then((res) => res.json())
       .then((data) => {
+        // console.log(data)
         setClasses(data);
         setIsData(true);
       })
@@ -105,7 +106,7 @@ export default function Class() {
               <TabsContent value="all">
                 <Card x-chunk="dashboard-06-chunk-0">
                   <CardHeader>
-                    <CardTitle>Classes</CardTitle>
+                    <CardTitle>Classes/Batches</CardTitle>
                     <CardDescription>Manage your classes here.</CardDescription>
                   </CardHeader>
                   {classes.length == 0 ? (
@@ -120,8 +121,9 @@ export default function Class() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Class Name</TableHead>
-                            <TableHead>Section</TableHead>
+                            <TableHead>Class/Batch Name</TableHead>
+                            <TableHead>Section(s)</TableHead>
+                            <TableHead>Subject(s)</TableHead>
                             <TableHead>Tuition Fee</TableHead>
                             {/* <TableHead className="hidden md:table-cell">
                         Assigned Teacher
@@ -137,7 +139,7 @@ export default function Class() {
                               <TableCell className="font-medium">
                                 {cls.sections.length == 0 ? (
                                   <Badge variant="destructive">
-                                    No section added!
+                                    N/A
                                   </Badge>
                                 ) : (
                                   <div className="flex items-center gap-1 flex-wrap">
@@ -147,6 +149,13 @@ export default function Class() {
                                   </div>
                                 )}
                               </TableCell>
+                             {
+                              cls.subject &&  <TableCell>
+                              <div className="font-bold text-md">
+                                {cls.subject.length}
+                              </div>
+                            </TableCell>
+                             }
                               <TableCell>
                                 <div className="font-bold text-md">
                                   {cls.fee} ৳

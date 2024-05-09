@@ -8,7 +8,7 @@ import { deleteStudent } from '@/lib/api';
 import { useState } from 'react';
 import { Link,  } from 'react-router-dom';
 import Alert from './Alert';
-const StudentTable = ({students}) => {
+const StudentTable2 = ({students}) => {
    const [_students, setStudents] = useState(students)
    console.log(students)
 
@@ -48,9 +48,9 @@ const StudentTable = ({students}) => {
                 <TableHead className="hidden md:table-cell">
                   Address
                 </TableHead>
-                <TableHead className="hidden md:table-cell">
+                {/* <TableHead className="hidden md:table-cell">
                   Class-Section
-                </TableHead>
+                </TableHead> */}
                 <TableHead className="hidden md:table-cell">
                   Action
                 </TableHead>
@@ -83,7 +83,8 @@ const StudentTable = ({students}) => {
                       <TableCell className="hidden md:table-cell">
                       {student.present_address}
                       </TableCell>
-                      {student.class && <TableCell>{student.class.name}  {student.section && `- ${student.section.name}`}</TableCell>}
+                      {/* </TableCell>
+                      {student.class && <TableCell>{student.class.name}  {student.section && `- ${student.section.name}`}</TableCell>} */}
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -116,8 +117,8 @@ const StudentTable = ({students}) => {
     );
 };
 
-StudentTable.propTypes = {
+StudentTable2.propTypes = {
     students: PropTypes.array.isRequired
 }
 
-export default StudentTable;
+export default StudentTable2;

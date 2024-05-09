@@ -57,6 +57,18 @@ const AdmissionFeeAdd = (data) => {
   });
 };
 
+//Regulat fee add
+const RegularFeeAdd = (data) => {
+  return fetch(api_key + 'regular_fee', {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const sectionAdd = (data) => {
   return fetch(api_key + "section_add", {
     method: "POST",
@@ -67,6 +79,9 @@ const sectionAdd = (data) => {
     body: JSON.stringify(data),
   });
 };
+
+
+
 
 //Add Settings
 const settingsAdd = (data) => {
@@ -319,4 +334,5 @@ export {
   formDate,
   getClassById,
   studentReadmission,
+  RegularFeeAdd,
 };
