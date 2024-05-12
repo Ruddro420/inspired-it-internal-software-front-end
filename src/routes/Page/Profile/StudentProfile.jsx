@@ -244,7 +244,7 @@ const StudentProfile = () => {
                             {student.name } #ID No: {student.id_no}
                           </CardTitle>
                           <CardDescription>
-                            {student.class?.name}  {student.section &&  `- <b>Section:</b> ${student.section.name}`}
+                            {student.class?.name}  {student.section &&  `- Section: ${student.section.name}`}
                           </CardDescription>
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">

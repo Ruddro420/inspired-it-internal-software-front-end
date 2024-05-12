@@ -22,7 +22,8 @@ const AddFees = () => {
   const { register, handleSubmit} = useForm();
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [getData, setGetData] = useState();
+  const [getData, setGetData] = useState(null);
+  const [studentId, setStudentId] = useState(null)
   const [regularFee, setRegularFee] = useState(0)
   const [fine, setFine] = useState(0)
   const [transportFee, setTransportFee] = useState(0)
@@ -40,6 +41,7 @@ const AddFees = () => {
       .then((res) => res.json())
       .then((data) => {
         setStudent(data);
+        setStudentId(data.id)
         setIsData(true);
         if (!data) {
           throw new Error("Student not Found!")
@@ -62,7 +64,16 @@ const AddFees = () => {
   };
 
   const onSubmit = (data) => {
-    data = {regular_fee: regularFee, transport_fee: transportFee, studentId: parseInt(getData)}
+    data = {
+      regular_fee: regularFee, 
+      transport_fee: transportFee, 
+      fine: fine,
+      id_card_fee: idCardFee,
+      uniform_fee: uniformFee,
+      others_fee: othersFee,
+      discount_fee: discountFee,
+      studentId: studentId
+    }
     toast.promise(
       RegularFeeAdd(data)
       .then((res) => res.json())
@@ -74,7 +85,7 @@ const AddFees = () => {
       }),
       {
         loading: "Searching....",
-        success: <b>Found!</b>,
+        success: <b>Fee added successfully!</b>,
         error: (error) => <b>{error.message}</b>,
       }
     );

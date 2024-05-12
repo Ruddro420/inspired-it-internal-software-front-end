@@ -55,6 +55,25 @@ const AddStudents = () => {
   const [isData2, setIsData2] = useState(false);
   const [isData3, setIsData3] = useState(false);
 
+  
+  const [fee, setFee] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [other, setOther] = useState(0);
+  const [isGenerate, setIsGenerate] = useState(false);
+  const [isReAdmission, setIsReAdmission] = useState(false);
+  const { targetRef } = usePDF();
+
+  const [info, setInfo] = useState([]);
+  const [stdId, setStdID] = useState("");
+  const [imageDataURI, setImageDataURI] = useState(null);
+
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [isWithoutPayment, setisWithoutPayment] = useState(false)
+
+  const { admin } = useContext(AuthContext);
+
   const updatedCount = () => {
     getStudentCount()
       .then((res) => res.json())
@@ -80,7 +99,8 @@ const AddStudents = () => {
         .then((d) => {
           // console.log(d);
           if (d.err) throw new Error(d.err);
-          setIsGenerate(true);
+          if(!isWithoutPayment) {
+            setIsGenerate(true);
           setTimeout(() => {
             generatePDF(targetRef, {
               filename: `Admission_pay_${watch("id_no")}`,
@@ -93,6 +113,7 @@ const AddStudents = () => {
             setIsGenerate(false);
             updatedCount();
           }, 2000);
+          }
         }),
       {
         loading: "Generating Pay Receipt...",
@@ -102,23 +123,6 @@ const AddStudents = () => {
     );
   };
 
-  const [fee, setFee] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [other, setOther] = useState(0);
-  const [isGenerate, setIsGenerate] = useState(false);
-  const [isReAdmission, setIsReAdmission] = useState(false);
-  const { targetRef } = usePDF();
-
-  const [info, setInfo] = useState([]);
-  const [stdId, setStdID] = useState("");
-  const [imageDataURI, setImageDataURI] = useState(null);
-
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const [isWithoutPayment, setisWithoutPayment] = useState(false)
-
-  const { admin } = useContext(AuthContext);
 
 
 
@@ -215,7 +219,7 @@ const AddStudents = () => {
             // console.log(d);
             if (d.err) throw new Error(d.err);
 
-            if(!isWithoutPayment) {
+            // if(!isWithoutPayment) {
               AdmissionDataSend({
                 fee: parseFloat(fee),
                 discount: parseFloat(discount),
@@ -223,7 +227,7 @@ const AddStudents = () => {
                 studentId: d.created.id,
                 readmission: true,
               });
-            }
+            // }
             if (image) {
               uploadFile(d.created.id_no.toString());
             }
@@ -252,7 +256,7 @@ const AddStudents = () => {
           // console.log(d);
           if (d.err) throw new Error(d.err);
 
-          if(!isWithoutPayment) {
+          // if(!isWithoutPayment) {
             AdmissionDataSend({
               fee: parseFloat(fee),
               discount: parseFloat(discount),
@@ -260,7 +264,7 @@ const AddStudents = () => {
               studentId: d.created.id,
               readmission: true,
             });
-          }
+          // }
 
           if (image) {
             uploadFile(d.created.id_no.toString());

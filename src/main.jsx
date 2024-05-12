@@ -24,8 +24,8 @@ import Sections from "./routes/Page/Sections/Sections";
 import Results from "./routes/Page/Result/Results";
 import AddResults from "./routes/Page/Result/AddResults";
 import IdCards from "./routes/Page/IdCard/IdCards";
-import Salaries from "./routes/Page/Salary/Salaries";
-import AddSalaries from "./routes/Page/Salary/AddSalaries";
+import Salaries from "./routes/Page/Salary/SalaryReport";
+import AddSalaries from "./routes/Page/Salary/PaySalary";
 import Reports from "./routes/Page/Report/Reports";
 import AddReports from "./routes/Page/Report/AddReports";
 import Exams from "./routes/Page/Exam/Exams";
@@ -39,6 +39,8 @@ import ClassView from "./routes/Page/Classes/ClassView";
 import { Toaster } from "react-hot-toast";
 import Settings from "./routes/Page/Settings/Settings";
 import StudentProfile from "./routes/Page/Profile/StudentProfile";
+import PaySalary from "./routes/Page/Salary/PaySalary";
+import SalaryReport from "./routes/Page/Salary/SalaryReport";
 
 const router = createBrowserRouter([
   {
@@ -142,12 +144,12 @@ const router = createBrowserRouter([
         element: <IdCards />,
       },
       {
-        path: "/dashboard/salaries",
-        element: <Salaries />,
+        path: "/dashboard/salaries-report",
+        element: <SalaryReport />,
       },
       {
-        path: "/dashboard/add-salaries",
-        element: <AddSalaries />,
+        path: "/dashboard/pay-salaries",
+        element: <PaySalary />,
       },
       {
         path: "/dashboard/reports",

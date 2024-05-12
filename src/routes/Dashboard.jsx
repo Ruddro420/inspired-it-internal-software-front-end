@@ -8,8 +8,10 @@ import {
   Dot,
   Home,
   Menu,
+  MessageSquarePlus,
   Minus,
   Package2,
+  Percent,
   Plus,
   Users,
 } from "lucide-react";
@@ -112,7 +114,11 @@ const Dashboard = () => {
     localStorage.setItem('navItem', e.target.id)
     closeAllMenus();
     setFeeNav(!feeNav);
-
+  };
+  const salaryHandler = (e) => {
+    localStorage.setItem('navItem', e.target.id)
+    closeAllMenus();
+    setSalaryNav(!salaryNav);
   };
   const navMenuHandler = (e) => {
     localStorage.setItem('navItem', e.target.id)
@@ -425,45 +431,6 @@ const Dashboard = () => {
                   ""
                 )}
 
-                {/* Accounts Start */}
-                <button id="acc" className="" onClick={accountNavHandler}>
-                  <div className="flex items-center justify-between">
-                    <a
-                      href="#"
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                    >
-                      <DiamondPercent className="h-4 w-4" />
-                      Accounts
-                    </a>
-                    {accountsNav ? (
-                      <Minus className="mt-2 h-4" />
-                    ) : (
-                      <Plus className="mt-2 h-4" />
-                    )}
-                  </div>
-                </button>
-                {accountsNav ? (
-                  <div className="fadeInDown">
-                    <NavLink
-                      to="/dashboard/add-accounts"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
-                      onClick={() => setSelectedMenu("add-accounts")}
-                    >
-                      <Dot className="h-8 w-8" />
-                      Add Accounts
-                    </NavLink>
-                    <NavLink
-                      to="/dashboard/view-accounts-report"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
-                      onClick={() => setSelectedMenu("view-accounts-report")}
-                    >
-                      <Dot className="h-8 w-8" />
-                      View Reports
-                    </NavLink>
-                  </div>
-                ) : (
-                  ""
-                )}
                 {/* Fee Start */}
                 <button id="acc" className="" onClick={feeHandler}>
                   <div className="flex items-center justify-between">
@@ -493,6 +460,86 @@ const Dashboard = () => {
                     </NavLink>
                     <NavLink
                       to="/dashboard/fees"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("view-accounts-report")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      View Reports
+                    </NavLink>
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                {/* Salary Start */}
+                <button id="acc" className="" onClick={salaryHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <Percent className="h-4 w-4" />
+                      Salaries
+                    </a>
+                    {salaryNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {salaryNav ? (
+                  <div className="fadeInDown">
+                    <NavLink
+                      to="/dashboard/pay-salaries"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("add-accounts")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Pay Salaries
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/salaries-report"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("view-accounts-report")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      View Reports
+                    </NavLink>
+                  </div>
+                ) : (
+                  ""
+                )}
+
+                  {/* Accounts Start */}
+                  <button id="acc" className="" onClick={accountNavHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <MessageSquarePlus className="h-4 w-4" />
+                      Accounts
+                    </a>
+                    {accountsNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {accountsNav ? (
+                  <div className="fadeInDown">
+                    <NavLink
+                      to="/dashboard/add-accounts"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("add-accounts")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Add Accounts
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/view-accounts-report"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("view-accounts-report")}
                     >
