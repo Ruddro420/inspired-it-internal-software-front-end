@@ -6,20 +6,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import PropTypes from 'prop-types'
 
 const TableRowCustom = ({teacher, handleDelete}) => {
-    const { id_no, name, phone, present_address, designation, department} = teacher
+    const { id_no, name, phone,  designation, department} = teacher
     return (
-        <TableRow>
-                                            
+        <TableRow>                     
         <TableCell className="hidden sm:table-cell">
-            
-                <img
+            <img
             alt="Teacher Image"
             className="aspect-square rounded-md object-cover"
             height="64"
             src={`http://localhost:5000/image/teachers/${id_no}`}
             width="64"
         />
-            
         </TableCell>
         <TableCell className="font-medium">
            {name}
@@ -27,9 +24,9 @@ const TableRowCustom = ({teacher, handleDelete}) => {
         <TableCell>
             {phone}
         </TableCell>
-        <TableCell className="hidden md:table-cell">
+        {/* <TableCell className="hidden md:table-cell">
            {present_address}
-        </TableCell>
+        </TableCell> */}
         <TableCell className="hidden md:table-cell">
             {designation}
         </TableCell>

@@ -10,6 +10,7 @@ import TableRowCustom from "./TableRowCustom";
 import { deleteTeacher } from "@/lib/api";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import Alert from "./Alert";
 const TeacherTable = ({ teachers }) => {
     const [_teachers, setTeachers] = useState(teachers)
 
@@ -34,6 +35,9 @@ const TeacherTable = ({ teachers }) => {
 
   return (
     <div>
+      {
+            teachers.length == 0 ? <Alert title="You have not added any Teacher yet!" subtitle="Here you can manage teachers!" link="/dashboard/add-teachers" linktitle="Add"/> 
+          :
       <Table>
         <TableHeader>
           <TableRow>
@@ -42,7 +46,7 @@ const TeacherTable = ({ teachers }) => {
             </TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Phone</TableHead>
-            <TableHead className="hidden md:table-cell">Address</TableHead>
+            {/* <TableHead className="hidden md:table-cell">Address</TableHead> */}
             <TableHead className="hidden md:table-cell">Designation</TableHead>
             <TableHead className="hidden md:table-cell">Department</TableHead>
             <TableHead>
@@ -51,11 +55,13 @@ const TeacherTable = ({ teachers }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
+          
           {_teachers.map((teacher) => (
             <TableRowCustom key={teacher.id} teacher={teacher}  handleDelete={handleDelete}/>
           ))}
         </TableBody>
       </Table>
+}
     </div>
   );
 };

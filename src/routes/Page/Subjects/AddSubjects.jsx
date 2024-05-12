@@ -83,7 +83,7 @@ const AddSubjects = () => {
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
-          <h1 className="text-2xl font-bold mb-3">Add Subjects</h1>
+          <h1 className="text-2xl font-bold mb-3">Add Subjects/Courses</h1>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -107,12 +107,12 @@ const AddSubjects = () => {
             )}
             <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
-                Subject name
+                Subject/Course Name
                 <Input
                   {...register("name", { required: true })}
                   type="text"
                   name="name"
-                  placeholder="Subject name"
+                  placeholder="Subject/Course Name"
                   required
                   disabled={
                     classes.length == 0 || teachers.length == 0 ? true : false
