@@ -358,5 +358,7 @@ export {
   formDate,
   getClassById,
   studentReadmission,
-  RegularFeeAdd,
+  staffAdd,
+  getLastStaff,
+  RegularFeeAdd
 };

@@ -1,26 +1,6 @@
-// import GenereateReport from "./GenereateReport";
-import { MoreHorizontal } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
-import GenereateReport from "../Accounts/GenereateReport";
 const SalaryReport = () => {
   return (
     <>
