@@ -216,13 +216,13 @@ const Dashboard = () => {
                   className="text-black"
                   onClick={classNavHandler}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between text-ellipsis">
                     <a
                       href="#"
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                     >
                       <BriefcaseBusiness className="h-4 w-4" />
-                      Classes/Course Name
+                     Classes/Courses
                     </a>
                     {classNav ? (
                       <Minus className="mt-2 h-4" />

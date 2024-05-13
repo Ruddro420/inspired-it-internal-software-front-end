@@ -182,6 +182,26 @@ const AddStudents = () => {
     }
   };
 
+  const idGenerate = () => {
+    getLastStudent()
+      .then((res) => res.json())
+      .then((data) => {
+        setIsData2(true);
+        const year = new Date().getFullYear().toString();
+        let id;
+        if (data.length != 0) {
+          id = data[0].id_no + 1;
+        } else {
+          id = year[2] + year[3] + "01";
+        }
+        isReAdmission
+          ? setValue("id_no", document.getElementById("student_id").value)
+          : setValue("id_no", id.toString());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   const onSubmit = (data) => {
     if (parseInt(fee) == 0 && !isWithoutPayment) {
       toast.error("You have forget to fill admission fee!");
@@ -227,6 +247,7 @@ const AddStudents = () => {
                 studentId: d.created.id,
                 readmission: true,
               });
+              idGenerate()
             // }
             if (image) {
               uploadFile(d.created.id_no.toString());
@@ -264,7 +285,9 @@ const AddStudents = () => {
               studentId: d.created.id,
               readmission: true,
             });
+
           // }
+          idGenerate()
 
           if (image) {
             uploadFile(d.created.id_no.toString());
@@ -277,6 +300,9 @@ const AddStudents = () => {
       }
     );
   };
+
+
+
 
   useEffect(() => {
     getClasses()
@@ -307,24 +333,7 @@ const AddStudents = () => {
         console.log(err);
       });
 
-    getLastStudent()
-      .then((res) => res.json())
-      .then((data) => {
-        setIsData2(true);
-        const year = new Date().getFullYear().toString();
-        let id;
-        if (data.length != 0) {
-          id = data[0].id_no + 1;
-        } else {
-          id = year[2] + year[3] + "01";
-        }
-        isReAdmission
-          ? setValue("id_no", document.getElementById("student_id").value)
-          : setValue("id_no", id.toString());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    idGenerate()
 
     const loadImageDataURI = async () => {
       const dataURI = await fetchImageAndConvertToDataURI("inst", "logo");

@@ -1,4 +1,5 @@
 import Alert from "@/components/app_components/Alert";
+import ClassAttendanceTable from "@/components/app_components/ClassAttendanceTable";
 import Loading from "@/components/app_components/Loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,14 +9,17 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import {
+    getClassAttendance,
   getClasses,
   getStudentsByClassAndSection,
   getTeachers,
 } from "@/lib/api";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -23,20 +27,51 @@ import toast from "react-hot-toast";
 const AddAttendance = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
-  // get Course Id And Batch ID
-  const [selectedClassId, setSelectedClassId] = useState(null);
-  const [selectedSectionId, setSelectedSectionId] = useState(null);
-
   const [classes, setClasses] = useState([]);
-  const [teachers, setTeachers] = useState([]);
   const [isData, setIsData] = useState(false);
   const [isData2, setIsData2] = useState(false);
   const [cands, setCandS] = useState([]);
-  const [getDataByCourseAndBatch, setGetDataByCourseAndBatch] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [attendance, setAttendance] = useState([])
+
+  const [aDate, setADate] = useState(null)
 
   const onSubmit = (data) => {
-    // Reset form after submission
-    reset();
+    // reset();
+
+    let classId;
+    let sectionId;
+    console.log(data)
+    setADate(data.date)
+
+    if((data.classAndSection).includes("|")) {
+    classId = data.classAndSection.split('|')[0]
+    sectionId = data.classAndSection.split('|')[1]
+    } else{
+        classId = data.classAndSection
+        sectionId = null 
+    }
+    
+    getStudentsByClassAndSection(classId)
+    .then(res=> res.json())
+    .then(data=> {
+       if(sectionId) {
+        const std = data.filter((s) => s.sectionId == parseInt(sectionId))
+        setStudents(std)
+       } else {
+        setStudents(data)
+       }
+    })
+
+
+
+    // getClassAttendance(classId, data.date)
+    // .then(res=> res.json())
+    // .then(data=> {
+    //     console.log(data)
+    // })
+
+
 
     /*  fetch("http://localhost:5000/subject_add", {
       method: "POST",
@@ -67,39 +102,14 @@ const AddAttendance = () => {
     console.log(data);
   }; */
   };
-
+  console.log(students)
   // get Data from course and batch no
-
-  useEffect(() => {
-    getStudentsByClassAndSection(selectedClassId, selectedSectionId)
-      .then((res) => res.json())
-      .then((data) => {
-        setGetDataByCourseAndBatch(data);
-        setIsData(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedClassId, selectedSectionId]);
-
-  console.log(getDataByCourseAndBatch);
-
   useEffect(() => {
     getClasses()
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
         setIsData(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    getTeachers()
-      .then((res) => res.json())
-      .then((data) => {
-        setTeachers(data);
-        setIsData2(true);
       })
       .catch((err) => {
         console.log(err);
@@ -139,7 +149,7 @@ const AddAttendance = () => {
 
   return (
     <>
-      {!isData || !isData2 ? (
+      {!isData ? (
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
@@ -157,27 +167,12 @@ const AddAttendance = () => {
                 linktitle="Add"
               />
             )}
-            {teachers.length == 0 && (
-              <Alert
-                title="You have not added any Teacher yet!"
-                subtitle="To create subject, add teacher first!"
-                link="/dashboard/add-teachers"
-                linktitle="Add"
-              />
-            )}
+           
             <div className="grid grid-cols-1 md:grid-cols-3 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
                 Section/Batch No
                 <Select
-                  onValueChange={(value) => {
-                    console.log(value);
-                    // Split the combined value into classId and sectionId
-                    const [classId, sectionId] = value.split("|");
-                    setSelectedClassId(classId);
-                    setSelectedSectionId(sectionId);
-                    setValue("classId", classId);
-                    setValue("sectionId", sectionId);
-                  }}
+                  onValueChange={(value) => setValue("classAndSection", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Course - Batch" />
@@ -194,38 +189,16 @@ const AddAttendance = () => {
                   </SelectContent>
                 </Select>
               </label>
-              <label htmlFor="Teachers">
-                Subject Teacher
-                <Select
-                  onValueChange={(value) => setValue("teacherId", value)}
-                  disabled={
-                    classes.length == 0 || teachers.length == 0 ? true : false
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Subject/Course Teacher" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Select Subject/Course teacher</SelectLabel>
-                      {teachers.map((t) => (
-                        <SelectItem key={t.id} value={t.id.toString()}>
-                          {t.name} - {t.department}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </label>
+            
               <label htmlFor="Name" className="md:col-span-1">
                 Select Date
                 <Input
-                  //{...register("name", { required: true })}
+                  {...register("date", { required: true })}
                   type="date"
-                  name="attendance-date"
+                  name="date"
                   required
                   disabled={
-                    classes.length == 0 || teachers.length == 0 ? true : false
+                    classes.length == 0
                   }
                 />
               </label>
@@ -234,12 +207,17 @@ const AddAttendance = () => {
               size="sm"
               className="h-8 gap-1 mt-5"
               disabled={
-                classes.length == 0 || teachers.length == 0 ? true : false
+                classes.length == 0
               }
             >
-              Find Data
+              Search
             </Button>
           </form>
+          <SelectSeparator className="mt-10"/>
+
+          {
+            students.length > 0  && <ClassAttendanceTable students={students} date={aDate}/>
+          }
         </div>
       )}
     </>
