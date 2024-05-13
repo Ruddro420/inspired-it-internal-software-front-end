@@ -15,31 +15,27 @@ import toast from "react-hot-toast";
 
 const AddClasses = () => {
   // const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    // reset
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   // const [isClick, setIsClick] = useState(false)
 
   const onSubmit = (data) => {
     toast.promise(
       classAdd(data)
-      .then((res) => {
-      return res.json();
-      }).then((d) => {
-        if(d.err)
-         throw new Error(d.err);
-      }),
+        .then((res) => {
+          reset();
+          return res.json();
+        })
+        .then((d) => {
+          if (d.err) throw new Error(d.err);
+        }),
       {
-        loading: 'Creating class...', 
-        success: <b>Successfully created!</b>, 
-        error: (error)=> <b>{error.message}</b>, 
+        loading: "Creating class...",
+        success: <b>Successfully created!</b>,
+        error: (error) => <b>{error.message}</b>,
       }
-    )
+    );
   };
-
 
   // For Class Data
   // const className = [
@@ -52,17 +48,16 @@ const AddClasses = () => {
 
   return (
     <div style={{ overflow: "hidden" }}>
-      <h1 className="text-2xl font-bold mb-3">Add Class/Batch</h1>
+      <h1 className="text-2xl font-bold mb-3">Add Class/Course Name </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
         <div className="grid grid-cols-1 md:grid-cols-2 mt-3 gap-4">
-
-        <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-            Class/Batch Name 
+          <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
+            Class/Course Name
             <Input
               {...register("name", { required: true })}
               type="text"
               name="name"
-              placeholder="Class/Batch Name"
+              placeholder="Class/Course Name "
             />
           </label>
           <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
@@ -77,7 +72,7 @@ const AddClasses = () => {
         </div>
 
         <Button type="submit" className="mt-3">
-          Add Class/Batch
+          Add Class/Course
         </Button>
       </form>
     </div>

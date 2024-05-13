@@ -42,6 +42,7 @@ import StudentProfile from "./routes/Page/Profile/StudentProfile";
 import PaySalary from "./routes/Page/Salary/PaySalary";
 import SalaryReport from "./routes/Page/Salary/SalaryReport";
 import EditClasses from "./routes/Page/Classes/EditClasses";
+import AddAttendance from "./routes/Page/Attendance/AddAttendance";
 
 const router = createBrowserRouter([
   {
@@ -183,6 +184,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/student-profile/:id",
         element: <StudentProfile />,
+      },
+      {
+        path: "/dashboard/add-attendance",
+        element: <AddAttendance />,
       },
       /* Edit Works */
       {

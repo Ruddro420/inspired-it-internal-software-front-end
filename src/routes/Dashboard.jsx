@@ -13,6 +13,7 @@ import {
   Package2,
   Percent,
   Plus,
+  ShieldCheck,
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,17 +30,15 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/Providers/AuthProvider"
-
+import { AuthContext } from "@/Providers/AuthProvider";
 
 const Dashboard = () => {
-  const { changeUserState, admin, AdminLogout } = useContext(AuthContext)
+  const { changeUserState, admin, AdminLogout } = useContext(AuthContext);
 
   // console.log(admin)
   const [selectedMenu, setSelectedMenu] = useState();
@@ -57,6 +56,7 @@ const Dashboard = () => {
   const [examNav, setExamNav] = useState(false);
 
   const [accountsNav, setAccountsNav] = useState(false);
+  const [attendanceNav, setAttendanceNav] = useState(false);
 
   const closeAllMenus = () => {
     setStudentNav(false);
@@ -72,59 +72,65 @@ const Dashboard = () => {
     setExamNav(false);
     setIdCardNav(false);
     setAccountsNav(false);
+    setAttendanceNav(false);
   };
 
   const studentNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setStudentNav(!studentNav);
   };
   const teachersNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setTeachersNav(!teachersNav);
   };
   const staffNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setStaffNav(!staffNav);
   };
   const subjectNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setSubjectNav(!subjectNav);
   };
   const classNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setClassNav(!classNav);
   };
   const accountNavHandler = (e) => {
-    const id = e.target.parentNode.parentNode.id
-    localStorage.setItem('navItem', id)
+    const id = e.target.parentNode.parentNode.id;
+    localStorage.setItem("navItem", id);
     closeAllMenus();
     setAccountsNav(!accountsNav);
   };
   const feeHandler = (e) => {
-    localStorage.setItem('navItem', e.target.id)
+    localStorage.setItem("navItem", e.target.id);
     closeAllMenus();
     setFeeNav(!feeNav);
   };
   const salaryHandler = (e) => {
-    localStorage.setItem('navItem', e.target.id)
+    localStorage.setItem("navItem", e.target.id);
     closeAllMenus();
     setSalaryNav(!salaryNav);
   };
+  const attendanceNavHandler = (e) => {
+    localStorage.setItem("navItem", e.target.id);
+    closeAllMenus();
+    setAttendanceNav(!attendanceNav);
+  };
   const navMenuHandler = (e) => {
-    localStorage.setItem('navItem', e.target.id)
+    localStorage.setItem("navItem", e.target.id);
     closeAllMenus();
   };
- 
+
   // const noticeNavHandler = () => {
   //   closeAllMenus();
   //   setNoticeNav(!noticeNav);
@@ -153,29 +159,28 @@ const Dashboard = () => {
   //   closeAllMenus();
   //   setExamNav(!examNav);
   // };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleLogout = () => {
     AdminLogout()
-      .then(res=> res.json())
-      .then(data=> {
-          console.log(data)
-          changeUserState(null)
-          localStorage.removeItem('status')
-          navigate('/')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        changeUserState(null);
+        localStorage.removeItem("status");
+        navigate("/");
       })
-      .catch(err=> {
-          console.log(err)
-      })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    const navItem = localStorage.getItem("navItem")
-    if(navItem) {
-      
-      document.getElementById(navItem).click()
-      localStorage.setItem("navItem", navItem)
+    const navItem = localStorage.getItem("navItem");
+    if (navItem) {
+      document.getElementById(navItem).click();
+      localStorage.setItem("navItem", navItem);
     }
-  }, [])
+  }, []);
   return (
     <>
       <div className="sidebar grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -193,27 +198,31 @@ const Dashboard = () => {
             </div>
             <div className="flex-1">
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                <Link id="dash"
+                <Link
+                  id="dash"
                   to="/dashboard"
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-primary hover:text-white`}
                   onClick={(e) => {
                     setSelectedMenu("dashboard");
                     navMenuHandler(e);
-                    
                   }}
                 >
                   <Home className="h-4 w-4" />
                   Dashboard
                 </Link>
                 {/* class start*/}
-                <button id="classes"  className="text-black" onClick={classNavHandler}>
+                <button
+                  id="classes"
+                  className="text-black"
+                  onClick={classNavHandler}
+                >
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                     >
                       <BriefcaseBusiness className="h-4 w-4" />
-                      Classes
+                      Classes/Course Name
                     </a>
                     {classNav ? (
                       <Minus className="mt-2 h-4" />
@@ -225,13 +234,12 @@ const Dashboard = () => {
                 {classNav ? (
                   <div className="fadeInDown">
                     <NavLink
-                
                       to="/dashboard/classes"
                       className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("classes")}
                     >
                       <Dot className="h-8 w-8" />
-                      View Classes
+                      View Classes/Course
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-classes"
@@ -239,7 +247,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("add-classes")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Classes
+                      Add Classes/Course
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-sections"
@@ -247,7 +255,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Sections
+                      Add Sections/Batch No
                     </NavLink>
                   </div>
                 ) : (
@@ -255,7 +263,7 @@ const Dashboard = () => {
                 )}
                 {/* class End*/}
                 {/* Subject */}
-                <button id="sub" className="" onClick={subjectNavHandler}>
+                {/* <button disabled id="sub" className="" onClick={subjectNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -273,14 +281,6 @@ const Dashboard = () => {
                 </button>
                 {subjectNav ? (
                   <div className="fadeInDown">
-                  {/*   <NavLink
-                      to="/dashboard/subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
-                      onClick={() => setSelectedMenu("subjects")}
-                    >
-                      <Dot className="h-8 w-8" />
-                      View Subject
-                    </NavLink> */}
                     <NavLink
                       to="/dashboard/add-subjects"
                       className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
@@ -292,11 +292,12 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
                 {/* Subject End */}
 
                 {/* Student Start  */}
-                <button id="std"
+                <button
+                  id="std"
                   className="text-muted-foreground "
                   onClick={studentNavHandler}
                 >
@@ -348,9 +349,10 @@ const Dashboard = () => {
                 {/* Student End */}
 
                 {/* Teachers Start  */}
-                <button id="teacher"
+                <button
+                  id="teacher"
                   className="text-muted-foreground "
-                  onClick={ teachersNavHandler}
+                  onClick={teachersNavHandler}
                 >
                   <div className="flex items-center justify-between rounded-lg  ">
                     <a
@@ -511,8 +513,8 @@ const Dashboard = () => {
                   ""
                 )}
 
-                  {/* Accounts Start */}
-                  <button id="acc" className="" onClick={accountNavHandler}>
+                {/* Accounts Start */}
+                <button id="acc" className="" onClick={accountNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -537,6 +539,45 @@ const Dashboard = () => {
                     >
                       <Dot className="h-8 w-8" />
                       Add Accounts
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard/view-accounts-report"
+                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("view-accounts-report")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      View Reports
+                    </NavLink>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {/* attendance Start */}
+                <button id="acc" className="" onClick={attendanceNavHandler}>
+                  <div className="flex items-center justify-between">
+                    <a
+                      href="#"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      Attendance
+                    </a>
+                    {attendanceNav ? (
+                      <Minus className="mt-2 h-4" />
+                    ) : (
+                      <Plus className="mt-2 h-4" />
+                    )}
+                  </div>
+                </button>
+                {attendanceNav ? (
+                  <div className="fadeInDown">
+                    <NavLink
+                      to="/dashboard/add-attendance"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("add-attendance")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Add Attendance
                     </NavLink>
                     <NavLink
                       to="/dashboard/view-accounts-report"
@@ -703,11 +744,15 @@ const Dashboard = () => {
             <div className="w-full flex-1">
               <form>
                 <div className="relative">
-                  {(admin?.info) ? <h1 className="font-bold text-xl">{admin.inst_name}</h1> : ""}
+                  {admin?.info ? (
+                    <h1 className="font-bold text-xl">{admin.inst_name}</h1>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </form>
             </div>
-            {admin ? admin.email: ''}
+            {admin ? admin.email : ""}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -722,12 +767,14 @@ const Dashboard = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link to='/dashboard/admin-settings'><DropdownMenuItem>
-                  Settings
-                </DropdownMenuItem></Link>
+                <Link to="/dashboard/admin-settings">
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </header>

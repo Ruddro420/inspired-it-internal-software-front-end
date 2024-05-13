@@ -184,7 +184,7 @@ const AddStudents = () => {
 
   const onSubmit = (data) => {
     if (parseInt(fee) == 0 && !isWithoutPayment) {
-      toast.error("You have forget to fill addmison fee!");
+      toast.error("You have forget to fill admission fee!");
       return;
     }
 
@@ -443,7 +443,7 @@ const AddStudents = () => {
                               onClick={() => {setIsReAdmission(false)}}
                               value="admission"
                             >
-                              Addmision
+                              Admission
                             </TabsTrigger>
                             <TabsTrigger
                               onClick={() => setIsReAdmission(true)}

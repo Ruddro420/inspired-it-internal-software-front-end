@@ -228,6 +228,15 @@ const getImage = (folder, filename) => {
   });
 };
 
+// get student by attendance
+
+const getStudentsByClassAndSection = (classId, sectionId) => {
+  return fetch(api_key + `students/${classId}/${sectionId}`, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 
 
 //----------------------------------------------
@@ -360,5 +369,6 @@ export {
   studentReadmission,
   staffAdd,
   getLastStaff,
-  RegularFeeAdd
+  RegularFeeAdd,
+  getStudentsByClassAndSection
 };

@@ -11,22 +11,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getClasses, getTeachers } from "@/lib/api";
+import {
+  getClasses,
+  getStudentsByClassAndSection,
+  getTeachers,
+} from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-const AddSubjects = () => {
+const AddAttendance = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
+
+  // get Course Id And Batch ID
+  const [selectedClassId, setSelectedClassId] = useState(null);
+  const [selectedSectionId, setSelectedSectionId] = useState(null);
 
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [isData, setIsData] = useState(false);
   const [isData2, setIsData2] = useState(false);
+  const [cands, setCandS] = useState([]);
+  const [getDataByCourseAndBatch, setGetDataByCourseAndBatch] = useState([]);
 
   const onSubmit = (data) => {
+    // Reset form after submission
     reset();
-    fetch("http://localhost:5000/subject_add", {
+
+    /*  fetch("http://localhost:5000/subject_add", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -53,7 +65,24 @@ const AddSubjects = () => {
         console.log(err);
       });
     console.log(data);
+  }; */
   };
+
+  // get Data from course and batch no
+
+  useEffect(() => {
+    getStudentsByClassAndSection(selectedClassId, selectedSectionId)
+      .then((res) => res.json())
+      .then((data) => {
+        setGetDataByCourseAndBatch(data);
+        setIsData(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [selectedClassId, selectedSectionId]);
+
+  console.log(getDataByCourseAndBatch);
 
   useEffect(() => {
     getClasses()
@@ -77,13 +106,44 @@ const AddSubjects = () => {
       });
   }, []);
 
+  // Course and Section
+  useEffect(() => {
+    getClasses()
+      .then((res) => res.json())
+      .then((data) => {
+        setClasses(data);
+        let d = [];
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].sections.length != 0) {
+            for (let j = 0; j < data[i].sections.length; j++) {
+              d.push({
+                name: data[i].name + "-" + data[i].sections[j].name,
+                value:
+                  data[i].sections[j].classId + "|" + data[i].sections[j].id,
+              });
+            }
+          } else {
+            d.push({
+              name: data[i].name,
+              value: data[i].id.toString(),
+            });
+          }
+        }
+        setCandS(d);
+        setIsData(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [setValue, isData2]);
+
   return (
     <>
       {!isData || !isData2 ? (
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
-          <h1 className="text-2xl font-bold mb-3">Add Subjects</h1>
+          <h1 className="text-2xl font-bold mb-3">Add Attendance</h1>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -105,59 +165,35 @@ const AddSubjects = () => {
                 linktitle="Add"
               />
             )}
-            <div className="grid grid-cols-1 md:grid-cols-4 mt-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
-                Subject
-                <Input
-                  {...register("name", { required: true })}
-                  type="text"
-                  name="name"
-                  placeholder="Subject/Course Name"
-                  required
-                  disabled={
-                    classes.length == 0 || teachers.length == 0 ? true : false
-                  }
-                />
-              </label>
-              <label htmlFor="Assign Teacher" className="md:col-span-1">
-                Marks
-                <Input
-                  {...register("mark", { required: true })}
-                  type="number"
-                  name="mark"
-                  placeholder="Marks"
-                  required
-                  disabled={
-                    classes.length == 0 || teachers.length == 0 ? true : false
-                  }
-                />
-              </label>
-
-              <label htmlFor="Class">
-                Class
+                Section/Batch No
                 <Select
-                  onValueChange={(value) => setValue("classId", value)}
-                  id="Class"
-                  disabled={
-                    classes.length == 0 || teachers.length == 0 ? true : false
-                  }
+                  onValueChange={(value) => {
+                    console.log(value);
+                    // Split the combined value into classId and sectionId
+                    const [classId, sectionId] = value.split("|");
+                    setSelectedClassId(classId);
+                    setSelectedSectionId(sectionId);
+                    setValue("classId", classId);
+                    setValue("sectionId", sectionId);
+                  }}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Class" />
+                    <SelectValue placeholder="Select Course - Batch" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Class</SelectLabel>
-                      {classes.map((cls) => (
-                        <SelectItem key={cls.id} value={cls.id.toString()}>
-                          {cls.name}
+                      <SelectLabel>Select Course - Batch</SelectLabel>
+                      {cands.map((cs,i) => (
+                        <SelectItem key={i} value={cs.value}>
+                          {cs.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </label>
-
               <label htmlFor="Teachers">
                 Subject Teacher
                 <Select
@@ -167,11 +203,11 @@ const AddSubjects = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Subject Teacher" />
+                    <SelectValue placeholder="Select Subject/Course Teacher" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select subject teacher</SelectLabel>
+                      <SelectLabel>Select Subject/Course teacher</SelectLabel>
                       {teachers.map((t) => (
                         <SelectItem key={t.id} value={t.id.toString()}>
                           {t.name} - {t.department}
@@ -181,6 +217,18 @@ const AddSubjects = () => {
                   </SelectContent>
                 </Select>
               </label>
+              <label htmlFor="Name" className="md:col-span-1">
+                Select Date
+                <Input
+                  //{...register("name", { required: true })}
+                  type="date"
+                  name="attendance-date"
+                  required
+                  disabled={
+                    classes.length == 0 || teachers.length == 0 ? true : false
+                  }
+                />
+              </label>
             </div>
             <Button
               size="sm"
@@ -189,7 +237,7 @@ const AddSubjects = () => {
                 classes.length == 0 || teachers.length == 0 ? true : false
               }
             >
-              Add Subject
+              Find Data
             </Button>
           </form>
         </div>
@@ -198,4 +246,4 @@ const AddSubjects = () => {
   );
 };
 
-export default AddSubjects;
+export default AddAttendance;
