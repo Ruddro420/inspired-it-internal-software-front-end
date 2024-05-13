@@ -41,6 +41,7 @@ import Settings from "./routes/Page/Settings/Settings";
 import StudentProfile from "./routes/Page/Profile/StudentProfile";
 import PaySalary from "./routes/Page/Salary/PaySalary";
 import SalaryReport from "./routes/Page/Salary/SalaryReport";
+import EditClasses from "./routes/Page/Classes/EditClasses";
 
 const router = createBrowserRouter([
   {
@@ -182,6 +183,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/student-profile/:id",
         element: <StudentProfile />,
+      },
+      /* Edit Works */
+      {
+        path: "/dashboard/editClass/:id",
+        element: <EditClasses />,
       },
 
       /*       {

@@ -65,23 +65,6 @@ const AddClasses = () => {
               placeholder="Class/Batch Name"
             />
           </label>
-          {/* <label htmlFor="Assign Teacher" className="md:col-span-1">
-            Class/Course Name
-            <Select onValueChange={(value) => setValue("name", value)} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Class/Course" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {className.map((section) => (
-                    <SelectItem key={section.id} value={section.name}>
-                      {section.name}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </label> */}
           <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
             Tuition/Course Fee
             <Input

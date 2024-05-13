@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import toast from "react-hot-toast";
@@ -58,22 +58,27 @@ export default function Class() {
 
   /* Delete Class */
   const deleteHandler = (id) => {
-      toast.promise(
-        deleteClass(id)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to delete!");
+    toast.promise(
+      deleteClass(id).then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to delete!");
         }
         const cls = classes.filter((item) => item.id != id);
         setClasses(cls);
         return res.json();
-        }),
-        {
-          loading: 'Deleting Class...', 
-          success: <b>Successfully deleted!</b>, 
-          error: <b>Failed to delete.</b>, 
-        }
-      )
+      }),
+      {
+        loading: "Deleting Class...",
+        success: <b>Successfully deleted!</b>,
+        error: <b>Failed to delete.</b>,
+      }
+    );
+  };
+  /* Edit Class */
+  const navigate = useNavigate();
+
+  const editHandler = (id) => {
+    navigate(`../editClass/${id}`);
   };
 
   return (
@@ -138,9 +143,7 @@ export default function Class() {
                               </TableCell>
                               <TableCell className="font-medium">
                                 {cls.sections.length == 0 ? (
-                                  <Badge variant="destructive">
-                                    N/A
-                                  </Badge>
+                                  <Badge variant="destructive">N/A</Badge>
                                 ) : (
                                   <div className="flex items-center gap-1 flex-wrap">
                                     {cls.sections.map((sc) => (
@@ -149,13 +152,13 @@ export default function Class() {
                                   </div>
                                 )}
                               </TableCell>
-                             {
-                              cls.subject &&  <TableCell>
-                              <div className="font-bold text-md">
-                                {cls.subject.length}
-                              </div>
-                            </TableCell>
-                             }
+                              {cls.subject && (
+                                <TableCell>
+                                  <div className="font-bold text-md">
+                                    {cls.subject.length}
+                                  </div>
+                                </TableCell>
+                              )}
                               <TableCell>
                                 <div className="font-bold text-md">
                                   {cls.fee} ৳
@@ -190,8 +193,14 @@ export default function Class() {
                                           View
                                         </DropdownMenuItem>
                                       </Link>
-                                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                                      <DropdownMenuItem onClick={() => deleteHandler(cls.id)}>
+                                      <DropdownMenuItem
+                                        onClick={() => editHandler(cls.id)}
+                                      >
+                                        Edit
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => deleteHandler(cls.id)}
+                                      >
                                         Delete
                                       </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -206,7 +215,7 @@ export default function Class() {
                                         <Eye size={20} className="mr-2" /> View
                                       </Button>
                                     </Link>
-                                    <Button>
+                                    <Button onClick={() => editHandler(cls.id)}>
                                       <Edit size={20} className="mr-2" /> Edit
                                     </Button>
                                     <Button
