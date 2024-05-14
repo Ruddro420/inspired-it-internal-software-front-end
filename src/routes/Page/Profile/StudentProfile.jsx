@@ -22,14 +22,19 @@ import {
 import { Link,  useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { getStudentById } from "@/lib/api";
+import { dateTime, formDate, getStudentById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
+import Spinner from "@/components/app_components/Spinner";
 
 const StudentProfile = () => {
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
+  const [admissionFee, setAdmissionFee] = useState([])
+  const [regularFee, setRegularFee] = useState([])
   let id = useParams();
+
+  const [totalPaid, setTotalPaid] = useState(0)
 
   /* Fetch students Data */
   useEffect(() => {
@@ -38,12 +43,30 @@ const StudentProfile = () => {
       .then((data) => {
         setStudent(data);
         setIsData(true);
+        
+        setAdmissionFee(data.admissionFee)
+        setRegularFee(data.regularFee)
+
+        let total = 0;
+        for(let i=0; i<data.admissionFee.length; i++) {
+          let fee = data.admissionFee[i]
+          total += (fee.fee + fee.other) - fee.discount
+        }
+
+        for(let i=0; i<data.regularFee.length; i++) {
+          total += data.regularFee[i].total
+        }
+        setTotalPaid(total)
+
+
+
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
-  console.log(student);
+ 
+  
   return (
     <>
       {!isData ? (
@@ -63,7 +86,7 @@ const StudentProfile = () => {
                         <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
-                        <div className="text-2xl font-bold">20 Days</div>
+                        <div className="text-2xl font-bold">{student.attendance.length}</div>
                       </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-1">
@@ -74,7 +97,7 @@ const StudentProfile = () => {
                         <Users className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
-                        <div className="text-2xl font-bold">৳ 2350+</div>
+                        <div className="text-2xl font-bold">৳ {totalPaid}</div>
                       </CardContent>
                     </Card>
                   </div>
@@ -85,7 +108,7 @@ const StudentProfile = () => {
                       <div className="grid gap-2">
                         <CardTitle>Transactions</CardTitle>
                         <CardDescription>
-                          Recent transactions from your organization.
+                          Recent transactions.
                         </CardDescription>
                       </div>
                       <Button asChild size="sm" className="ml-auto gap-1">
@@ -96,142 +119,63 @@ const StudentProfile = () => {
                       </Button>
                     </CardHeader>
                     <CardContent>
-                      <Table>
+                     {
+                      regularFee.length != 0 ?  <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Customer</TableHead>
-                            <TableHead className="hidden xl:table-column">
+                            <TableHead>Fee Type</TableHead>
+                            {/* <TableHead className="hidden xl:table-column">
                               Type
-                            </TableHead>
-                            <TableHead className="hidden xl:table-column">
+                            </TableHead> */}
+                            {/* <TableHead className="hidden xl:table-column">
                               Status
-                            </TableHead>
-                            <TableHead className="hidden xl:table-column">
+                            </TableHead> */}
+                            {/* <TableHead className="hidden xl:table-column">
                               Date
-                            </TableHead>
+                            </TableHead> */}
                             <TableHead className="text-right">Amount</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          <TableRow>
+                        {
+                          admissionFee.map(fee=>
+                            <TableRow key={fee.id}>
                             <TableCell>
-                              <div className="font-medium">Liam Johnson</div>
+                              <div className="font-medium">Admission Fee</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
-                                liam@example.com
+                                {dateTime(new Date(fee.collectionDate))}
                               </div>
                             </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              Sale
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              <Badge className="text-xs" variant="outline">
-                                Approved
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                              2023-06-23
-                            </TableCell>
                             <TableCell className="text-right">
-                              ৳250.00
+                              ৳{(fee.fee + fee.other) - fee.discount}
                             </TableCell>
                           </TableRow>
-                          <TableRow>
+                          )
+                        }
+
+                        {
+                          regularFee.map(fee=>
+                            <TableRow key={fee.id}>
                             <TableCell>
-                              <div className="font-medium">Olivia Smith</div>
+                              <div className="font-medium">Regular Fee</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
-                                olivia@example.com
+                                {dateTime(new Date(fee.collectionDate))}
                               </div>
                             </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              Refund
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              <Badge className="text-xs" variant="outline">
-                                Declined
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                              2023-06-24
-                            </TableCell>
                             <TableCell className="text-right">
-                              ৳150.00
+                              ৳{fee.total}
                             </TableCell>
                           </TableRow>
-                          <TableRow>
-                            <TableCell>
-                              <div className="font-medium">Noah Williams</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                noah@example.com
-                              </div>
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              Subscription
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              <Badge className="text-xs" variant="outline">
-                                Approved
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                              2023-06-25
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳350.00
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>
-                              <div className="font-medium">Emma Brown</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                emma@example.com
-                              </div>
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              Sale
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              <Badge className="text-xs" variant="outline">
-                                Approved
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                              2023-06-26
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳450.00
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>
-                              <div className="font-medium">Liam Johnson</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                liam@example.com
-                              </div>
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              Sale
-                            </TableCell>
-                            <TableCell className="hidden xl:table-column">
-                              <Badge className="text-xs" variant="outline">
-                                Approved
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                              2023-06-27
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳550.00
-                            </TableCell>
-                          </TableRow>
+                          )
+                        }
                         </TableBody>
-                      </Table>
+                      </Table> : <Spinner/>
+                     }
                     </CardContent>
                   </div>
                 </div>
 
                 {/* Profile Section */}
-
-
                 <div className="md:w-[33%] w-full rounded-md">
                   <div>
                     <Card
@@ -244,7 +188,7 @@ const StudentProfile = () => {
                             {student.name } #ID No: {student.id_no}
                           </CardTitle>
                           <CardDescription>
-                            {student.class?.name}  {student.section &&  `- Section: ${student.section.name}`}
+                            {student.class.name}  {student.section &&  `- Section: ${student.section.name}`}
                           </CardDescription>
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">
@@ -278,7 +222,7 @@ const StudentProfile = () => {
                                 Section
                               </span>
                               <span>
-                                {student.section}
+                                {student.section.name}
                               </span>
                             </li>
                             }

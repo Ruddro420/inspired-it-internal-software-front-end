@@ -128,7 +128,7 @@ export default function Class() {
                           <TableRow>
                             <TableHead>Class/Batch Name</TableHead>
                             <TableHead>Section(s)/Batch</TableHead>
-                            <TableHead>Subject(s)</TableHead>
+                            {/* <TableHead>Subject(s)</TableHead> */}
                             <TableHead>Tuition Fee</TableHead>
                             {/* <TableHead className="hidden md:table-cell">
                         Assigned Teacher
@@ -152,13 +152,13 @@ export default function Class() {
                                   </div>
                                 )}
                               </TableCell>
-                              {cls.subject && (
+                              {/* {cls.subject && (
                                 <TableCell>
                                   <div className="font-bold text-md">
                                     {cls.subject.length}
                                   </div>
                                 </TableCell>
-                              )}
+                              )} */}
                               <TableCell>
                                 <div className="font-bold text-md">
                                   {cls.fee} ৳

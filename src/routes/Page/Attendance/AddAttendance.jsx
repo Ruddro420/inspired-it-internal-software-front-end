@@ -14,10 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-    getClassAttendance,
   getClasses,
   getStudentsByClassAndSection,
-  getTeachers,
+  setClassAbsent,
 } from "@/lib/api";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useEffect, useState } from "react";
@@ -31,19 +30,62 @@ const AddAttendance = () => {
   const [isData, setIsData] = useState(false);
   const [isData2, setIsData2] = useState(false);
   const [cands, setCandS] = useState([]);
+
   const [students, setStudents] = useState([]);
-  const [attendance, setAttendance] = useState([])
 
   const [aDate, setADate] = useState(null)
 
-  const onSubmit = (data) => {
-    // reset();
+  const setAttendanceByDate = (students, classId, date, sectionId) => {
+    console.log(students)
+    setClassAbsent(students)
+    .then(res=> res.json())
+    .then(data=> {
+      console.log(data)
+      if(!data.err) {
+        getClassAttendanceByDate(classId, date, sectionId)
+      }
+    })
+    .catch(err=> {
+      console.log(err)
+    })
 
+  }
+
+  const getClassAttendanceByDate = async(classId, date, sectionId) => {
+    console.log(date)
+    try {
+      const response = await fetch(import.meta.env.VITE_apiKey + `class/attendance/${classId}/${date}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch attendance');
+      }
+      const data = await response.json()
+    const _students = data.map(item => {
+      const std = item.student
+      return {
+        ...std,
+        isPresent: item.isPresent,
+        attendanceId: item.id,
+      }
+    })
+
+    let _students_;
+    (sectionId) ? _students_ = _students.filter(s=> s.sectionId == sectionId) : _students_ = _students
+      setStudents(_students_)
+      return _students_;
+    } catch (error) {
+      console.error('Error fetching attendance:', error);
+      throw error;
+    }
+  }
+
+  const onSubmit = async (data) => {
+   
     let classId;
     let sectionId;
-    console.log(data)
     setADate(data.date)
-
     if((data.classAndSection).includes("|")) {
     classId = data.classAndSection.split('|')[0]
     sectionId = data.classAndSection.split('|')[1]
@@ -51,58 +93,53 @@ const AddAttendance = () => {
         classId = data.classAndSection
         sectionId = null 
     }
-    
-    getStudentsByClassAndSection(classId)
+
+
+   
+    const _students = await getClassAttendanceByDate(classId, data.date, sectionId)
+  
+    if(_students.length == 0) {
+      getStudentsByClassAndSection(classId)
     .then(res=> res.json())
-    .then(data=> {
+    .then(stdData=> {
+      let std;
        if(sectionId) {
-        const std = data.filter((s) => s.sectionId == parseInt(sectionId))
-        setStudents(std)
+         std = stdData.filter((s) => s.sectionId == parseInt(sectionId))
        } else {
-        setStudents(data)
+        std = stdData
        }
-    })
 
-
-
-    // getClassAttendance(classId, data.date)
-    // .then(res=> res.json())
-    // .then(data=> {
-    //     console.log(data)
-    // })
-
-
-
-    /*  fetch("http://localhost:5000/subject_add", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        ...data,
-        classId: parseInt(data.classId),
-        mark: parseInt(data.mark),
-        teacherId: parseInt(data.teacherId),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.err) {
-          toast.error(data.err);
-        } else {
-          toast.success("Successfuly added!");
+       let absentStudentsData = std.map(item => {
+        if(!item.sectionId) {
+          return {
+            classId: item.classId,
+            studentId: item.id,
+            isPresent: false,
+            date: new Date(data.date)
+          }
+        }
+        return {
+          classId: item.classId,
+          sectionId: item.sectionId,
+          studentId: item.id,
+          isPresent: false,
+          date: new Date(data.date)
         }
       })
-      .catch((err) => {
-        toast.error("Something went wrong!");
-        console.log(err);
-      });
-    console.log(data);
-  }; */
+
+      std = std.map(item=> {
+        return {...item, isPresent: false}
+      })
+
+      setAttendanceByDate(absentStudentsData, classId, data.date, sectionId)
+    })
+
+    }
+    
+
   };
-  console.log(students)
+
+
   // get Data from course and batch no
   useEffect(() => {
     getClasses()
@@ -216,7 +253,7 @@ const AddAttendance = () => {
           <SelectSeparator className="mt-10"/>
 
           {
-            students.length > 0  && <ClassAttendanceTable students={students} date={aDate}/>
+            students.length > 0  && <ClassAttendanceTable students={students} date={aDate} updateAttendanceTable={getClassAttendanceByDate}/>
           }
         </div>
       )}

@@ -110,6 +110,19 @@ const settingsAdd = (data) => {
   });
 };
 
+
+//set all absent for students
+const setClassAbsent = (data) => {
+  return fetch(api_key + "class/attendances", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 ////___________________________________________________________________________________________________________________////////
 
 //GET
@@ -296,6 +309,18 @@ const settingsUpdate = (data, id) => {
   });
 };
 
+// Attendance Update
+const attendanceUpdate = (data, studentId, date, attendanceId) => {
+  return fetch(api_key + `class/attendance/${attendanceId}/${studentId}/${date}/`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 
 //______________________________________________________________________________//////
 
@@ -379,5 +404,7 @@ export {
   getLastStaff,
   RegularFeeAdd,
   getStudentsByClassAndSection,
-  getClassAttendance
+  getClassAttendance,
+  setClassAbsent,
+  attendanceUpdate
 };

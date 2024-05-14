@@ -95,8 +95,9 @@ export default function IdCards() {
   return (
     <>
       <div style={{ overflow: "hidden", padding: "10px" }}>
-        <h1 className="text-2xl font-bold mb-3">ID Card Generate</h1>
 
+        <h1 className="text-2xl font-bold mb-3">ID Card Generate</h1>
+       
         <form onSubmit={findStudent}>
           <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
             <label htmlFor=" ID Card" className="md:col-span-1">
@@ -188,6 +189,7 @@ export default function IdCards() {
       {student.length !== 0 && (
         <div ref={targetRef}>
           <div className=" flex justify-center flex-wrap gap-10 mt-10">
+          
             <div
               id="id_card"
               className="shadow-lg p-5 relative h-[700px] w-[500px] border"

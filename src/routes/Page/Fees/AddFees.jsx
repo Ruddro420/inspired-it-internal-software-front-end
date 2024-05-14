@@ -63,6 +63,7 @@ const AddFees = () => {
 
   };
 
+
   const onSubmit = (data) => {
     data = {
       regular_fee: regularFee, 

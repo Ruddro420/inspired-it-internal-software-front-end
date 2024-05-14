@@ -101,3 +101,7 @@
   .fadeInDown{
     animation: animate 0.5s ease-in-out;
   }
+
+  .font-hind{
+    font-family: "Hind Siliguri", sans-serif;
+  }

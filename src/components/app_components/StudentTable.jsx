@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu';
@@ -8,9 +9,8 @@ import { deleteStudent } from '@/lib/api';
 import { useState } from 'react';
 import { Link,  } from 'react-router-dom';
 import Alert from './Alert';
-const StudentTable = ({students}) => {
-   const [_students, setStudents] = useState(students)
-   console.log(students)
+const StudentTable = ({students,studentFetchHandler}) => {
+  //  const [_students, setStudents] = useState(students)
 
   const handleDelete = (id) => {
     toast.promise(
@@ -19,8 +19,9 @@ const StudentTable = ({students}) => {
         if (!res.ok) {
           throw new Error("Failed to delete!");
       }
-      const std = _students.filter((item) => item.id != id);
-      setStudents(std);
+      // const std = _students.filter((item) => item.id != id);
+      // setStudents(std);
+      studentFetchHandler()
       return res.json();
       }),
       {
@@ -34,7 +35,7 @@ const StudentTable = ({students}) => {
     return (
         <div> 
           {
-            _students.length == 0 ? <Alert title="You have not added any Students yet!" subtitle="Here you can manage students!" link="/dashboard/add-students" linktitle="Add"/> : <Table>
+            students.length == 0 ? <Alert title="You have not added any Students yet!" subtitle="Here you can manage students!" link="/dashboard/add-students" linktitle="Add"/> : <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="hidden w-[100px] sm:table-cell">
@@ -58,7 +59,7 @@ const StudentTable = ({students}) => {
             </TableHeader>
             <TableBody>
               
-              {_students.map(student => 
+              {students.map(student => 
                 
                     <TableRow key={student.email}>
                       <TableCell className="hidden sm:table-cell">
