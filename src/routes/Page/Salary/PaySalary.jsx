@@ -1,108 +1,163 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
-import { getStudentById } from "@/lib/api";
-// import { Item } from "@radix-ui/react-dropdown-menu";
+import { useContext, useState } from "react";
+import {
+  fetchImageAndConvertToDataURI,
+  getStudentById,
+  RegularFeeAdd,
+} from "@/lib/api";
 import { Input } from "@/components/ui/input";
-import Loading from "@/components/app_components/Loading";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import Transactions from "@/components/app_components/Transactions/Transactions";
+import { Search } from "lucide-react";
+import { AuthContext } from "@/Providers/AuthProvider";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PaySalary = () => {
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { admin } = useContext(AuthContext);
+
+  const { register, handleSubmit, setValue } = useForm();
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [getData, setGetData] = useState();
-  const [totalFee, setTotalFee] = useState(0);
-  //let id = useParams();
+  const [getData, setGetData] = useState(null);
+  const [studentId, setStudentId] = useState(null);
+  const [regularFee, setRegularFee] = useState(0);
+  const [fine, setFine] = useState(0);
+  const [transportFee, setTransportFee] = useState(0);
+  const [idCardFee, setidCardFee] = useState(0);
+  const [uniformFee, setUniformFee] = useState(0);
+  const [othersFee, setOthersFee] = useState(0);
+  const [discountFee, setDiscountFee] = useState(0);
+
+  //const [dataLoad,SetLoadData] = useState(false)
+
+  const [imageDataURI, setImageDataURI] = useState(null);
+
   const feeDataHandler = (e) => {
     e.preventDefault();
-    getStudentById(getData)
-      .then((res) => res.json())
-      .then((data) => {
-        setStudent(data);
-        setIsData(true);
-        if (!data) {
-          toast.error("Data Not Found!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  /*   useEffect(() => {
-    
-  }, [getData]); */
-  /* Fetch students Data */
+    toast.promise(
+      getStudentById(getData)
+        .then((res) => res.json())
+        .then((data) => {
+          setStudent(data);
+          setStudentId(data.id);
+          setIsData(true);
+          if (!data) {
+            throw new Error("Student not Found!");
+          }
+        }),
+      {
+        loading: "Searching....",
+        success: <b>Found!</b>,
+        error: (error) => <b>{error.message}</b>,
+      }
+    );
 
-  //console.log(student);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const calculateTotalFee = () => {
-    const regularFee = parseFloat(watch("regular_fee")) || 0;
-    const fine = parseFloat(watch("fine")) || 0;
-    const transportFee = parseFloat(watch("transport_fee")) || 0;
-    const bonusFee = parseFloat(watch("bonus_fee")) || 0;
-    const othersFee = parseFloat(watch("others_fee")) || 0;
+    const loadImageDataURI = async () => {
+      const logoURI = await fetchImageAndConvertToDataURI("inst", "logo");
+      setImageDataURI(logoURI);
+    };
 
-    const total =
-      regularFee +
-      transportFee +
-      bonusFee +
-      othersFee -
-      fine;
-    setTotalFee(total);
+    loadImageDataURI();
   };
 
-  useEffect(() => {
-    calculateTotalFee();
-  }, [calculateTotalFee, watch]);
+  const onSubmit = (data) => {
+    data = {
+      regular_fee: regularFee,
+      transport_fee: transportFee,
+      fine: fine,
+      id_card_fee: idCardFee,
+      uniform_fee: uniformFee,
+      others_fee: othersFee,
+      discount_fee: discountFee,
+      studentId: studentId,
+    };
+    toast.promise(
+      RegularFeeAdd(data)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          // SetLoadData(true)
+          if (data.err) {
+            throw new Error("Something went wrong!");
+          }
+        }),
+      {
+        loading: "Searching....",
+        success: <b>Fee added successfully!</b>,
+        error: (error) => <b>{error.message}</b>,
+      }
+    );
+  };
 
   return (
     <>
-      {/* {!isData ? (
-        <Loading />
-      ) : (
-        
-      )} */}
-      <div style={{ overflow: "hidden" }}>
-        <h1 className="text-2xl font-bold mb-3">Add Salaries</h1>
-        <form onSubmit={feeDataHandler} className="border p-5 rounded">
-          <div className="grid grid-cols-1 md:grid-cols-1  mt-3 gap-4">
-            <label htmlFor="Id Number" className="md:col-span-1">
-              Id Number
-              <Input
-                onChange={(e) => setGetData(e.target.value)}
-                type="number"
-                id="idNumber"
-                placeholder="Id Number"
-                required
-              />
-            </label>
-          </div>
-          <Button size="sm" className="h-8 gap-1 mt-5">
-            Search Id
-          </Button>
-        </form>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="col-span-2">
+          <h1 className="text-2xl font-bold mb-3">Pay Salary</h1>
+          <form
+            className="mb-5 flex items-center gap-2"
+            onSubmit={feeDataHandler}
+          >
+            <Input
+              className="max-w-[200px]"
+              onChange={(e) => setGetData(e.target.value)}
+              type="number"
+              id="idNumber"
+              placeholder="ID"
+            />
 
-        {isData && student && (
-          <section className="grid grid-cols-3 gap-3 mt-5">
-            <div className="col-span-2">
-              <form>
-                <div className="border p-5 rounded-xl grid grid-cols-2 gap-3">
+            <label htmlFor="type">
+           
+              <Select
+                onValueChange={(value) => setValue("classId", value)}
+                id="type"
+                
+                required
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Employee" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Select Employee</SelectLabel>
+                    <SelectItem value="teachers">Teachers</SelectItem>
+                    <SelectItem value="staffs">Staff</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </label>
+            <Button size="sm">
+              <Search size={18} /> <span className="ml-2">Search</span>
+            </Button>
+          </form>
+
+          {isData && student && (
+            <div>
+              <form
+                className="border p-5 rounded-lg"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <div className="grid grid-cols-3 gap-3">
                   <label htmlFor="Name" className="md:col-span-1">
-                    Regular Salary
+                    Regular Fee
                     <Input
                       {...register("regular_fee", { required: true })}
+                      onChange={(e) =>
+                        setRegularFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
                       type="number"
                       name="regular_fee"
                       required
@@ -110,186 +165,247 @@ const PaySalary = () => {
                     />
                   </label>
                   <label htmlFor="Mobile Number" className="md:col-span-1">
-                    Bonus Fee
+                    Fine
                     <Input
-                      {...register("bonus_fee", { required: true })}
+                      {...register("fine")}
+                      onChange={(e) =>
+                        setFine(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
                       type="number"
-                      name="bonus_fee"
-                      placeholder="Bonus Fee"
+                      name="fine"
+                      placeholder="Fine"
                     />
                   </label>
                   <label htmlFor="Present Address" className="md:col-span-1">
                     Transport Fee
                     <Input
-                      {...register("transport_fee", { required: true })}
+                      {...register("transport_fee")}
+                      onChange={(e) =>
+                        setTransportFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
                       type="number"
                       name="transport_fee"
                       placeholder="Transport Fee"
                     />
                   </label>
+
+                  <label htmlFor="Permanent Address" className="md:col-span-1">
+                    ID Card Fee
+                    <Input
+                      {...register("id_card_fee")}
+                      onChange={(e) =>
+                        setidCardFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
+                      type="number"
+                      name="id_card_fee"
+                      placeholder="ID Card Fee"
+                    />
+                  </label>
+                  <label htmlFor="Email" className="md:col-span-1">
+                    Uniform Fee
+                    <Input
+                      {...register("uniform_fee")}
+                      type="number"
+                      onChange={(e) =>
+                        setUniformFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
+                      name="uniform_fee"
+                      placeholder="Uniform Fee"
+                    />
+                  </label>
                   <label htmlFor="Date of Birth" className="md:col-span-1">
                     Others
                     <Input
-                      {...register("others_fee", { required: true })}
+                      {...register("others_fee")}
                       type="number"
+                      onChange={(e) =>
+                        setOthersFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
                       name="others_fee"
                       placeholder="Others"
                     />
                   </label>
-                  <label htmlFor="discount_fee" className="md:col-span-2">
-                    Fine
+                  <label htmlFor="discount_fee" className="md:col-span-1">
+                    Discount Fee
                     <Input
-                      {...register("fine", { required: true })}
+                      {...register("discount_fee")}
                       type="number"
-                      name="fine"
-                      placeholder="Total Fine"
+                      onChange={(e) =>
+                        setDiscountFee(
+                          !e.target.value == "" ? parseFloat(e.target.value) : 0
+                        )
+                      }
+                      name="discount_fee"
+                      placeholder="Discount Fee"
                     />
                   </label>
-
-                  <Button size="sm" className="h-8 gap-1 mt-5 col-span-2">
-                    Submit & Generate Payslip
-                  </Button>
                 </div>
+                <Button size="sm" className="mt-5">
+                  Submit
+                </Button>
               </form>
-              {/* Transactions */}
-              <Transactions />
+              {/* <Transactions getData={getData} dataLoad={dataLoad} /> */}
             </div>
-            <div className=" ">
-              <div>
-                <Card
-                  className="overflow-hidden"
-                  x-chunk="dashboard-05-chunk-4"
-                >
-                  <CardHeader className="flex flex-row items-start bg-muted/50">
-                    <div className="grid gap-0.5">
-                      <CardTitle className="group flex items-center gap-2 text-lg">
-                        {student.name} #ID No: {student.id_no}
-                      </CardTitle>
-                      <CardDescription>
-                        {student.class?.name}
-                        {student.section && `-Section: ${student.section.name}`}
-                      </CardDescription>
+          )}
+        </div>
+        {isData && student && (
+          <div>
+            <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
+              <CardHeader className="flex flex-row items-start bg-muted/50">
+                <div className="flex flex-col items-center w-full">
+                  <img className="h-10" src={imageDataURI}></img>
+                  {admin && (
+                    <div className="mt-3 text-center">
+                      <div className="font-bold text-xl">{admin.inst_name}</div>
+                      <div className="font-bold text-sm">
+                        EIIN: {admin.inst_eiin}
+                      </div>
+                      <div className="font-bold mt-2">
+                        Payment Money Reciept
+                      </div>
                     </div>
-                    <div className="ml-auto flex items-center gap-1 border-2 rounded">
-                      <img
-                        alt="Product image"
-                        className="aspect-square rounded-md object-cover "
-                        height="64"
-                        src={`http://localhost:5000/image/students/${student.id_no}`}
-                        width="64"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6 text-sm">
-                    <div className="grid gap-3">
-                      <div className="font-semibold">Personal Details</div>
-                      <ul className="grid gap-3">
-                        <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">
-                            Student Name
-                          </span>
-                          <span>{student.name}</span>
-                        </li>
-                        <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">
-                            Student ID NO
-                          </span>
-                          <span># {student.id_no}</span>
-                        </li>
-                        <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">
-                            Email Address
-                          </span>
-                          <span>{student.email}</span>
-                        </li>
-                        <li className="flex items-center justify-between">
-                          <span className="text-muted-foreground">
-                            Phone Number
-                          </span>
-                          <span>{student.phone}</span>
-                        </li>
-                      </ul>
-                      <Separator className="my-2" />
-                      <ul className="grid gap-3">
-                        <li className="flex items-center justify-between font-semibold">
-                          <span className="text-muted-foreground font-semibold">
-                            Group
-                          </span>
-                          <span>
-                            {student.group ? student.group : "No Group"}
-                          </span>
-                        </li>
-                        <li className="flex items-center justify-between font-semibold">
-                          <span className="text-muted-foreground">Session</span>
-                          <span>{student.session}</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <Separator className="my-4" />
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent className=" text-sm">
+                <div className="grid gap-3">
+                  <Separator className="my-2" />
+                  <div className="font-semibold">Student Infromation</div>
+                  <ul className="grid gap-3 font-semibold">
+                    <li className="flex items-center justify-between">
+                      <span className="text-muted-foreground">
+                        Student Name
+                      </span>
+                      <span>{student.name}</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Class</span>
+                      <span>{student.class.name}</span>
+                    </li>
 
-                    <Separator className="my-4" />
-                    <div className="grid gap-3">
-                      <div className="font-semibold">Fees Information</div>
-                      <dl className="grid gap-3">
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Regular Salary
-                          </dt>
-                          <dd className="font-semibold">
-                            {watch("regular_fee") ? watch("regular_fee") : "00"}{" "}
-                            ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Bonus Fee</dt>
-                          <dd className="font-semibold">
-                            {watch("bonus_fee") ? watch("bonus_fee") : "00"} ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">
-                            Transport Fee
-                          </dt>
-                          <dd className="font-semibold">
-                            {watch("transport_fee")
-                              ? watch("transport_fee")
-                              : "00"}{" "}
-                            ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Others</dt>
-                          <dd className="font-semibold">
-                            {watch("others_fee") ? watch("others_fee") : "00"} ৳
-                          </dd>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <dt className="text-muted-foreground">Fine</dt>
-                          <dd className="font-semibold">
-                          {watch("fine") ? watch("fine") : "00"} ৳
-                          </dd>
-                        </div>
-                      </dl>
-                    </div>
-                    <Separator className="my-4" />
+                    {student.section && (
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Section</span>
+                        <span>{student.section.name}</span>
+                      </li>
+                    )}
+                    <li className="flex items-center justify-between">
+                      <span className="text-muted-foreground">#ID</span>
+                      <span>{student.id_no}</span>
+                    </li>
+                    {student.group && (
+                      <li className="flex items-center justify-between">
+                        <span className="text-muted-foreground font-semibold">
+                          Group
+                        </span>
+                        <span className="uppercase">{student.group}</span>
+                      </li>
+                    )}
+                    <li className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Session</span>
+                      <span>{student.session}</span>
+                    </li>
+                  </ul>
+                </div>
+                <Separator className="my-4" />
+                <div className="grid gap-3">
+                  <div className="font-semibold">Fees</div>
+                  <dl className="grid gap-3">
                     <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground font-bold">
-                        Total Payable (৳)
-                      </dt>
-                      <dd className="font-bold">{totalFee}৳</dd>
+                      <dt className="text-muted-foreground">Regular Fee</dt>
+                      <dd className="font-semibold">
+                        {regularFee.toString().padStart(2, "0")} ৳
+                      </dd>
                     </div>
-                    <div className="flex items-center justify-between mt-3 font-bold">
-                      <dt className="text-muted-foreground text-red-700">
-                        {" "}
-                        Due (৳)
-                      </dt>
-                      <dd className="font-bold">100 ৳</dd>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">Fine</dt>
+                      <dd className="font-semibold">
+                        {fine.toString().padStart(2, "0")} ৳
+                      </dd>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">Transport Fee</dt>
+                      <dd className="font-semibold">
+                        {transportFee.toString().padStart(2, "0")} ৳
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">ID Card Fee</dt>
+                      <dd className="font-semibold">
+                        {idCardFee.toString().padStart(2, "0")} ৳
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">Uniform Fee</dt>
+                      <dd className="font-semibold">
+                        {uniformFee.toString().padStart(2, "0")} ৳
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">Others</dt>
+                      <dd className="font-semibold">
+                        {othersFee.toString().padStart(2, "0")} ৳
+                      </dd>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-muted-foreground">Discount Fee</dt>
+                      <dd className="font-semibold">
+                        {discountFee.toString().padStart(2, "0")} ৳
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+                <Separator className="my-4" />
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground font-bold">
+                    Paying This Time (৳)
+                  </dt>
+                  <dd className="font-bold">
+                    {regularFee +
+                      fine +
+                      transportFee +
+                      idCardFee +
+                      uniformFee +
+                      othersFee -
+                      discountFee}
+                    ৳
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between mt-3 font-bold">
+                  <dt className="text-muted-foreground text-red-700">
+                    Course/Class fee (৳)
+                  </dt>
+                  <dd className="font-bold">5000 ৳</dd>
+                </div>
+                <div className="flex items-center justify-between mt-3 font-bold">
+                  <dt className="text-muted-foreground text-red-700">
+                    Current Due (৳)
+                  </dt>
+                  <dd className="font-bold">
+                    {5000 -
+                      (regularFee +
+                        fine +
+                        transportFee +
+                        idCardFee +
+                        uniformFee +
+                        othersFee -
+                        discountFee)}{" "}
+                    ৳
+                  </dd>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </>

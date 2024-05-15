@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  getClasses,
   getLastStaff,
   staffAdd,
 } from "../../../lib/api";
@@ -49,7 +48,7 @@ const AddStuffs = () => {
     formData.append("image", renamedFile);
     try {
       const response = await axios.post(
-        "http://localhost:5000/staff_add",
+        "http://localhost:5000/staff_upload",
       
         formData,
         {

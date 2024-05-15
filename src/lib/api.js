@@ -218,7 +218,7 @@ const getStudentCount = () => {
   });
 };
 
-//getStudentById
+//getStudentById_no
 const getStudentById = (id) => {
   return fetch(api_key + "student/" + id, {
     method: "GET",
@@ -257,6 +257,23 @@ const getClassAttendance = (classId, date) => {
     credentials: "include",
   });
 };
+
+//getTeacherById_no
+const getTeacherById = (id) => {
+  return fetch(api_key + "teacher/" + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
+//getTeacherById_no
+const getStaffById = (id) => {
+  return fetch(api_key + "staff/" + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 
 
 
@@ -369,6 +386,8 @@ const formDate = (date) => {
 }
 
 export {
+  getTeacherById,
+  getStaffById,
   adminLogin,
   adminLogout,
   checkAdminLogin,
