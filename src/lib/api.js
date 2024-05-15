@@ -84,6 +84,30 @@ const RegularFeeAdd = (data) => {
   });
 };
 
+
+//teacher salary add
+const teacherSalaryAdd = (data) => {
+  return fetch(api_key + 'teacher_salary_add', {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const staffSalaryAdd = (data) => {
+  return fetch(api_key + 'staff_salary_add', {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const sectionAdd = (data) => {
   return fetch(api_key + "section_add", {
     method: "POST",
@@ -274,6 +298,14 @@ const getStaffById = (id) => {
   });
 };
 
+//getTeacherOrStaffById_no
+const getTeacherOrStaffById = (id, type) => {
+  return fetch(api_key + `${type}/` + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
 
 
 
@@ -388,6 +420,7 @@ const formDate = (date) => {
 export {
   getTeacherById,
   getStaffById,
+  getTeacherOrStaffById,
   adminLogin,
   adminLogout,
   checkAdminLogin,
@@ -425,5 +458,7 @@ export {
   getStudentsByClassAndSection,
   getClassAttendance,
   setClassAbsent,
-  attendanceUpdate
+  attendanceUpdate,
+  teacherSalaryAdd,
+  staffSalaryAdd,
 };

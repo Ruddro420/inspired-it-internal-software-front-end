@@ -5,8 +5,9 @@ import { Separator } from "@/components/ui/separator";
 import { useContext, useState } from "react";
 import {
   fetchImageAndConvertToDataURI,
-  getStudentById,
-  RegularFeeAdd,
+  getTeacherOrStaffById,
+  staffSalaryAdd,
+  teacherSalaryAdd,
 } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -26,18 +27,14 @@ import {
 const PaySalary = () => {
   const { admin } = useContext(AuthContext);
 
-  const { register, handleSubmit, setValue } = useForm();
-  const [student, setStudent] = useState(null);
+  const { register, handleSubmit} = useForm();
+  const [employee, setEmployee] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [getData, setGetData] = useState(null);
-  const [studentId, setStudentId] = useState(null);
-  const [regularFee, setRegularFee] = useState(0);
-  const [fine, setFine] = useState(0);
-  const [transportFee, setTransportFee] = useState(0);
-  const [idCardFee, setidCardFee] = useState(0);
-  const [uniformFee, setUniformFee] = useState(0);
-  const [othersFee, setOthersFee] = useState(0);
-  const [discountFee, setDiscountFee] = useState(0);
+  const [employeeId, setEmployeeId] = useState(null);
+  const [monthlySalary, setMonthlySalary] = useState(0);
+  const [bonus, setBonus] = useState(0);
+  const [employeeType, setEmployeeType] = useState(null)
+
 
   //const [dataLoad,SetLoadData] = useState(false)
 
@@ -45,12 +42,15 @@ const PaySalary = () => {
 
   const feeDataHandler = (e) => {
     e.preventDefault();
+    setEmployeeType(e.target.employee.value)
+
     toast.promise(
-      getStudentById(getData)
+      getTeacherOrStaffById(e.target.id_no.value, e.target.employee.value)
         .then((res) => res.json())
         .then((data) => {
-          setStudent(data);
-          setStudentId(data.id);
+          console.log(data);
+          setEmployee(data);
+          setEmployeeId(data.id_no);
           setIsData(true);
           if (!data) {
             throw new Error("Student not Found!");
@@ -72,32 +72,52 @@ const PaySalary = () => {
   };
 
   const onSubmit = (data) => {
-    data = {
-      regular_fee: regularFee,
-      transport_fee: transportFee,
-      fine: fine,
-      id_card_fee: idCardFee,
-      uniform_fee: uniformFee,
-      others_fee: othersFee,
-      discount_fee: discountFee,
-      studentId: studentId,
-    };
-    toast.promise(
-      RegularFeeAdd(data)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          // SetLoadData(true)
-          if (data.err) {
-            throw new Error("Something went wrong!");
-          }
-        }),
-      {
-        loading: "Searching....",
-        success: <b>Fee added successfully!</b>,
-        error: (error) => <b>{error.message}</b>,
-      }
-    );
+    if(employeeType == "staff") {
+      data = {
+        monthly_salary: monthlySalary,
+        bonus: bonus,
+        staffId: employeeId,
+      };
+      toast.promise(
+        staffSalaryAdd(data)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            // SetLoadData(true)
+            if (data.err) {
+              throw new Error("Something went wrong!");
+            }
+          }),
+        {
+          loading: "Searching....",
+          success: <b>Fee added successfully!</b>,
+          error: (error) => <b>{error.message}</b>,
+        }
+      );
+    } else {
+      data = {
+        monthly_salary: monthlySalary,
+        bonus: bonus,
+        teacherId: employeeId,
+      };
+      toast.promise(
+        teacherSalaryAdd(data)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.err) {
+              throw new Error("Something went wrong!");
+            }
+          }),
+        {
+          loading: "Searching....",
+          success: <b>Fee added successfully!</b>,
+          error: (error) => <b>{error.message}</b>,
+        }
+      );
+    }
+   
+   
   };
 
   return (
@@ -111,18 +131,16 @@ const PaySalary = () => {
           >
             <Input
               className="max-w-[200px]"
-              onChange={(e) => setGetData(e.target.value)}
               type="number"
-              id="idNumber"
+              id="id"
+              name="id_no"
               placeholder="ID"
             />
 
             <label htmlFor="type">
-           
               <Select
-                onValueChange={(value) => setValue("classId", value)}
-                id="type"
-                
+                id="type"  
+                name="employee"
                 required
               >
                 <SelectTrigger>
@@ -131,8 +149,8 @@ const PaySalary = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Select Employee</SelectLabel>
-                    <SelectItem value="teachers">Teachers</SelectItem>
-                    <SelectItem value="staffs">Staff</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="staff">Staff</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -142,111 +160,40 @@ const PaySalary = () => {
             </Button>
           </form>
 
-          {isData && student && (
+          {isData && employee && (
             <div>
               <form
                 className="border p-5 rounded-lg"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <label htmlFor="Name" className="md:col-span-1">
-                    Regular Fee
+                    Monthly Salary
                     <Input
-                      {...register("regular_fee", { required: true })}
+                      {...register("monthly_salary", { required: true })}
                       onChange={(e) =>
-                        setRegularFee(
+                        setMonthlySalary(
                           !e.target.value == "" ? parseFloat(e.target.value) : 0
                         )
                       }
                       type="number"
-                      name="regular_fee"
+                      name="monthly_salary"
                       required
-                      placeholder="Regular Fee"
+                      placeholder="Monthly Salary"
                     />
                   </label>
                   <label htmlFor="Mobile Number" className="md:col-span-1">
-                    Fine
+                    Bonus
                     <Input
-                      {...register("fine")}
+                      {...register("bonus")}
                       onChange={(e) =>
-                        setFine(
+                        setBonus(
                           !e.target.value == "" ? parseFloat(e.target.value) : 0
                         )
                       }
                       type="number"
-                      name="fine"
-                      placeholder="Fine"
-                    />
-                  </label>
-                  <label htmlFor="Present Address" className="md:col-span-1">
-                    Transport Fee
-                    <Input
-                      {...register("transport_fee")}
-                      onChange={(e) =>
-                        setTransportFee(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
-                      type="number"
-                      name="transport_fee"
-                      placeholder="Transport Fee"
-                    />
-                  </label>
-
-                  <label htmlFor="Permanent Address" className="md:col-span-1">
-                    ID Card Fee
-                    <Input
-                      {...register("id_card_fee")}
-                      onChange={(e) =>
-                        setidCardFee(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
-                      type="number"
-                      name="id_card_fee"
-                      placeholder="ID Card Fee"
-                    />
-                  </label>
-                  <label htmlFor="Email" className="md:col-span-1">
-                    Uniform Fee
-                    <Input
-                      {...register("uniform_fee")}
-                      type="number"
-                      onChange={(e) =>
-                        setUniformFee(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
-                      name="uniform_fee"
-                      placeholder="Uniform Fee"
-                    />
-                  </label>
-                  <label htmlFor="Date of Birth" className="md:col-span-1">
-                    Others
-                    <Input
-                      {...register("others_fee")}
-                      type="number"
-                      onChange={(e) =>
-                        setOthersFee(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
-                      name="others_fee"
-                      placeholder="Others"
-                    />
-                  </label>
-                  <label htmlFor="discount_fee" className="md:col-span-1">
-                    Discount Fee
-                    <Input
-                      {...register("discount_fee")}
-                      type="number"
-                      onChange={(e) =>
-                        setDiscountFee(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
-                      name="discount_fee"
-                      placeholder="Discount Fee"
+                      name="bonus"
+                      placeholder="Bonus"
                     />
                   </label>
                 </div>
@@ -258,7 +205,7 @@ const PaySalary = () => {
             </div>
           )}
         </div>
-        {isData && student && (
+        {isData && employee && (
           <div>
             <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
               <CardHeader className="flex flex-row items-start bg-muted/50">
@@ -280,40 +227,20 @@ const PaySalary = () => {
               <CardContent className=" text-sm">
                 <div className="grid gap-3">
                   <Separator className="my-2" />
-                  <div className="font-semibold">Student Infromation</div>
+                  <div className="font-semibold">Employee Infromation</div>
                   <ul className="grid gap-3 font-semibold">
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">
-                        Student Name
+                        Employee Name
                       </span>
-                      <span>{student.name}</span>
+                      <span>{employee.name}</span>
                     </li>
-                    <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Class</span>
-                      <span>{student.class.name}</span>
-                    </li>
+                   
 
-                    {student.section && (
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Section</span>
-                        <span>{student.section.name}</span>
-                      </li>
-                    )}
+                    
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">#ID</span>
-                      <span>{student.id_no}</span>
-                    </li>
-                    {student.group && (
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground font-semibold">
-                          Group
-                        </span>
-                        <span className="uppercase">{student.group}</span>
-                      </li>
-                    )}
-                    <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Session</span>
-                      <span>{student.session}</span>
+                      <span>{employee.id_no}</span>
                     </li>
                   </ul>
                 </div>
@@ -322,47 +249,18 @@ const PaySalary = () => {
                   <div className="font-semibold">Fees</div>
                   <dl className="grid gap-3">
                     <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Regular Fee</dt>
+                      <dt className="text-muted-foreground">Monthly Salary</dt>
                       <dd className="font-semibold">
-                        {regularFee.toString().padStart(2, "0")} ৳
+                        {monthlySalary.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
                     <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Fine</dt>
+                      <dt className="text-muted-foreground">Bonus</dt>
                       <dd className="font-semibold">
-                        {fine.toString().padStart(2, "0")} ৳
+                        {bonus.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Transport Fee</dt>
-                      <dd className="font-semibold">
-                        {transportFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">ID Card Fee</dt>
-                      <dd className="font-semibold">
-                        {idCardFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Uniform Fee</dt>
-                      <dd className="font-semibold">
-                        {uniformFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Others</dt>
-                      <dd className="font-semibold">
-                        {othersFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Discount Fee</dt>
-                      <dd className="font-semibold">
-                        {discountFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
+                    
                   </dl>
                 </div>
                 <Separator className="my-4" />
@@ -371,38 +269,11 @@ const PaySalary = () => {
                     Paying This Time (৳)
                   </dt>
                   <dd className="font-bold">
-                    {regularFee +
-                      fine +
-                      transportFee +
-                      idCardFee +
-                      uniformFee +
-                      othersFee -
-                      discountFee}
+                    {monthlySalary+bonus}
                     ৳
                   </dd>
                 </div>
-                <div className="flex items-center justify-between mt-3 font-bold">
-                  <dt className="text-muted-foreground text-red-700">
-                    Course/Class fee (৳)
-                  </dt>
-                  <dd className="font-bold">5000 ৳</dd>
-                </div>
-                <div className="flex items-center justify-between mt-3 font-bold">
-                  <dt className="text-muted-foreground text-red-700">
-                    Current Due (৳)
-                  </dt>
-                  <dd className="font-bold">
-                    {5000 -
-                      (regularFee +
-                        fine +
-                        transportFee +
-                        idCardFee +
-                        uniformFee +
-                        othersFee -
-                        discountFee)}{" "}
-                    ৳
-                  </dd>
-                </div>
+              
               </CardContent>
             </Card>
           </div>
