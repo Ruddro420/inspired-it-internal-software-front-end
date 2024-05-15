@@ -3,10 +3,7 @@ import { Input } from "@/components/ui/input";
 import {
   getClasses,
   getLastStaff,
-  getLastTeacher,
-  getTeacherCount,
   staffAdd,
-  teacherAdd,
 } from "../../../lib/api";
 import {
   Select,
@@ -18,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
-import { CheckCircle, PlusCircle } from "lucide-react";
+// import { CheckCircle, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "@/components/app_components/Loading";
 //import Alert from "@/components/app_components/Alert";
@@ -34,10 +31,7 @@ const AddStuffs = () => {
     // reset
   } = useForm();
 
-  const [classes, setClasses] = useState([]);
-  const [isData, setIsData] = useState(false);
   const [isData2, setIsData2] = useState(false);
-  const [teacherCount, setTeacherCount] = useState(0);
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -56,6 +50,7 @@ const AddStuffs = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/staff_add",
+      
         formData,
         {
           withCredentials: true,
@@ -100,32 +95,13 @@ const AddStuffs = () => {
 
   const onSubmit = (data) => {
     let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
-    let selectedClasses = classes.filter((cls) => cls.selected == true);
-
-    if (selectedClasses.length == 0) {
-      toast.error("Please select class to assign!");
-      return;
-    }
 
     if (!image) {
-      toast.error("Please select teacher image.");
+      toast.error("Please select staff image.");
       return;
     }
-
-    selectedClasses = selectedClasses.map((cls) => {
-      if (cls.selected)
-        return {
-          class: {
-            connect: {
-              id: cls.id,
-            },
-          },
-        };
-    });
-
     _data = {
-      ...data,
-      classes: { create: selectedClasses },
+      ..._data,
       fixed_salary: parseInt(data.fixed_salary),
       id_no: parseInt(data.id_no),
     };
@@ -147,26 +123,10 @@ const AddStuffs = () => {
   };
 
   useEffect(() => {
-    getClasses()
-      .then((res) => res.json())
-      .then((data) => {
-        let _data = [];
-        for (let d in data) {
-          _data.push({ ...data[d], selected: false });
-        }
-        setClasses(_data);
-        setIsData(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-
-      // staff Id Generate
       getLastStaff()
       .then((res) => res.json())
       .then((data) => {
-        //  console.log(data)
+        console.log(data)
         setIsData2(true);
         const year = new Date().getFullYear().toString();
         let id;
@@ -180,28 +140,13 @@ const AddStuffs = () => {
       .catch((err) => {
         console.log(err);
       });
-
-    // getTeacherCount()
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   //  console.log(data)
-    //   setTeacherCount(data.count);
-    //   setIsData2(true);
-    //   const year = new Date().getFullYear().toString();
-    //   let y = `${year[2]}${year[3]}`
-    //   y = parseInt(y) + 1
-    //   setValue("id_no", `${y}${(teacherCount + 1).toString().padStart(2, '0')}`);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
-  }, [setValue, teacherCount]);
+  }, [setValue]);
 
 
 
   return (
     <>
-      {!isData && isData2 ? (
+      {!isData2 ? (
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
@@ -237,8 +182,8 @@ const AddStuffs = () => {
                       required
                     />
                   </label>
-                  <label htmlFor="Parmanent Address" className="md:col-span-1">
-                    Parmanent Address
+                  <label htmlFor="Present Address" className="md:col-span-1">
+                    Present Address
                     <Input
                       {...register("present_address", { required: true })}
                       type="text"
@@ -249,13 +194,13 @@ const AddStuffs = () => {
                   </label>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-                  <label htmlFor="Parmanent Address" className="md:col-span-1">
-                    Present Address
+                  <label htmlFor="Permanent Address" className="md:col-span-1">
+                    Permanent Address
                     <Input
-                      {...register("parmanent_address", { required: true })}
+                      {...register("permanent_address", { required: true })}
                       type="text"
-                      name="parmanent_address"
-                      placeholder="Parmanent Address"
+                      name="permanent_address"
+                      placeholder="Permanent Address"
                       required
                     />
                   </label>
@@ -302,7 +247,7 @@ const AddStuffs = () => {
                     />
                   </label>
                   <label htmlFor="ID" className="md:col-span-1">
-                    Teacher ID
+                    Staff ID
                     <Input
                       disabled
                       {...register("id_no", { required: true })}

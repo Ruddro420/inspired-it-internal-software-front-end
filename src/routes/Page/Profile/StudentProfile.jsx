@@ -57,15 +57,12 @@ const StudentProfile = () => {
           total += data.regularFee[i].total
         }
         setTotalPaid(total)
-
-
-
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
- 
+
   
   return (
     <>
@@ -111,16 +108,15 @@ const StudentProfile = () => {
                           Recent transactions.
                         </CardDescription>
                       </div>
-                      <Button asChild size="sm" className="ml-auto gap-1">
+                      {/* <Button asChild size="sm" className="ml-auto gap-1">
                         <Link to="#">
                           View All
                           <ArrowUpRight className="h-4 w-4" />
                         </Link>
-                      </Button>
+                      </Button> */}
                     </CardHeader>
                     <CardContent>
-                     {
-                      regularFee.length != 0 ?  <Table>
+                       <Table>
                         <TableHeader>
                           <TableRow>
                             <TableHead>Fee Type</TableHead>
@@ -169,8 +165,8 @@ const StudentProfile = () => {
                           )
                         }
                         </TableBody>
-                      </Table> : <Spinner/>
-                     }
+                      </Table>
+                     
                     </CardContent>
                   </div>
                 </div>
@@ -185,10 +181,10 @@ const StudentProfile = () => {
                       <CardHeader className="flex flex-row items-start bg-muted/50">
                         <div className="grid gap-0.5">
                           <CardTitle className="group flex items-center gap-2 text-lg">
-                            {student.name } #ID No: {student.id_no}
+                            {student.name } 
                           </CardTitle>
                           <CardDescription>
-                            {student.class.name}  {student.section &&  `- Section: ${student.section.name}`}
+                            {student.class.name}  {student.section &&  `- ${student.section.name}`}
                           </CardDescription>
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">
@@ -219,7 +215,7 @@ const StudentProfile = () => {
                             {
                               (student.section) && <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
-                                Section
+                                Section / Batch
                               </span>
                               <span>
                                 {student.section.name}
@@ -230,9 +226,9 @@ const StudentProfile = () => {
                          
                             <li className="flex items-center justify-between font-semibold">
                               <span className="text-muted-foreground">
-                                Session
+                                ID NO
                               </span>
-                              <span>{student.session}</span>
+                              <span>{student.id_no}</span>
                             </li>
                           </ul>
 
