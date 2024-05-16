@@ -8,7 +8,8 @@ import {
   CardTitle,
 } from "../ui/card";
 import TeacherTable from "./TeacherTable";
-const TeacherTabContent = ({ title, description, teachers }) => {
+import StaffTable from "./StaffTable";
+const StaffTabContent = ({ title, description, staffs }) => {
   return (
     <Card x-chunk="dashboard-06-chunk-0">
       <CardHeader>
@@ -16,17 +17,17 @@ const TeacherTabContent = ({ title, description, teachers }) => {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <TeacherTable teachers={teachers} />
+        <StaffTable staffs={staffs} />
       </CardContent>
       <CardFooter></CardFooter>
     </Card>
   );
 };
 
-TeacherTabContent.propTypes = {
+StaffTabContent.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  teachers: PropTypes.array.isRequired,
+  staffs: PropTypes.array.isRequired,
 };
 
-export default TeacherTabContent;
+export default StaffTabContent;

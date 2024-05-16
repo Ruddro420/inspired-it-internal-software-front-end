@@ -36,6 +36,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/Providers/AuthProvider";
+import { ModeToggle } from "@/components/theme/toggle-theme";
 
 const Dashboard = () => {
   const { changeUserState, admin, AdminLogout } = useContext(AuthContext);
@@ -235,7 +236,7 @@ const Dashboard = () => {
                   <div className="fadeInDown">
                     <NavLink
                       to="/dashboard/classes"
-                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      className={`flex items-center hover:dark:bg-black rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("classes")}
                     >
                       <Dot className="h-8 w-8" />
@@ -243,7 +244,7 @@ const Dashboard = () => {
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-classes"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      className={`flex hover:dark:bg-black items-center rounded-lg px-3 py-1 ml-3 mb-1 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("add-classes")}
                     >
                       <Dot className="h-8 w-8" />
@@ -251,7 +252,7 @@ const Dashboard = () => {
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-sections"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      className={`flex items-center hover:dark:bg-black  rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
@@ -742,7 +743,6 @@ const Dashboard = () => {
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
-              <form>
                 <div className="relative">
                   {admin?.info ? (
                     <h1 className="font-bold text-xl">{admin.inst_name}</h1>
@@ -750,7 +750,6 @@ const Dashboard = () => {
                     ""
                   )}
                 </div>
-              </form>
             </div>
             {admin ? admin.email : ""}
             <DropdownMenu>
@@ -777,6 +776,7 @@ const Dashboard = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <ModeToggle/>
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
             <Outlet />

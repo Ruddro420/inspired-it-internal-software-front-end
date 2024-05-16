@@ -7,25 +7,26 @@ import {
   TableRow,
 } from "../ui/table";
 import TableRowCustom from "./TableRowCustom";
-import { deleteTeacher } from "@/lib/api";
+import { deleteStaff, deleteTeacher } from "@/lib/api";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import Alert from "./Alert";
-const TeacherTable = ({ teachers }) => {
-  const [_teachers, setTeachers] = useState(teachers);
+const StaffTable = ({ staffs }) => {
+  const [_staffs, setStaffs] = useState(staffs);
 
   const handleDelete = (id) => {
+    console.log(id);
     toast.promise(
-      deleteTeacher(id).then((res) => {
+      deleteStaff(id).then((res) => {
         if (!res.ok) {
           throw new Error("Failed to delete!");
         }
-        const t = _teachers.filter((item) => item.id_no != id);
-        setTeachers(t);
+        const s = _staffs.filter((item) => item.id_no != id);
+        setStaffs(s);
         return res.json();
       }),
       {
-        loading: "Deleting Student...",
+        loading: "Deleting...",
         success: <b>Successfully deleted!</b>,
         error: <b>Failed to delete.</b>,
       }
@@ -34,11 +35,11 @@ const TeacherTable = ({ teachers }) => {
 
   return (
     <div>
-      {teachers.length == 0 ? (
+      {staffs.length == 0 ? (
         <Alert
-          title="You have not added any Teacher yet!"
-          subtitle="Here you can manage teachers!"
-          link="/dashboard/add-teachers"
+          title="You have not added any Staff yet!"
+          subtitle="Here you can manage staff!"
+          link="/dashboard/add-staff"
           linktitle="Add"
         />
       ) : (
@@ -61,11 +62,11 @@ const TeacherTable = ({ teachers }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {_teachers.map((teacher) => (
+            {_staffs.map((staff) => (
               <TableRowCustom
-                nameFile="teachers"
-                key={teacher.id}
-                data={teacher}
+                nameFile="staffs"
+                key={staff.id}
+                data={staff}
                 handleDelete={handleDelete}
               />
             ))}
@@ -76,8 +77,8 @@ const TeacherTable = ({ teachers }) => {
   );
 };
 
-TeacherTable.propTypes = {
-  teachers: PropTypes.array.isRequired,
+StaffTable.propTypes = {
+  staffs: PropTypes.array.isRequired,
 };
 
-export default TeacherTable;
+export default StaffTable;

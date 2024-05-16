@@ -70,7 +70,6 @@ export function Login() {
             setIsCheck(true)
             setLoggedIn(false)
             throw new Error("Not logged In!");
-            
           }
           setLoggedIn(true)
           // navigate('/dashboard')
@@ -89,10 +88,11 @@ export function Login() {
   }, [])
   return (
     <>
-      <Card className="mx-auto max-w-sm mt-10">
+    
+      <Card className="w-[400px] mt-10 custom-glass ">
         <CardHeader>
           <CardTitle className="text-2xl">Admin Login</CardTitle>
-          <CardDescription>Login with your email and password!</CardDescription>
+          <CardDescription className="text-black">Login with your email and password!</CardDescription>
         </CardHeader>
         <CardContent>
           {

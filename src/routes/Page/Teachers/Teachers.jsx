@@ -103,12 +103,12 @@ export default function Teachers() {
                         <TabsContent value="all">
                             <TeacherTabContent title="All Teachers" description="Manage all teachers here." teachers={teachers}/>
                         </TabsContent>
-                        <TabsContent value="present">
+                        {/* <TabsContent value="present">
                         <TeacherTabContent title="Present Teachers" description="Manage all present teachers here." teachers={teachers}/>
                         </TabsContent>
                         <TabsContent value="leave">
                         <TeacherTabContent title="Teachers who have left" description="Manage all left teachers here." teachers={teachers}/>
-                        </TabsContent>
+                        </TabsContent> */}
                         </div>
                     }
                 </Tabs>

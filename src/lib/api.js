@@ -7,7 +7,7 @@ const adminLogin = (email, password) => {
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify({email, password}),
+    body: JSON.stringify({ email, password }),
   });
 };
 
@@ -47,7 +47,6 @@ const staffAdd = (data) => {
   });
 };
 
-
 /* Add Student */
 
 const studentAdd = (data) => {
@@ -72,9 +71,9 @@ const AdmissionFeeAdd = (data) => {
   });
 };
 
-//Regulat fee add
+//Regular fee add
 const RegularFeeAdd = (data) => {
-  return fetch(api_key + 'regular_fee', {
+  return fetch(api_key + "regular_fee", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -95,9 +94,6 @@ const sectionAdd = (data) => {
   });
 };
 
-
-
-
 //Add Settings
 const settingsAdd = (data) => {
   return fetch(api_key + "settings_add", {
@@ -110,10 +106,21 @@ const settingsAdd = (data) => {
   });
 };
 
-
 //set all absent for students
 const setClassAbsent = (data) => {
   return fetch(api_key + "class/attendances", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+// ADD Accounts
+const accountsAdd = (data) => {
+  return fetch(api_key + "account_add", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -169,11 +176,31 @@ const getLastTeacher = () => {
     credentials: "include",
   });
 };
+//getTeacherById
+const getTeacherById = (id) => {
+  return fetch(api_key + "teacher/" + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
 
 /* Get Last Staff */
-
 const getLastStaff = () => {
   return fetch(api_key + "last_staff", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+/* Get All Staff */
+const getStaffs = () => {
+  return fetch(api_key + "staffs", {
+    method: "GET",
+    credentials: "include",
+  });
+};
+//getStaffById
+const getStaffById = (id) => {
+  return fetch(api_key + "staff/" + id, {
     method: "GET",
     credentials: "include",
   });
@@ -247,9 +274,7 @@ const getStudentsByClassAndSection = (classId) => {
     method: "GET",
     credentials: "include",
   });
-  
 };
-
 
 const getClassAttendance = (classId, date) => {
   return fetch(api_key + `class/attendance/${classId}/${date}`, {
@@ -257,14 +282,18 @@ const getClassAttendance = (classId, date) => {
     credentials: "include",
   });
 };
-
-
-
+/* Get Accounts Details */
+const getAccounts = () => {
+  return fetch(api_key + "accounts", {
+    method: "GET",
+    credentials: "include",
+  });
+};
 //----------------------------------------------
-//UPDATE 
+//UPDATE
 
 const adminUpdate = (data, id) => {
-  return fetch(api_key + "admin_update/"+id, {
+  return fetch(api_key + "admin_update/" + id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -275,7 +304,7 @@ const adminUpdate = (data, id) => {
 };
 
 const studentReadmission = (data, id) => {
-  return fetch(api_key + "readmission/"+id, {
+  return fetch(api_key + "readmission/" + id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -286,7 +315,7 @@ const studentReadmission = (data, id) => {
 };
 
 const studentUpdate = (data, id) => {
-  return fetch(api_key + "readmission/"+id, {
+  return fetch(api_key + "readmission/" + id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -299,7 +328,7 @@ const studentUpdate = (data, id) => {
 /* Settings Update */
 
 const settingsUpdate = (data, id) => {
-  return fetch(api_key + "settings_update/"+id, {
+  return fetch(api_key + "settings_update/" + id, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -311,16 +340,18 @@ const settingsUpdate = (data, id) => {
 
 // Attendance Update
 const attendanceUpdate = (data, studentId, date, attendanceId) => {
-  return fetch(api_key + `class/attendance/${attendanceId}/${studentId}/${date}/`, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  return fetch(
+    api_key + `class/attendance/${attendanceId}/${studentId}/${date}/`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
 };
-
 
 //______________________________________________________________________________//////
 
@@ -339,34 +370,43 @@ const deleteStudent = (id) => {
   });
 };
 
+/* Teacher Delete */
 const deleteTeacher = (id) => {
   return fetch(api_key + "teacher/" + id, {
     method: "DELETE",
     credentials: "include",
   });
 };
-
+/* Staff Delete */
+const deleteStaff = (id) => {
+  return fetch(api_key + "staff/" + id, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
 
 // get Formatted DateTime
 const dateTime = (date) => {
-  let d = date.toString()
-  d = d.split(' ')
-  return d[1] + " " + d[2] + ", " + d[3]
-}
+  let d = date.toString();
+  d = d.split(" ");
+  return d[1] + " " + d[2] + ", " + d[3];
+};
 
-
-// 
+//
 const fetchImageAndConvertToDataURI = async (folder, filename) => {
-  const response = await fetch(api_key + 'image/'+ `${folder}/${filename}`, {credentials: "include"});
+  const response = await fetch(api_key + "image/" + `${folder}/${filename}`, {
+    credentials: "include",
+  });
   const blob = await response.blob();
   return URL.createObjectURL(blob);
 };
 
-
 const formDate = (date) => {
-  date = new Date(date)
-  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
-}
+  date = new Date(date);
+  return `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+};
 
 export {
   adminLogin,
@@ -388,7 +428,7 @@ export {
   getStudents,
   getStudentCount,
   deleteStudent,
-  dateTime, 
+  dateTime,
   AdmissionFeeAdd,
   settingsAdd,
   getSettings,
@@ -406,5 +446,11 @@ export {
   getStudentsByClassAndSection,
   getClassAttendance,
   setClassAbsent,
-  attendanceUpdate
+  attendanceUpdate,
+  getStaffs,
+  deleteStaff,
+  getTeacherById,
+  getStaffById,
+  accountsAdd,
+  getAccounts,
 };

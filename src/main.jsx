@@ -43,11 +43,19 @@ import PaySalary from "./routes/Page/Salary/PaySalary";
 import SalaryReport from "./routes/Page/Salary/SalaryReport";
 import EditClasses from "./routes/Page/Classes/EditClasses";
 import AddAttendance from "./routes/Page/Attendance/AddAttendance";
+import TeacherProfile from "./routes/Page/Profile/TeacherProfile";
+import TsProfile from "./routes/Page/Profile/TeacherProfile";
+import StaffProfile from "./routes/Page/Profile/StaffProfile";
+import Home from "./routes/Home";
 
 const router = createBrowserRouter([
   {
     path: "/dashboard",
-    element: <PrivateRoute><Dashboard /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard/",
@@ -186,6 +194,14 @@ const router = createBrowserRouter([
         element: <StudentProfile />,
       },
       {
+        path: "/dashboard/teachers-profile/:id",
+        element: <TeacherProfile />,
+      },
+      {
+        path: "/dashboard/staffs-profile/:id",
+        element: <StaffProfile />,
+      },
+      {
         path: "/dashboard/add-attendance",
         element: <AddAttendance />,
       },
@@ -223,16 +239,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Login />,
+    element: <Home/>,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-     <AuthProvider> 
-      <RouterProvider router={router} />
-      <Toaster />
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster />
       </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>

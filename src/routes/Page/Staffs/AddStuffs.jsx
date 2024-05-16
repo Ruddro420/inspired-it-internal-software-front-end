@@ -49,7 +49,7 @@ const AddStuffs = () => {
     formData.append("image", renamedFile);
     try {
       const response = await axios.post(
-        "http://localhost:5000/staff_add",
+        "http://localhost:5000/staff_upload",
       
         formData,
         {
