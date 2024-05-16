@@ -1,7 +1,6 @@
 import {
   Album,
   Bell,
-  BookOpen,
   BriefcaseBusiness,
   CircleUser,
   DiamondPercent,
@@ -175,12 +174,19 @@ const Dashboard = () => {
       });
   };
 
+
+
+
   useEffect(() => {
     const navItem = localStorage.getItem("navItem");
     if (navItem) {
       document.getElementById(navItem).click();
       localStorage.setItem("navItem", navItem);
     }
+
+
+
+   
   }, []);
   return (
     <>

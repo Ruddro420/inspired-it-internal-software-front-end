@@ -30,6 +30,8 @@ const AddFees = () => {
   const [uniformFee, setUniformFee] = useState(0);
   const [othersFee, setOthersFee] = useState(0);
   const [discountFee, setDiscountFee] = useState(0);
+  const [prevDue, setPrevDue] = useState(0)
+
 
   //const [dataLoad,SetLoadData] = useState(false)
 
@@ -41,9 +43,11 @@ const AddFees = () => {
       getStudentById(getData)
         .then((res) => res.json())
         .then((data) => {
+          console.log(data)
           setStudent(data);
           setStudentId(data.id);
           setIsData(true);
+          setPrevDue(data.due)
           if (!data) {
             throw new Error("Student not Found!");
           }
@@ -73,13 +77,14 @@ const AddFees = () => {
       others_fee: othersFee,
       discount_fee: discountFee,
       studentId: studentId,
+      due: prevDue - (regularFee  - discountFee)
     };
     toast.promise(
       RegularFeeAdd(data)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          SetLoadData(true)
+          // SetLoadData(true)
           if (data.err) {
             throw new Error("Something went wrong!");
           }
@@ -356,21 +361,26 @@ const AddFees = () => {
                   <dt className="text-muted-foreground text-red-700">
                     Course/Class fee (৳)
                   </dt>
-                  <dd className="font-bold">5000 ৳</dd>
+                  <dd className="font-bold">{student.class.fee} ৳</dd>
                 </div>
+
+                <div className="flex items-center justify-between mt-3 font-bold">
+                  <dt className="text-muted-foreground text-red-700">
+                    Previous Due (৳)
+                  </dt>
+                  <dd className="font-bold">
+                    {prevDue} ৳
+                  </dd>
+                </div>
+                
                 <div className="flex items-center justify-between mt-3 font-bold">
                   <dt className="text-muted-foreground text-red-700">
                     Current Due (৳)
                   </dt>
                   <dd className="font-bold">
-                    {5000 -
-                      (regularFee +
-                        fine +
-                        transportFee +
-                        idCardFee +
-                        uniformFee +
-                        othersFee -
-                        discountFee)}{" "}
+                    {prevDue -
+                      (regularFee  -
+                        discountFee)}
                     ৳
                   </dd>
                 </div>

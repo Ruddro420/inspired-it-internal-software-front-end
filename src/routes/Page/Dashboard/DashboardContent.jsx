@@ -1,12 +1,16 @@
 import Transaction from "@/components/app_components/DashboardComponent/Transaction";
 import PieChart from "@/components/app_components/DashboardComponent/Graph/PieChart";
 import LineChart from "@/components/app_components/DashboardComponent/Graph/LineChart";
+import CardCount from "@/components/app_components/DashboardComponent/CardCount";
 
 
 export default function DashboardContent() {
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <div>
+    <div>
+      <CardCount/>
+    </div>
+      <div className="mt-5">
         <Transaction></Transaction>
       </div>
 

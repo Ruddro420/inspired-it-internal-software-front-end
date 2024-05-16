@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const TableRowCustom = ({ data, handleDelete, nameFile }) => {
   const { id_no, name, phone, designation, department } = data;
 
-  console.log(handleDelete);
+  // console.log(handleDelete);
   return (
     <TableRow>
       <TableCell className="hidden sm:table-cell">

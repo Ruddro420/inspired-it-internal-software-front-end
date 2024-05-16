@@ -88,7 +88,7 @@ const ClassView = () => {
     setStudents([...std]);
   };
 
-  console.log(students);
+  // console.log(students);
 
   return (
     <div>

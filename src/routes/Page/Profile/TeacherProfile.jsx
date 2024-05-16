@@ -63,7 +63,7 @@ const TeacherProfile = () => {
       });
   }, [id]);
 
-  console.log(teacher);
+  // console.log(teacher);
   return (
     <>
       {!isData ? (

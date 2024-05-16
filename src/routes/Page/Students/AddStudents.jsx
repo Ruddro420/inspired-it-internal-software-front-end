@@ -727,7 +727,7 @@ const AddStudents = () => {
                                   htmlFor="B/C Number"
                                   className="md:col-span-1"
                                 >
-                                  B/C Number
+                                  B/C No./NID No.
                                   <Input
                                     {...register("birth_certificate_no", {
                                       required: true,

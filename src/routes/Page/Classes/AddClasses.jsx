@@ -20,6 +20,7 @@ const AddClasses = () => {
   // const [isClick, setIsClick] = useState(false)
 
   const onSubmit = (data) => {
+    data = {...data, fee: parseFloat(data.fee)}
     toast.promise(
       classAdd(data)
         .then((res) => {

@@ -111,7 +111,7 @@ export default function Class() {
               <TabsContent value="all">
                 <Card x-chunk="dashboard-06-chunk-0">
                   <CardHeader>
-                    <CardTitle>Classes/Course</CardTitle>
+                    <CardTitle>Classes/Courses</CardTitle>
                     <CardDescription>Manage your classes here.</CardDescription>
                   </CardHeader>
                   {classes.length == 0 ? (

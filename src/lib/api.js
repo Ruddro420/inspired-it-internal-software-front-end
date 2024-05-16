@@ -83,6 +83,30 @@ const RegularFeeAdd = (data) => {
   });
 };
 
+
+//teacher salary add
+const teacherSalaryAdd = (data) => {
+  return fetch(api_key + 'teacher_salary_add', {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const staffSalaryAdd = (data) => {
+  return fetch(api_key + 'staff_salary_add', {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const sectionAdd = (data) => {
   return fetch(api_key + "section_add", {
     method: "POST",
@@ -245,7 +269,7 @@ const getStudentCount = () => {
   });
 };
 
-//getStudentById
+//getStudentById_no
 const getStudentById = (id) => {
   return fetch(api_key + "student/" + id, {
     method: "GET",
@@ -289,6 +313,31 @@ const getAccounts = () => {
     credentials: "include",
   });
 };
+
+
+
+
+//getTeacherOrStaffById_no
+const getTeacherOrStaffById = (id, type) => {
+  return fetch(api_key + `${type}/` + id, {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
+
+//count 
+const getCount = () => {
+  return fetch(api_key + 'count', {
+    method: "GET",
+    credentials: "include",
+  });
+};
+
+
+
+
+
 //----------------------------------------------
 //UPDATE
 
@@ -409,6 +458,7 @@ const formDate = (date) => {
 };
 
 export {
+  getTeacherOrStaffById,
   adminLogin,
   adminLogout,
   checkAdminLogin,
@@ -453,4 +503,7 @@ export {
   getStaffById,
   accountsAdd,
   getAccounts,
+  teacherSalaryAdd,
+  staffSalaryAdd,
+  getCount
 };

@@ -95,6 +95,9 @@ const StudentProfile = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">৳ {totalPaid}</div>
+                         <div className="text-xs text-red-500 text-muted-foreground">
+                Due ৳{student.due}
+              </div>
                       </CardContent>
                     </Card>
                   </div>
