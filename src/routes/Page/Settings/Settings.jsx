@@ -14,6 +14,7 @@ import { AuthContext } from "@/Providers/AuthProvider";
 
 const Settings = () => {
   const { admin, changeUserState } = useContext(AuthContext)
+  console.log(admin)
   const [isData, setIsData] = useState(true);
   const [image, setImage] = useState(null)
   const [image2, setImage2] = useState(null)

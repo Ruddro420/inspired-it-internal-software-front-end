@@ -93,7 +93,7 @@ const AddStuffs = () => {
   };
 
   const onSubmit = (data) => {
-    let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
+    let _data = { ...data, password: "123" };
 
     if (!image) {
       toast.error("Please select staff image.");
@@ -102,7 +102,7 @@ const AddStuffs = () => {
     _data = {
       ..._data,
       fixed_salary: parseInt(data.fixed_salary),
-      id_no: parseInt(data.id_no),
+      id_no: data.id_no
     };
 
     toast.promise(
@@ -111,6 +111,7 @@ const AddStuffs = () => {
         .then((d) => {
           console.log(d);
           if (d.err) throw new Error(d.err);
+          updateId()
           uploadFile(d.created.id_no.toString());
         }),
       {
@@ -121,6 +122,32 @@ const AddStuffs = () => {
     );
   };
 
+
+  const updateId = () => {
+    getLastStaff()
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setIsData2(true);
+        const year = new Date().getFullYear().toString();
+        let id;
+        if(data.length != 0) {
+          let sid = data[0].id_no
+          id = parseInt(sid.match(/\d{4}$/))
+          id += 1
+          sid = sid.slice(0, -4)
+          id = id.toString().padStart(4, "0")
+          id = sid + id
+        } else {
+          id = year[2] + year[3] + 'S' + "0001";
+        }
+        setValue("id_no", id.toString());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
       getLastStaff()
       .then((res) => res.json())
@@ -129,10 +156,15 @@ const AddStuffs = () => {
         setIsData2(true);
         const year = new Date().getFullYear().toString();
         let id;
-        if (data.length != 0) {
-          id = data[0].id_no + 1;
+        if(data.length != 0) {
+          let sid = data[0].id_no
+          id = parseInt(sid.match(/\d{4}$/))
+          id += 1
+          sid = sid.slice(0, -4)
+          id = id.toString().padStart(4, "0")
+          id = sid + id
         } else {
-          id = parseInt(year[2] + year[2]) + 4 + "01";
+          id = year[2] + year[3] + 'S' + "0001";
         }
         setValue("id_no", id.toString());
       })
@@ -250,7 +282,7 @@ const AddStuffs = () => {
                     <Input
                       disabled
                       {...register("id_no", { required: true })}
-                      type="number"
+                      type="text"
                       name="id_no"
                       placeholder="ID"
                       required

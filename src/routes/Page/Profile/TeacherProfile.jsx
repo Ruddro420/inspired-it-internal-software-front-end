@@ -1,8 +1,8 @@
-import { ArrowUpRight, Users } from "lucide-react";
+// import { ArrowUpRight, Users } from "lucide-react";
 
 import { TbCurrencyTaka } from "react-icons/tb";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -14,27 +14,27 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { dateTime, formDate, getStudentById, getTeacherById } from "@/lib/api";
+import { getTeacherById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
-import Spinner from "@/components/app_components/Spinner";
+import { Users } from "lucide-react";
+// import Spinner from "@/components/app_components/Spinner";
 
 const TeacherProfile = () => {
   const [teacher, setTeacher] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [admissionFee, setAdmissionFee] = useState([]);
-  const [regularFee, setRegularFee] = useState([]);
+  // const [admissionFee, setAdmissionFee] = useState([]);
+  // const [regularFee, setRegularFee] = useState([]);
   let id = useParams();
 
-  const [totalPaid, setTotalPaid] = useState(0);
+  // const [totalPaid, setTotalPaid] = useState(0);
 
   /* Fetch students Data */
   useEffect(() => {
@@ -43,20 +43,6 @@ const TeacherProfile = () => {
       .then((data) => {
         setTeacher(data);
         setIsData(true);
-
-        setAdmissionFee(data.admissionFee);
-        setRegularFee(data.regularFee);
-
-        let total = 0;
-        for (let i = 0; i < data.admissionFee.length; i++) {
-          let fee = data.admissionFee[i];
-          total += fee.fee + fee.other - fee.discount;
-        }
-
-        for (let i = 0; i < data.regularFee.length; i++) {
-          total += data.regularFee[i].total;
-        }
-        setTotalPaid(total);
       })
       .catch((err) => {
         console.log(err);

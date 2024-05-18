@@ -7,8 +7,7 @@ import {
   fetchImageAndConvertToDataURI,
   getCount,
   getTeacherOrStaffById,
-  staffSalaryAdd,
-  teacherSalaryAdd,
+  SalaryAdd,
 } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -53,19 +52,20 @@ const PaySalary = () => {
 
   const feeDataHandler = (e) => {
     e.preventDefault();
-    setEmployeeType(e.target.employee.value);
+    console.log(e.target.id_no.value)
+    setEmployeeType(e.target.employee.value)
 
     toast.promise(
       getTeacherOrStaffById(e.target.id_no.value, e.target.employee.value)
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data);
-          setEmployee(data);
-          setEmployeeId(data.id_no);
-          setIsData(true);
           if (!data) {
-            throw new Error("Student not Found!");
+            throw new Error("Employee not Found!");
           }
+          setEmployee(data);
+          setEmployeeId(data.id);
+          setIsData(true);
+          
         }),
       {
         loading: "Searching....",
@@ -90,7 +90,7 @@ const PaySalary = () => {
         staffId: employeeId,
       };
       toast.promise(
-        staffSalaryAdd(data)
+        SalaryAdd(data, 'Staff')
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -112,7 +112,7 @@ const PaySalary = () => {
         teacherId: employeeId,
       };
       toast.promise(
-        teacherSalaryAdd(data)
+        SalaryAdd(data, 'Teacher')
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -135,17 +135,17 @@ const PaySalary = () => {
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-3">Pay Salary</h1>
           {checkData.teacher != 0 || checkData.staff != 0 ? (
-            <form
-              className="mb-5 flex items-center gap-2"
-              onSubmit={feeDataHandler}
-            >
-              <Input
-                className="max-w-[200px]"
-                type="number"
-                id="id"
-                name="id_no"
-                placeholder="ID"
-              />
+          <form
+            className="mb-5 flex items-center gap-2"
+            onSubmit={feeDataHandler}
+          >
+            <Input
+              className="max-w-[200px]"
+              type="text"
+              id="id"
+              name="id_no"
+              placeholder="ID"
+            />
 
               <label htmlFor="type">
                 <Select id="type" name="employee" required>

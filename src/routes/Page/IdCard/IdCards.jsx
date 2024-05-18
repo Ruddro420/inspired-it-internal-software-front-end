@@ -49,7 +49,7 @@ export default function IdCards() {
   /* Find Student For Generate ID CARD */
   const findStudent = async (e) => {
     e.preventDefault();
-    const id = parseInt(document.getElementById("student_id2").value);
+    const id = document.getElementById("student_id2").value;
     toast.promise(
       getStudentById(id)
         .then((res) => {
@@ -120,11 +120,11 @@ export default function IdCards() {
           <form onSubmit={findStudent}>
             <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
               <label htmlFor=" ID Card" className="md:col-span-1">
-                ID Number
+                ID No.
                 <Input
-                  type="number"
+                  type="text"
                   id="student_id2"
-                  placeholder="ID Number"
+                  placeholder="ID No"
                   required
                 />
               </label>
@@ -233,14 +233,14 @@ export default function IdCards() {
                 </div>
                 <div className="mt-1 text-md">{student.class.name}</div>
                 {student.section && (
-                  <div className="mt-1 text-md">{student.section.name}</div>
+                  <div className="mt-1 text-md">Batch-{student.section.name}</div>
                 )}
                 <div className="mt-1 text-md ">
                   ID: <b>{student.id_no}</b>
                 </div>
-                <div>
+                {/* <div>
                   Session: <b>{student.session}</b>
-                </div>
+                </div> */}
                 <div className="mt-14 flex justify-center grayscale">
                   <img className="h-[70px]" src={imageDataURI} />
                 </div>
