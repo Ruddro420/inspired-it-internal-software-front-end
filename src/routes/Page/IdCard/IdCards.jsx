@@ -103,7 +103,6 @@ export default function IdCards() {
     loadImageDataURI();
   }, []);
 
-   console.log(checkData);
 
   return (
     <>

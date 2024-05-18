@@ -14,7 +14,6 @@ import { AuthContext } from "@/Providers/AuthProvider";
 
 const Settings = () => {
   const { admin, changeUserState } = useContext(AuthContext)
-  console.log(admin)
   const [isData, setIsData] = useState(true);
   const [image, setImage] = useState(null)
   const [image2, setImage2] = useState(null)
@@ -109,7 +108,7 @@ const Settings = () => {
       getImage("inst", "logo")
       .then(res=> {
         if(!res.ok) {
-          console.log(res)
+          // console.log(res)
           setIsData(true)
           return
         }
@@ -124,7 +123,7 @@ const Settings = () => {
       getImage("inst", "signature")
       .then(res=> {
         if(!res.ok) {
-          console.log(res)
+          // console.log(res)
           setIsData(true)
           return
         }

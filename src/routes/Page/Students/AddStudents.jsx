@@ -1225,7 +1225,7 @@ const AddStudents = () => {
                                         )
                                       }
                                       defaultValue={0}
-                                      className="border rounded-xl w-[100px] text-center"
+                                      className="border dark:bg-black rounded-xl w-[100px] text-center"
                                       type="number"
                                       placeholder="00"
                                     />
@@ -1245,7 +1245,7 @@ const AddStudents = () => {
                                         )
                                       }
                                       defaultValue={0}
-                                      className="border rounded-xl w-[100px] text-center"
+                                      className="border dark:bg-black  rounded-xl w-[100px] text-center"
                                       type="number"
                                       placeholder="00"
                                     />
@@ -1265,7 +1265,7 @@ const AddStudents = () => {
                                         )
                                       }
                                       defaultValue={0}
-                                      className="border rounded-xl w-[100px] text-center"
+                                      className="border dark:bg-black  rounded-xl w-[100px] text-center"
                                       type="number"
                                       placeholder="00"
                                     />
@@ -1386,7 +1386,7 @@ const AddStudents = () => {
                                   <span>{fee} tk</span>
                                 </li>
                                 <li className="flex items-center justify-between font-semibold">
-                                  <span>Discount</span>
+                                  <span>Discount(Flat)</span>
                                   <span>{discount}%</span>
                                 </li>
 
@@ -1398,9 +1398,9 @@ const AddStudents = () => {
                                 <li className="flex items-center justify-between font-semibold">
                                   <span>Total</span>
                                   <span>
-                                    {fee +
-                                      other -
-                                      (fee + other) * (discount / 100)}{" "}
+                                    {(fee +
+                                      other )- discount
+                                    }
                                     tk
                                   </span>
                                 </li>
