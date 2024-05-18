@@ -36,6 +36,7 @@ import {
   studentAdd,
   studentReadmission,
 } from "@/lib/api";
+import { generateLetter } from "@/lib/functions";
 import { AuthContext } from "@/Providers/AuthProvider";
 import axios from "axios";
 import { CreditCard, Search } from "lucide-react";
@@ -74,20 +75,21 @@ const AddStudents = () => {
 
   const { admin } = useContext(AuthContext);
 
-  const updatedCount = () => {
-    getStudentCount()
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data)
-        setStudentCount(data.count);
-        setIsData2(true);
-        const year = new Date().getFullYear().toString();
-        setValue("id_no", `${year[2]}${year[3]}0${studentCount + 1}`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
+  // const updatedCount = () => {
+  //   getStudentCount()
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // console.log(data)
+  //       setStudentCount(data.count);
+  //       setIsData2(true);
+  //       const year = new Date().getFullYear().toString();
+  //       setValue("id_no", `${year[2]}${year[3]}0${studentCount + 1}`);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const AdmissionDataSend = (data) => {
     // console.log(data)
@@ -111,7 +113,7 @@ const AddStudents = () => {
           }, 1000);
           setTimeout(() => {
             setIsGenerate(false);
-            updatedCount();
+            // updatedCount();
           }, 2000);
           }
         }),
@@ -182,26 +184,40 @@ const AddStudents = () => {
     }
   };
 
-  const idGenerate = () => {
+  const idGenerate = (course_batch) => {
+    const {name} = cands.filter(item=> item.value == course_batch)[0]
+    let cb = generateLetter(name)
+    const batch = name.split('-')[1]
+    console.log(cb)
     getLastStudent()
       .then((res) => res.json())
       .then((data) => {
-        setIsData2(true);
+        // setIsData2(true);
         const year = new Date().getFullYear().toString();
         let id;
-        if (data.length != 0) {
-          id = data[0].id_no + 1;
+        console.log(data)
+        if (data.length > 0) {
+          let sid = data[0].id_no
+          console.log(sid)
+          id = parseInt(sid.match(/\d{4}$/))
+          id += 1
+          sid = sid.slice(0, -4)
+          id = id.toString().padStart(4, "0")
+          id = sid + id
+         
         } else {
-          id = year[2] + year[3] + "01";
+         
+          id = year[2] + year[3] +cb + batch + "0001";      
         }
         isReAdmission
           ? setValue("id_no", document.getElementById("student_id").value)
-          : setValue("id_no", id.toString());
+          : setValue("id_no", id);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+  
   const onSubmit = (data) => {
     if (parseInt(fee) == 0 && !isWithoutPayment) {
       toast.error("You have forget to fill admission fee!");
@@ -217,14 +233,14 @@ const AddStudents = () => {
         password: "123",
         classId: parseInt(Id[0]),
         sectionId: parseInt(Id[1]),
-        id_no: parseInt(data.id_no),
+        id_no: data.id_no,
       };
     } else {
       _data = {
         ...data,
         password: "123",
         classId: parseInt(data.classId),
-        id_no: parseInt(data.id_no),
+        id_no: data.id_no,
         sectionId: null,
       };
     }
@@ -236,10 +252,8 @@ const AddStudents = () => {
             return res.json();
           })
           .then((d) => {
-            // console.log(d);
+ 
             if (d.err) throw new Error(d.err);
-
-            // if(!isWithoutPayment) {
               AdmissionDataSend({
                 fee: parseFloat(fee),
                 discount: parseFloat(discount),
@@ -247,8 +261,7 @@ const AddStudents = () => {
                 studentId: d.created.id,
                 readmission: true,
               });
-              idGenerate()
-            // }
+              idGenerate(watch('classId'))
             if (image) {
               uploadFile(d.created.id_no.toString());
             }
@@ -274,20 +287,16 @@ const AddStudents = () => {
           return res.json();
         })
         .then((d) => {
-          // console.log(d);
           if (d.err) throw new Error(d.err);
-
-          // if(!isWithoutPayment) {
             AdmissionDataSend({
               fee: parseFloat(fee),
               discount: parseFloat(discount),
               other: parseFloat(other),
               studentId: d.created.id,
-              readmission: true,
+              readmission: false,
             });
 
-          // }
-          idGenerate()
+          idGenerate(watch('classId'))
 
           if (image) {
             uploadFile(d.created.id_no.toString());
@@ -333,8 +342,6 @@ const AddStudents = () => {
         console.log(err);
       });
 
-    idGenerate()
-
     const loadImageDataURI = async () => {
       const dataURI = await fetchImageAndConvertToDataURI("inst", "logo");
       setImageDataURI(dataURI);
@@ -345,7 +352,7 @@ const AddStudents = () => {
       setIsData3(true);
     }
     loadImageDataURI();
-  }, [setValue, studentCount, isData2, isReAdmission, admin]);
+  }, [setValue, admin]);
 
   const [class_, setCls] = useState("");
   const [sec, setSec] = useState("");
@@ -413,6 +420,7 @@ const AddStudents = () => {
       });
   };
 
+
   return (
     <>
       {isData3 ? (
@@ -426,7 +434,7 @@ const AddStudents = () => {
             />
           ) : (
             <>
-              {isData && isData2 ? (
+              {isData ? (
                 <div style={{ overflow: "hidden" }}>
                   <UploadDialog
                     progress={uploadProgress.toString()}
@@ -468,7 +476,7 @@ const AddStudents = () => {
                                 <Input
                                   id="student_id"
                                   className="text-black"
-                                  type="number"
+                                  type="text"
                                   placeholder="Student Id"
                                 />
                                 <Button
@@ -584,16 +592,17 @@ const AddStudents = () => {
                                   htmlFor="Class"
                                   className="md:col-span-1"
                                 >
-                                  Class & Section
+                                  Course & Batch
                                   <Select
                                     onValueChange={(value) => {
                                       getClass(value);
+                                      idGenerate(value)
                                       return setValue("classId", value);
                                     }}
                                     required
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder="Select Class & Section" />
+                                      <SelectValue placeholder="Select Course & Batch" />
                                     </SelectTrigger>
                                     <SelectContent>
                                       <SelectGroup>
@@ -686,7 +695,7 @@ const AddStudents = () => {
                                   <Input
                                     disabled
                                     {...register("id_no", { required: true })}
-                                    type="number"
+                                    type="text"
                                     name="id_no"
                                     placeholder="ID"
                                     required
