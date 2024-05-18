@@ -32,7 +32,6 @@ import {
   getImage,
   getLastStudent,
   getStudentById,
-  getStudentCount,
   studentAdd,
   studentReadmission,
 } from "@/lib/api";
@@ -49,11 +48,11 @@ import generatePDF, { Margin, usePDF } from "react-to-pdf";
 const AddStudents = () => {
   const { register, handleSubmit, setValue, watch } = useForm();
 
-  const [studentCount, setStudentCount] = useState(0);
+  // const [studentCount, setStudentCount] = useState(0);
   const [cands, setCandS] = useState([]);
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
-  const [isData2, setIsData2] = useState(false);
+  // const [isData2, setIsData2] = useState(false);
   const [isData3, setIsData3] = useState(false);
 
   

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getClasses, getLastTeacher, getTeacherCount, teacherAdd } from "../../../lib/api";
+import { getClasses, getLastTeacher, teacherAdd } from "../../../lib/api";
 import {
   Select,
   SelectContent,
@@ -30,7 +30,7 @@ const AddTeacher = () => {
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
   const [isData2, setIsData2] = useState(false);
-  const [teacherCount, setTeacherCount] = useState(0)
+  // const [teacherCount, setTeacherCount] = useState(0)
   
 
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -86,7 +86,7 @@ const AddTeacher = () => {
 
   const onSubmit = (data) => {
     
-    let _data = { ...data, password: "123", id_no: parseInt(data.id_no) };
+    let _data = { ...data, password: "123",};
     let selectedClasses = classes.filter((cls) => cls.selected == true);
 
     if(selectedClasses.length == 0) {
@@ -117,18 +117,18 @@ const AddTeacher = () => {
       ...data,
       classes: { create: selectedClasses },
       fixed_salary: parseInt(data.fixed_salary),
-      id_no: parseInt(data.id_no)
+      id_no: data.id_no
     };
-    
-
-
+  
       toast.promise(
         teacherAdd(_data)
       .then((res) => res.json())
       .then((d) => {
         console.log(d)
         if (d.err) throw new Error(d.err);
+        updateId()
         uploadFile(d.created.id_no.toString())
+
       }),
         {
           loading: "Adding teacher...",
@@ -137,6 +137,32 @@ const AddTeacher = () => {
         }
       );
   };
+
+
+  const updateId = () => {
+    getLastTeacher()
+    .then((res) => res.json())
+    .then((data) => {
+      //  console.log(data)
+      setIsData2(true);
+      const year = new Date().getFullYear().toString();
+      let id 
+      if(data.length != 0) {
+        let sid = data[0].id_no
+        id = parseInt(sid.match(/\d{4}$/))
+        id += 1
+        sid = sid.slice(0, -4)
+        id = id.toString().padStart(4, "0")
+        id = sid + id
+      } else {
+        id = year[2] + year[3] + 'T' + "0001";
+      }
+      setValue("id_no", id.toString());
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
   
 
@@ -163,9 +189,14 @@ const AddTeacher = () => {
         const year = new Date().getFullYear().toString();
         let id 
         if(data.length != 0) {
-          id = (data[0].id_no)+1
+          let sid = data[0].id_no
+          id = parseInt(sid.match(/\d{4}$/))
+          id += 1
+          sid = sid.slice(0, -4)
+          id = id.toString().padStart(4, "0")
+          id = sid + id
         } else {
-          id = (parseInt(year[2]+year[3]) + 1) + "01"
+          id = year[2] + year[3] + 'T' + "0001";
         }
         setValue("id_no", id.toString());
       })
@@ -174,23 +205,7 @@ const AddTeacher = () => {
       });
 
 
-
-      // getTeacherCount()
-      // .then((res) => res.json())
-      // .then((data) => {
-      //   //  console.log(data)
-      //   setTeacherCount(data.count);
-      //   setIsData2(true);
-      //   const year = new Date().getFullYear().toString();
-      //   let y = `${year[2]}${year[3]}`
-      //   y = parseInt(y) + 1
-      //   setValue("id_no", `${y}${(teacherCount + 1).toString().padStart(2, '0')}`);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
-
-  }, [setValue, teacherCount]);
+  }, [setValue]);
 
   const handleClassSelect = (id) => {
     classes[id]["selected"] = !classes[id]["selected"];
@@ -308,7 +323,7 @@ const AddTeacher = () => {
                         <Input
                           disabled
                           {...register("id_no", { required: true })}
-                          type="number"
+                          type="text"
                           name="id_no"
                           placeholder="ID"
                           required

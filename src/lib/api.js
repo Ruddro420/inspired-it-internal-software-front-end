@@ -84,9 +84,9 @@ const RegularFeeAdd = (data) => {
 };
 
 
-//teacher salary add
-const teacherSalaryAdd = (data) => {
-  return fetch(api_key + 'teacher_salary_add', {
+
+const SalaryAdd = (data, employee) => {
+  return fetch(api_key + 'salary_add/'+employee, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -96,16 +96,28 @@ const teacherSalaryAdd = (data) => {
   });
 };
 
-const staffSalaryAdd = (data) => {
-  return fetch(api_key + 'staff_salary_add', {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-};
+//teacher salary add
+// const teacherSalaryAdd = (data) => {
+//   return fetch(api_key + 'teacher_salary_add', {
+//     method: "POST",
+//     credentials: "include",
+//     headers: {
+//       "content-type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+// };
+
+// const staffSalaryAdd = (data) => {
+//   return fetch(api_key + 'staff_salary_add', {
+//     method: "POST",
+//     credentials: "include",
+//     headers: {
+//       "content-type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+// };
 
 const sectionAdd = (data) => {
   return fetch(api_key + "section_add", {
@@ -503,7 +515,8 @@ export {
   getStaffById,
   accountsAdd,
   getAccounts,
-  teacherSalaryAdd,
-  staffSalaryAdd,
+  // teacherSalaryAdd,
+  // staffSalaryAdd,
+  SalaryAdd,
   getCount
 };

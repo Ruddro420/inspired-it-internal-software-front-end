@@ -6,8 +6,7 @@ import { useContext, useState } from "react";
 import {
   fetchImageAndConvertToDataURI,
   getTeacherOrStaffById,
-  staffSalaryAdd,
-  teacherSalaryAdd,
+  SalaryAdd,
 } from "@/lib/api";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
@@ -42,19 +41,20 @@ const PaySalary = () => {
 
   const feeDataHandler = (e) => {
     e.preventDefault();
+    console.log(e.target.id_no.value)
     setEmployeeType(e.target.employee.value)
 
     toast.promise(
       getTeacherOrStaffById(e.target.id_no.value, e.target.employee.value)
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data);
-          setEmployee(data);
-          setEmployeeId(data.id_no);
-          setIsData(true);
           if (!data) {
-            throw new Error("Student not Found!");
+            throw new Error("Employee not Found!");
           }
+          setEmployee(data);
+          setEmployeeId(data.id);
+          setIsData(true);
+          
         }),
       {
         loading: "Searching....",
@@ -79,7 +79,7 @@ const PaySalary = () => {
         staffId: employeeId,
       };
       toast.promise(
-        staffSalaryAdd(data)
+        SalaryAdd(data, 'Staff')
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -101,7 +101,7 @@ const PaySalary = () => {
         teacherId: employeeId,
       };
       toast.promise(
-        teacherSalaryAdd(data)
+        SalaryAdd(data, 'Teacher')
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -131,7 +131,7 @@ const PaySalary = () => {
           >
             <Input
               className="max-w-[200px]"
-              type="number"
+              type="text"
               id="id"
               name="id_no"
               placeholder="ID"

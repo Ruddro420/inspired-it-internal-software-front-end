@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import Transactions from "@/components/app_components/Transactions/Transactions";
+// import Transactions from "@/components/app_components/Transactions/Transactions";
 import { Search } from "lucide-react";
 import { AuthContext } from "@/Providers/AuthProvider";
 
@@ -109,7 +109,7 @@ const AddFees = () => {
             <Input
               className="max-w-[200px]"
               onChange={(e) => setGetData(e.target.value)}
-              type="number"
+              type="text"
               id="idNumber"
               placeholder="ID Search..."
             />
