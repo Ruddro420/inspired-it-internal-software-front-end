@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import GenereateReport from "./GenereateReport";
+import GenereateReport from "./GenerateReport";
 import { useEffect, useState } from "react";
 import { accountReportByDate } from "@/lib/api";
 const ViewAccountReport = () => {
