@@ -2,7 +2,11 @@ import generatePDF, { Margin, Resolution, usePDF } from "react-to-pdf";
 import { Download, Earth, Home, Mail, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { fetchImageAndConvertToDataURI, getStudentById } from "@/lib/api";
+import {
+  fetchImageAndConvertToDataURI,
+  getCount,
+  getStudentById,
+} from "@/lib/api";
 import { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,6 +21,7 @@ import {
 import { useForm } from "react-hook-form";
 import QRCode from "react-qr-code";
 import { AuthContext } from "@/Providers/AuthProvider";
+import Alert from "@/components/app_components/Alert";
 
 // const fetchImageAndConvertToDataURI = async (imageUrl) => {
 //   const response = await fetch(imageUrl, {credentials: "include"});
@@ -33,6 +38,15 @@ export default function IdCards() {
   const [studentURI, setStudentURI] = useState(null);
   const { admin } = useContext(AuthContext);
 
+  /* Check Student */
+  const [checkData, setCheckData] = useState([]);
+  useEffect(() => {
+    getCount()
+      .then((res) => res.json())
+      .then((data) => setCheckData(data.student));
+  }, [setCheckData]);
+
+  /* Find Student For Generate ID CARD */
   const findStudent = async (e) => {
     e.preventDefault();
     const id = parseInt(document.getElementById("student_id2").value);
@@ -85,94 +99,100 @@ export default function IdCards() {
     const loadImageDataURI = async () => {
       const dataURI = await fetchImageAndConvertToDataURI("inst", "logo");
       setImageDataURI(dataURI);
-      
     };
     loadImageDataURI();
   }, []);
 
-  // console.log(student);
+   console.log(checkData);
 
   return (
     <>
       <div style={{ overflow: "hidden", padding: "10px" }}>
-
         <h1 className="text-2xl font-bold mb-3">ID Card Generate</h1>
-       
-        <form onSubmit={findStudent}>
-          <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
-            <label htmlFor=" ID Card" className="md:col-span-1">
-              ID Number
-              <Input
-                type="number"
-                id="student_id2"
-                placeholder="ID Number"
-                required
-              />
-            </label>
-            <label htmlFor=" ID Card" className="md:col-span-1">
-              Type
-              <Select
-                onValueChange={(value) => setValue("type", value)}
-                id="Type"
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Select Type</SelectLabel>
-                    <SelectItem value="Student">Student</SelectItem>
-                    <SelectItem value="Internship">Internship</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </label>
-            <label htmlFor="ID Card" className="md:col-span-1">
-              Issuer Type
-              <Select
-                onValueChange={(value) => setValue("issuer", value)}
-                id="Class"
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Issuer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Select Issuer</SelectLabel>
-                    <SelectItem value="Founder">Founder</SelectItem>
-                    <SelectItem value="Principle">Principle</SelectItem>
-                    <SelectItem value="Registrar">Registrar</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </label>
-            <label htmlFor="Issue Date" className="md:col-span-1">
-              Issue Date
-              <Input
-                {...register("issue_date", { required: true })}
-                type="date"
-                name="issue_date"
-                placeholder="Issue Date"
-                required
-              />
-            </label>
-            <label htmlFor="Issue Date" className="md:col-span-1">
-              Expiry Date
-              <Input
-                {...register("expiry_date", { required: true })}
-                type="date"
-                name="expiry_date"
-                placeholder="Expiry Date"
-                required
-              />
-            </label>
-          </div>
-          <Button size="sm" className="h-8 gap-1 mt-5">
-            Generate Id Card
-          </Button>
-        </form>
+        {checkData == 0 ? (
+          <Alert
+            title="You have not added any Students yet!"
+            subtitle="Here you can manage students!"
+            link="/dashboard/add-students"
+            linktitle="Add"
+          />
+        ) : (
+          <form onSubmit={findStudent}>
+            <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
+              <label htmlFor=" ID Card" className="md:col-span-1">
+                ID Number
+                <Input
+                  type="number"
+                  id="student_id2"
+                  placeholder="ID Number"
+                  required
+                />
+              </label>
+              <label htmlFor=" ID Card" className="md:col-span-1">
+                Type
+                <Select
+                  onValueChange={(value) => setValue("type", value)}
+                  id="Type"
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select Type</SelectLabel>
+                      <SelectItem value="Student">Student</SelectItem>
+                      <SelectItem value="Internship">Internship</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </label>
+              <label htmlFor="ID Card" className="md:col-span-1">
+                Issuer Type
+                <Select
+                  onValueChange={(value) => setValue("issuer", value)}
+                  id="Class"
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Issuer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select Issuer</SelectLabel>
+                      <SelectItem value="Founder">Founder</SelectItem>
+                      <SelectItem value="Principle">Principle</SelectItem>
+                      <SelectItem value="Registrar">Registrar</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </label>
+              <label htmlFor="Issue Date" className="md:col-span-1">
+                Issue Date
+                <Input
+                  {...register("issue_date", { required: true })}
+                  type="date"
+                  name="issue_date"
+                  placeholder="Issue Date"
+                  required
+                />
+              </label>
+              <label htmlFor="Issue Date" className="md:col-span-1">
+                Expiry Date
+                <Input
+                  {...register("expiry_date", { required: true })}
+                  type="date"
+                  name="expiry_date"
+                  placeholder="Expiry Date"
+                  required
+                />
+              </label>
+            </div>
+            <Button size="sm" className="h-8 gap-1 mt-5">
+              Generate Id Card
+            </Button>
+          </form>
+        )}
 
         {student.length != 0 && (
           <Button
@@ -189,7 +209,6 @@ export default function IdCards() {
       {student.length !== 0 && (
         <div ref={targetRef}>
           <div className=" flex justify-center flex-wrap gap-10 mt-10">
-          
             <div
               id="id_card"
               className="shadow-lg p-5 relative h-[700px] w-[500px] border"
@@ -320,7 +339,11 @@ export default function IdCards() {
                       </div>
                     </div>
                   </div>
-                  <img className="h-10 mt-10" src={imageDataURI2} alt="signature"/>
+                  <img
+                    className="h-10 mt-10"
+                    src={imageDataURI2}
+                    alt="signature"
+                  />
                   <div className="h-1 bg-black w-[200px]  mb-0"></div>
                   <div className="font-bold">{watch("issuer")}</div>
 

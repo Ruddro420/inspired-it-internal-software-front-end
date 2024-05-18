@@ -20,7 +20,9 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react";
-import { dateTime, getAccounts } from "@/lib/api";
+import { dateTime, deleteAccounts, getAccounts } from "@/lib/api";
+import toast from "react-hot-toast";
+import Alert from "@/components/app_components/Alert";
 const ViewAccounts = ({ dataLoad, setDataLoad }) => {
   const [account, setAccount] = useState([]);
   /* Get Account Data */
@@ -37,6 +39,29 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
       });
   }, [dataLoad]);
 
+  /* Delete Class */
+  const deleteHandler = (id) => {
+    // Prompt the user for confirmation
+    if (window.confirm("Are you sure you want to delete this?")) {
+      // If the user confirms, proceed with the deletion
+      toast.promise(
+        deleteAccounts(id).then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to delete!");
+          }
+          const acnt = account.filter((item) => item.id != id);
+          setAccount(acnt);
+          return res.json();
+        }),
+        {
+          loading: "Deleting Class...",
+          success: <b>Successfully deleted!</b>,
+          error: <b>Failed to delete.</b>,
+        }
+      );
+    }
+  };
+
   return (
     <TooltipProvider>
       <main className="">
@@ -47,59 +72,71 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                 <CardTitle>View Account Details</CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name Of Purpose</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Transactions Type</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Date
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {account.map((item) => {
-                      return (
-                        <>
-                          <TableRow>
-                            <TableCell className="font-medium">
-                              {item.purpose}
-                            </TableCell>
-                            <TableCell>{item.type}</TableCell>
-                            <TableCell>{item.transaction_type}</TableCell>
-                            <TableCell>{item.amount}</TableCell>
-                            <div className="flex items-center">
-                              <TableCell>
-                                {dateTime(new Date(item.date))}
+                {account.length == 0 ? (
+                  <Alert title="No Data Found!" />
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name Of Purpose</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Transactions Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead className="hidden md:table-cell">
+                          Date
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {account.map((item) => {
+                        return (
+                          <>
+                            <TableRow>
+                              <TableCell className="font-medium">
+                                {item.purpose}
                               </TableCell>
-                            </div>
-                            <TableCell>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    aria-haspopup="true"
-                                    size="icon"
-                                    variant="ghost"
-                                  >
-                                    <MoreHorizontal className="h-4 w-4" />
-                                    <span className="sr-only">Toggle menu</span>
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                                  <DropdownMenuItem>Delete</DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                        </>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
+                              <TableCell>{item.type}</TableCell>
+                              <TableCell>{item.transaction_type}</TableCell>
+                              <TableCell>{item.amount}</TableCell>
+                              <div className="flex items-center">
+                                <TableCell>
+                                  {dateTime(new Date(item.date))}
+                                </TableCell>
+                              </div>
+                              <TableCell>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      aria-haspopup="true"
+                                      size="icon"
+                                      variant="ghost"
+                                    >
+                                      <MoreHorizontal className="h-4 w-4" />
+                                      <span className="sr-only">
+                                        Toggle menu
+                                      </span>
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>
+                                      Actions
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => deleteHandler(item.id)}
+                                    >
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                            </TableRow>
+                          </>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

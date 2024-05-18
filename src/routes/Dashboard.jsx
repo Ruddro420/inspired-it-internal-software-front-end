@@ -131,34 +131,6 @@ const Dashboard = () => {
     closeAllMenus();
   };
 
-  // const noticeNavHandler = () => {
-  //   closeAllMenus();
-  //   setNoticeNav(!noticeNav);
-  // };
-  // const feeNavHandler = () => {
-  //   closeAllMenus();
-  //   setFeeNav(!feeNav);
-  // };
-  // const resultNavHandler = () => {
-  //   closeAllMenus();
-  //   setResultNav(!resultNav);
-  // };
-  // const idCardNavHandler = () => {
-  //   closeAllMenus();
-  //   setIdCardNav(!idCardNav);
-  // };
-  // const salaryNavHandler = () => {
-  //   closeAllMenus();
-  //   setSalaryNav(!salaryNav);
-  // };
-  // const reportNavHandler = () => {
-  //   closeAllMenus();
-  //   setReportNav(!reportNav);
-  // };
-  // const examNavHandler = () => {
-  //   closeAllMenus();
-  //   setExamNav(!examNav);
-  // };
   const navigate = useNavigate();
   const handleLogout = () => {
     AdminLogout()
@@ -174,19 +146,12 @@ const Dashboard = () => {
       });
   };
 
-
-
-
   useEffect(() => {
     const navItem = localStorage.getItem("navItem");
     if (navItem) {
       document.getElementById(navItem).click();
       localStorage.setItem("navItem", navItem);
     }
-
-
-
-   
   }, []);
   return (
     <>
@@ -196,7 +161,7 @@ const Dashboard = () => {
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <Package2 className="h-6 w-6" />
-                <span className="">SMS ADMIN</span>
+                <span className="">ADMIN</span>
               </Link>
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                 <Bell className="h-4 w-4" />
@@ -229,7 +194,7 @@ const Dashboard = () => {
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
                     >
                       <BriefcaseBusiness className="h-4 w-4" />
-                     Classes/Courses
+                      Courses
                     </a>
                     {classNav ? (
                       <Minus className="mt-2 h-4" />
@@ -246,7 +211,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("classes")}
                     >
                       <Dot className="h-8 w-8" />
-                      View Classes/Course
+                      View Course
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-classes"
@@ -254,7 +219,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("add-classes")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Classes/Course
+                      Add Course
                     </NavLink>
                     <NavLink
                       to="/dashboard/add-sections"
@@ -262,45 +227,13 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Sections/Batch No
+                      Add Batch No
                     </NavLink>
                   </div>
                 ) : (
                   ""
                 )}
                 {/* class End*/}
-                {/* Subject */}
-                {/* <button disabled id="sub" className="" onClick={subjectNavHandler}>
-                  <div className="flex items-center justify-between">
-                    <a
-                      href="#"
-                      className={`flex items-center gap-3 rounded-lg px-3 py-2 mt-2 text-muted-foreground transition-all `}
-                    >
-                      <BookOpen className="h-4 w-4" />
-                      Subject / Course
-                    </a>
-                    {subjectNav ? (
-                      <Minus className="mt-2 h-4" />
-                    ) : (
-                      <Plus className="mt-2 h-4" />
-                    )}
-                  </div>
-                </button>
-                {subjectNav ? (
-                  <div className="fadeInDown">
-                    <NavLink
-                      to="/dashboard/add-subjects"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
-                      onClick={() => setSelectedMenu("add-subjects")}
-                    >
-                      <Dot className="h-8 w-8" />
-                      Add Subject
-                    </NavLink>
-                  </div>
-                ) : (
-                  ""
-                )} */}
-                {/* Subject End */}
 
                 {/* Student Start  */}
                 <button
@@ -348,6 +281,15 @@ const Dashboard = () => {
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />
                       Generate ID Card
+                    </NavLink>
+
+                    <NavLink
+                      to="/dashboard/add-attendance"
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      onClick={() => setSelectedMenu("add-attendance")}
+                    >
+                      <Dot className="h-8 w-8" />
+                      Add Attendance
                     </NavLink>
                   </div>
                 ) : (
@@ -560,7 +502,7 @@ const Dashboard = () => {
                   ""
                 )}
                 {/* attendance Start */}
-                <button id="acc" className="" onClick={attendanceNavHandler}>
+               {/*  <button id="acc" className="" onClick={attendanceNavHandler}>
                   <div className="flex items-center justify-between">
                     <a
                       href="#"
@@ -597,7 +539,7 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
 
                 {/* section */}
                 {/* <Link
@@ -749,13 +691,13 @@ const Dashboard = () => {
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
-                <div className="relative">
-                  {admin?.info ? (
-                    <h1 className="font-bold text-xl">{admin.inst_name}</h1>
-                  ) : (
-                    ""
-                  )}
-                </div>
+              <div className="relative">
+                {admin?.info ? (
+                  <h1 className="font-bold text-xl">{admin.inst_name}</h1>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
             {admin ? admin.email : ""}
             <DropdownMenu>
@@ -782,7 +724,7 @@ const Dashboard = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <ModeToggle/>
+            <ModeToggle />
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
             <Outlet />

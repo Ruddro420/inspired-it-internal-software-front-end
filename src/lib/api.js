@@ -83,10 +83,9 @@ const RegularFeeAdd = (data) => {
   });
 };
 
-
 //teacher salary add
 const teacherSalaryAdd = (data) => {
-  return fetch(api_key + 'teacher_salary_add', {
+  return fetch(api_key + "teacher_salary_add", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -97,7 +96,7 @@ const teacherSalaryAdd = (data) => {
 };
 
 const staffSalaryAdd = (data) => {
-  return fetch(api_key + 'staff_salary_add', {
+  return fetch(api_key + "staff_salary_add", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -314,9 +313,6 @@ const getAccounts = () => {
   });
 };
 
-
-
-
 //getTeacherOrStaffById_no
 const getTeacherOrStaffById = (id, type) => {
   return fetch(api_key + `${type}/` + id, {
@@ -325,18 +321,24 @@ const getTeacherOrStaffById = (id, type) => {
   });
 };
 
+/* Account Report BY Date */
 
-//count 
+const accountReportByDate = (startDate, endDate) => {
+  return fetch(api_key + `accountsByDate?startDate=${startDate}&endDate=${endDate}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+};
+
+//count
 const getCount = () => {
-  return fetch(api_key + 'count', {
+  return fetch(api_key + "count", {
     method: "GET",
     credentials: "include",
   });
 };
-
-
-
-
 
 //----------------------------------------------
 //UPDATE
@@ -456,6 +458,14 @@ const formDate = (date) => {
     .toString()
     .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
 };
+/* Accounts Delete */
+const deleteAccounts = (id) => {
+  return fetch(api_key + "accounts/" + id, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
+/* Accounts Report */
 
 export {
   getTeacherOrStaffById,
@@ -505,5 +515,7 @@ export {
   getAccounts,
   teacherSalaryAdd,
   staffSalaryAdd,
-  getCount
+  getCount,
+  deleteAccounts,
+  accountReportByDate,
 };

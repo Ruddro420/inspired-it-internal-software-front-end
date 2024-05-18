@@ -16,7 +16,8 @@ import axios from "axios";
 import { accountsAdd } from "@/lib/api";
 import toast from "react-hot-toast";
 const AddAccounts = () => {
-    const [dataLoad,setDataLoad] = useState(true)
+  const [dataLoad, setDataLoad] = useState(true);
+  const [checkType, setCheckType] = useState("");
   const {
     register,
     handleSubmit,
@@ -36,20 +37,22 @@ const AddAccounts = () => {
     accountsAdd(data)
       .then(function (response) {
         toast.success("Add Successfully");
-        setDataLoad(data)
+        setDataLoad(data);
         console.log(response);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+  console.log(checkType);
   return (
     <>
       {" "}
       <div style={{ overflow: "hidden" }}>
         <h1 className="text-2xl font-bold mb-3">Add Accounts</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
-          <div className="grid grid-cols-1 md:grid-cols-5 mt-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-6 mt-3 gap-4">
             <label htmlFor="Name" className="md:col-span-1">
               Name Of Purpose
               <Input
@@ -80,7 +83,10 @@ const AddAccounts = () => {
             <label htmlFor="Tuition Fee" className="md:col-span-1">
               Transactions Type
               <Select
-                onValueChange={(value) => setValue("transaction_type", value)}
+                onValueChange={(value) => {
+                  setCheckType(value);
+                  setValue("transaction_type", value);
+                }}
                 required
               >
                 <SelectTrigger>
@@ -89,12 +95,25 @@ const AddAccounts = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Select Type</SelectLabel>
-                    <SelectItem value="income">Cash</SelectItem>
-                    <SelectItem value="expense">Check</SelectItem>
+                    <SelectItem value="Cash">Cash</SelectItem>
+                    <SelectItem value="Check">Check</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </label>
+            {checkType == "Check" ? (
+              <label htmlFor="Name" className="md:col-span-1">
+                Check Number
+                <Input
+                  type="number"
+                  name="amount"
+                  placeholder="Check Number "
+                  {...register("check_number", { required: true })}
+                />
+              </label>
+            ) : (
+              ""
+            )}
             <label htmlFor="Name" className="md:col-span-1">
               Amount
               <Input
@@ -119,7 +138,7 @@ const AddAccounts = () => {
         </form>
       </div>
       {/* View Account */}
-      <ViewAccounts dataLoad={dataLoad}/>
+      <ViewAccounts dataLoad={dataLoad} />
     </>
   );
 };

@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   fetchImageAndConvertToDataURI,
+  getCount,
   getTeacherOrStaffById,
   staffSalaryAdd,
   teacherSalaryAdd,
@@ -23,18 +24,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Alert from "@/components/app_components/Alert";
 
 const PaySalary = () => {
   const { admin } = useContext(AuthContext);
 
-  const { register, handleSubmit} = useForm();
+  const { register, handleSubmit } = useForm();
   const [employee, setEmployee] = useState(null);
   const [isData, setIsData] = useState(false);
   const [employeeId, setEmployeeId] = useState(null);
   const [monthlySalary, setMonthlySalary] = useState(0);
   const [bonus, setBonus] = useState(0);
-  const [employeeType, setEmployeeType] = useState(null)
+  const [employeeType, setEmployeeType] = useState(null);
 
+  /* Check Student */
+  const [checkData, setCheckData] = useState([]);
+  useEffect(() => {
+    getCount()
+      .then((res) => res.json())
+      .then((data) => setCheckData(data));
+  }, [setCheckData]);
+
+  console.log(checkData);
 
   //const [dataLoad,SetLoadData] = useState(false)
 
@@ -42,7 +53,7 @@ const PaySalary = () => {
 
   const feeDataHandler = (e) => {
     e.preventDefault();
-    setEmployeeType(e.target.employee.value)
+    setEmployeeType(e.target.employee.value);
 
     toast.promise(
       getTeacherOrStaffById(e.target.id_no.value, e.target.employee.value)
@@ -72,7 +83,7 @@ const PaySalary = () => {
   };
 
   const onSubmit = (data) => {
-    if(employeeType == "staff") {
+    if (employeeType == "staff") {
       data = {
         monthly_salary: monthlySalary,
         bonus: bonus,
@@ -116,8 +127,6 @@ const PaySalary = () => {
         }
       );
     }
-   
-   
   };
 
   return (
@@ -125,40 +134,43 @@ const PaySalary = () => {
       <div className="grid grid-cols-3 gap-3">
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-3">Pay Salary</h1>
-          <form
-            className="mb-5 flex items-center gap-2"
-            onSubmit={feeDataHandler}
-          >
-            <Input
-              className="max-w-[200px]"
-              type="number"
-              id="id"
-              name="id_no"
-              placeholder="ID"
-            />
+          {checkData.teacher != 0 || checkData.staff != 0 ? (
+            <form
+              className="mb-5 flex items-center gap-2"
+              onSubmit={feeDataHandler}
+            >
+              <Input
+                className="max-w-[200px]"
+                type="number"
+                id="id"
+                name="id_no"
+                placeholder="ID"
+              />
 
-            <label htmlFor="type">
-              <Select
-                id="type"  
-                name="employee"
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Employee" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Select Employee</SelectLabel>
-                    <SelectItem value="teacher">Teacher</SelectItem>
-                    <SelectItem value="staff">Staff</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </label>
-            <Button size="sm">
-              <Search size={18} /> <span className="ml-2">Search</span>
-            </Button>
-          </form>
+              <label htmlFor="type">
+                <Select id="type" name="employee" required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Employee" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select Employee</SelectLabel>
+                      <SelectItem value="teacher">Teacher</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </label>
+              <Button size="sm">
+                <Search size={18} /> <span className="ml-2">Search</span>
+              </Button>
+            </form>
+          ) : (
+            <Alert
+              title="You have not added any Teachers/Staff yet!"
+              subtitle="Create Teachers and Staff First"
+            />
+          )}
 
           {isData && employee && (
             <div>
@@ -235,9 +247,7 @@ const PaySalary = () => {
                       </span>
                       <span>{employee.name}</span>
                     </li>
-                   
 
-                    
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">#ID</span>
                       <span>{employee.id_no}</span>
@@ -260,7 +270,6 @@ const PaySalary = () => {
                         {bonus.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
-                    
                   </dl>
                 </div>
                 <Separator className="my-4" />
@@ -268,12 +277,8 @@ const PaySalary = () => {
                   <dt className="text-muted-foreground font-bold">
                     Paying This Time (৳)
                   </dt>
-                  <dd className="font-bold">
-                    {monthlySalary+bonus}
-                    ৳
-                  </dd>
+                  <dd className="font-bold">{monthlySalary + bonus}৳</dd>
                 </div>
-              
               </CardContent>
             </Card>
           </div>

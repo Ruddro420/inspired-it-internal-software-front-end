@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   fetchImageAndConvertToDataURI,
+  getCount,
   getStudentById,
   RegularFeeAdd,
 } from "@/lib/api";
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form";
 import Transactions from "@/components/app_components/Transactions/Transactions";
 import { Search } from "lucide-react";
 import { AuthContext } from "@/Providers/AuthProvider";
+import Alert from "@/components/app_components/Alert";
 
 const AddFees = () => {
   const { admin } = useContext(AuthContext);
@@ -30,8 +32,15 @@ const AddFees = () => {
   const [uniformFee, setUniformFee] = useState(0);
   const [othersFee, setOthersFee] = useState(0);
   const [discountFee, setDiscountFee] = useState(0);
-  const [prevDue, setPrevDue] = useState(0)
+  const [prevDue, setPrevDue] = useState(0);
 
+  /* Check Student */
+  const [checkData, setCheckData] = useState([]);
+  useEffect(() => {
+    getCount()
+      .then((res) => res.json())
+      .then((data) => setCheckData(data.student));
+  }, [setCheckData]);
 
   //const [dataLoad,SetLoadData] = useState(false)
 
@@ -43,11 +52,11 @@ const AddFees = () => {
       getStudentById(getData)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
+          console.log(data);
           setStudent(data);
           setStudentId(data.id);
           setIsData(true);
-          setPrevDue(data.due)
+          setPrevDue(data.due);
           if (!data) {
             throw new Error("Student not Found!");
           }
@@ -77,7 +86,7 @@ const AddFees = () => {
       others_fee: othersFee,
       discount_fee: discountFee,
       studentId: studentId,
-      due: prevDue - (regularFee  - discountFee)
+      due: prevDue - (regularFee - discountFee),
     };
     toast.promise(
       RegularFeeAdd(data)
@@ -102,21 +111,30 @@ const AddFees = () => {
       <div className="grid grid-cols-3 gap-3">
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-3">Add Fee</h1>
-          <form
-            className="mb-5 flex items-center gap-2"
-            onSubmit={feeDataHandler}
-          >
-            <Input
-              className="max-w-[200px]"
-              onChange={(e) => setGetData(e.target.value)}
-              type="number"
-              id="idNumber"
-              placeholder="ID Search..."
+          {checkData == 0 ? (
+            <Alert
+              title="You have not added any Students yet!"
+              subtitle="Here you can manage students!"
+              link="/dashboard/add-students"
+              linktitle="Add"
             />
-            <Button size="sm">
-              <Search size={18} /> <span className="ml-2">Search</span>
-            </Button>
-          </form>
+          ) : (
+            <form
+              className="mb-5 flex items-center gap-2"
+              onSubmit={feeDataHandler}
+            >
+              <Input
+                className="max-w-[200px]"
+                onChange={(e) => setGetData(e.target.value)}
+                type="number"
+                id="idNumber"
+                placeholder="ID Search..."
+              />
+              <Button size="sm">
+                <Search size={18} /> <span className="ml-2">Search</span>
+              </Button>
+            </form>
+          )}
 
           {isData && student && (
             <div>
@@ -368,20 +386,15 @@ const AddFees = () => {
                   <dt className="text-muted-foreground text-red-700">
                     Previous Due (৳)
                   </dt>
-                  <dd className="font-bold">
-                    {prevDue} ৳
-                  </dd>
+                  <dd className="font-bold">{prevDue} ৳</dd>
                 </div>
-                
+
                 <div className="flex items-center justify-between mt-3 font-bold">
                   <dt className="text-muted-foreground text-red-700">
                     Current Due (৳)
                   </dt>
                   <dd className="font-bold">
-                    {prevDue -
-                      (regularFee  -
-                        discountFee)}
-                    ৳
+                    {prevDue - (regularFee - discountFee)}৳
                   </dd>
                 </div>
               </CardContent>
