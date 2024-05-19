@@ -12,7 +12,6 @@ import {
 import ViewAccounts from "./ViewAccounts";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { accountsAdd } from "@/lib/api";
 import toast from "react-hot-toast";
 const AddAccounts = () => {
@@ -33,7 +32,7 @@ const AddAccounts = () => {
       date: new Date(data.date),
       amount: parseInt(data.amount),
     };
-    // add data
+
     accountsAdd(data)
       .then(function (response) {
         toast.success("Add Successfully");

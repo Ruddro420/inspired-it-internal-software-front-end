@@ -23,6 +23,9 @@ import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { getData } from '@/lib/GET';
 import Spinner from '../Spinner';
+import Loading from "../Loading";
+import { dateTime } from "@/lib/api";
+import { ArrowUpRight } from "lucide-react";
 
 
 
@@ -31,13 +34,29 @@ const Transaction = () => {
 
   const [date, setDate] = useState(new Date())
   const [monthly, setMonthly ] = useState([])
+  const [transactions, setTransactions] = useState([])
+  const [isData, setIsData] = useState(false)
 
   useEffect(() => {
     getData('transactions/with-month')
     .then(res=>res.json())
     .then(data=> {
+      const monthOrder = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      data.sort((a, b) => {
+        return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+    })
       setMonthly(data)
     })
+
+    getData('transactions/all')
+    .then(res=>res.json())
+    .then(data=> {
+      console.log(data)
+      setTransactions(data)
+      setIsData(true)
+      
+    })
+
   }, [])
   
 
@@ -130,138 +149,55 @@ const Transaction = () => {
           <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
-                <CardTitle>Transactions</CardTitle>
+                <CardTitle>Latest Transactions</CardTitle>
                 <CardDescription>
                   Recent transactions from your institution.
                 </CardDescription>
               </div>
-              {/* <Button asChild size="sm" className="ml-auto gap-1">
+              <Button asChild size="sm" className="ml-auto gap-1">
                 <Link href="#">
                   View All
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
-              </Button> */}
+              </Button>
             </CardHeader>
             <CardContent>
-              <Table>
+              {!isData ? <Loading /> :
+              <>
+              {
+                transactions.length > 0 ? <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden xl:table-column">
+                    <TableHead>Purpose</TableHead>
+                    <TableHead>
                       Type
                     </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Status
+                    <TableHead>
+                      Amount
                     </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Date
-                    </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
+                  { transactions.map(entry => <TableRow key={entry.id}>
                     <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
+                      <div className="font-medium">{entry.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {dateTime(new Date(entry.date))}
                       </div>
                     </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-23
-                    </TableCell>
-                    <TableCell className="text-right">৳250.00</TableCell>
-                  </TableRow>
-                  <TableRow>
                     <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
+                      <Badge className={`"text-xs" ${entry.type=='expense' ? "bg-red-500" : ""}`}>
+                        {entry.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">৳150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">৳350.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">৳450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">৳550.00</TableCell>
-                  </TableRow>
+                    <TableCell>৳{entry.amount}</TableCell>
+                  </TableRow>)}              
+                 
                 </TableBody>
-              </Table>
+              </Table> : "No Data"
+              }
+              </>
+}
             </CardContent>
           </Card>
         
