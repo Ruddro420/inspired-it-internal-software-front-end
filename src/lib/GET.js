@@ -1,3 +1,5 @@
+// import axios from "axios";
+
 const api_key = import.meta.env.VITE_apiKey;
 
 
@@ -8,6 +10,10 @@ const getData = (url) => {
     });
   };
 
+
+// const getDataWithQuery(url, query) => {
+//   return axios.
+// }
 
 
   export {getData}

@@ -37,6 +37,7 @@ export function Login() {
         adminLogin(email, password)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         if(data.errors){
           throw new Error(data.errors.err)
         } else {
@@ -45,6 +46,9 @@ export function Login() {
             navigate('/dashboard')
           }
         }
+      }).catch(err=> {
+        console.log(err)
+        throw new Error(err)
       }),
         {
           loading: "Loggin In....",
@@ -85,6 +89,19 @@ export function Login() {
         } ,
       }
     );
+
+
+    // fetch('https://inspiredit-management-server.vercel.app/' + "settings", {
+    //   method: "GET",
+    //   credentials: "include",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // }).then(res => res.json())
+    // .then(data => {
+    //   console.log(data)
+  
+    // })
   }, [])
   return (
     <>
