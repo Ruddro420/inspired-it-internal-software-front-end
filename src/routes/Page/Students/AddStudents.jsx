@@ -184,6 +184,7 @@ const AddStudents = () => {
   };
 
   const idGenerate = (course_batch) => {
+    console.log(course_batch)
     const {name} = cands.filter(item=> item.value == course_batch)[0]
     let cb = generateLetter(name)
     const batch = name.split('-')[1]
@@ -194,15 +195,16 @@ const AddStudents = () => {
         // setIsData2(true);
         const year = new Date().getFullYear().toString();
         let id;
-        console.log(data)
+        // console.log(data)
         if (data.length > 0) {
           let sid = data[0].id_no
-          console.log(sid)
+          // console.log(sid)
           id = parseInt(sid.match(/\d{4}$/))
           id += 1
-          sid = sid.slice(0, -4)
+          sid = sid.slice(0, -7)
+          console.log(sid)
           id = id.toString().padStart(4, "0")
-          id = sid + id
+          id = sid+cb+batch + id
          
         } else {
          
@@ -374,7 +376,7 @@ const AddStudents = () => {
   };
 
   const findStudent = () => {
-    const id = parseInt(document.getElementById("student_id").value);
+    const id = document.getElementById("student_id").value;
     toast.promise(
       getStudentById(id)
         .then((res) => {
@@ -620,14 +622,14 @@ const AddStudents = () => {
                                 </label>
                                 <label
                                   htmlFor="Group"
-                                  className="md:col-span-1"
+                                  className="md:col-span-1 hidden"
                                 >
                                   Group
                                   <Select
                                     onValueChange={(value) =>
                                       setValue("group", value)
                                     }
-                                    required
+                                 
                                   >
                                     <SelectTrigger>
                                       <SelectValue placeholder="Select Group" />
@@ -651,13 +653,12 @@ const AddStudents = () => {
                                 </label>
                                 <label
                                   htmlFor="Session"
-                                  className="md:col-span-1"
+                                  className="md:col-span-1 hidden"
                                 >
                                   Session
                                   <Input
-                                    {...register("session", { required: true })}
+                                    {...register("session", { required: false })}
                                     type="text"
-                                    required
                                     name="session"
                                     placeholder="Session"
                                   />
@@ -923,7 +924,7 @@ const AddStudents = () => {
                                 />
                               </label>
                               <label htmlFor="Class" className="md:col-span-1">
-                                Class & Section
+                                Course & Batch
                                 <Select
                                   onValueChange={(value) => {
                                     getClass(value);
@@ -949,13 +950,12 @@ const AddStudents = () => {
                                   </SelectContent>
                                 </Select>
                               </label>
-                              <label htmlFor="Group" className="md:col-span-1">
+                              <label htmlFor="Group" className="md:col-span-1 hidden">
                                 Group
                                 <Select
                                   onValueChange={(value) =>
                                     setValue("group", value)
                                   }
-                                  required
                                 >
                                   <SelectTrigger>
                                     <SelectValue placeholder="Select Group" />
@@ -979,13 +979,12 @@ const AddStudents = () => {
                               </label>
                               <label
                                 htmlFor="Session"
-                                className="md:col-span-1"
+                                className="md:col-span-1 hidden"
                               >
                                 Session
                                 <Input
-                                  {...register("session", { required: true })}
+                                  {...register("session", { required: false })}
                                   type="text"
-                                  required
                                   name="session"
                                   placeholder="Session"
                                 />
@@ -1005,7 +1004,7 @@ const AddStudents = () => {
                                 <Input
                                   disabled
                                   {...register("id_no", { required: true })}
-                                  type="number"
+                                  type="text"
                                   name="id_no"
                                   placeholder="ID"
                                 />
