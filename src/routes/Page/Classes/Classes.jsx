@@ -91,19 +91,19 @@ export default function Class() {
             <Tabs defaultValue="all">
               <div className="flex items-center">
                 <div className="ml-auto flex items-center gap-2">
-                  <Button size="sm" variant="outline" className="h-8 gap-1">
+                 {/*  <Button size="sm" variant="outline" className="h-8 gap-1">
                     <File className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                       Export
                     </span>
-                  </Button>
+                  </Button> */}
                   <Button size="sm" className="h-8 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
                     <Link
                       to="/dashboard/add-classes"
                       className="sr-only sm:not-sr-only sm:whitespace-nowrap"
                     >
-                      Add Classes
+                      Add Course
                     </Link>
                   </Button>
                 </div>
@@ -111,8 +111,8 @@ export default function Class() {
               <TabsContent value="all">
                 <Card x-chunk="dashboard-06-chunk-0">
                   <CardHeader>
-                    <CardTitle>Classes/Courses</CardTitle>
-                    <CardDescription>Manage your classes here.</CardDescription>
+                    <CardTitle>Courses</CardTitle>
+                    <CardDescription>Manage your courses here.</CardDescription>
                   </CardHeader>
                   {classes.length == 0 ? (
                     <Alert
@@ -126,10 +126,10 @@ export default function Class() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Class/Batch Name</TableHead>
-                            <TableHead>Section(s)/Batch</TableHead>
+                            <TableHead>Course Name</TableHead>
+                            <TableHead>Batch</TableHead>
                             {/* <TableHead>Subject(s)</TableHead> */}
-                            <TableHead>Tuition Fee</TableHead>
+                            <TableHead>Course Fee</TableHead>
                             {/* <TableHead className="hidden md:table-cell">
                         Assigned Teacher
                       </TableHead> */}

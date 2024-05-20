@@ -204,7 +204,7 @@ const StudentProfile = () => {
                         <div className="grid gap-3">
                           
                           <ul className="grid gap-3">
-                          {
+                          {/* {
                               (student.group != "na") && <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Group
@@ -213,9 +213,9 @@ const StudentProfile = () => {
                                 {student.group}
                               </span>
                             </li>
-                            }
+                            } */}
 
-                            {
+                           {/*  {
                               (student.section) && <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Section / Batch
@@ -225,7 +225,7 @@ const StudentProfile = () => {
                               </span>
                             </li>
                             }
-
+ */}
                          
                             <li className="flex items-center justify-between font-semibold">
                               <span className="text-muted-foreground">

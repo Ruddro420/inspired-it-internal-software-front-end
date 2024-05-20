@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Alert from "@/components/app_components/Alert";
 import Loading from "@/components/app_components/Loading";
 import UploadDialog from "@/components/app_components/UploadDialog";
@@ -55,7 +56,6 @@ const AddStudents = () => {
   // const [isData2, setIsData2] = useState(false);
   const [isData3, setIsData3] = useState(false);
 
-  
   const [fee, setFee] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [other, setOther] = useState(0);
@@ -70,10 +70,9 @@ const AddStudents = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const [isWithoutPayment, setisWithoutPayment] = useState(false)
+  const [isWithoutPayment, setisWithoutPayment] = useState(false);
 
   const { admin } = useContext(AuthContext);
-
 
   // const updatedCount = () => {
   //   getStudentCount()
@@ -100,20 +99,20 @@ const AddStudents = () => {
         .then((d) => {
           // console.log(d);
           if (d.err) throw new Error(d.err);
-          if(!isWithoutPayment) {
+          if (!isWithoutPayment) {
             setIsGenerate(true);
-          setTimeout(() => {
-            generatePDF(targetRef, {
-              filename: `Admission_pay_${watch("id_no")}`,
-              page: {
-                margin: Margin.SMALL,
-              },
-            });
-          }, 1000);
-          setTimeout(() => {
-            setIsGenerate(false);
-            // updatedCount();
-          }, 2000);
+            setTimeout(() => {
+              generatePDF(targetRef, {
+                filename: `Admission_pay_${watch("id_no")}`,
+                page: {
+                  margin: Margin.SMALL,
+                },
+              });
+            }, 1000);
+            setTimeout(() => {
+              setIsGenerate(false);
+              // updatedCount();
+            }, 2000);
           }
         }),
       {
@@ -124,8 +123,7 @@ const AddStudents = () => {
     );
   };
 
-
-
+  console.log(admin);
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -184,11 +182,11 @@ const AddStudents = () => {
   };
 
   const idGenerate = (course_batch) => {
-    console.log(course_batch)
-    const {name} = cands.filter(item=> item.value == course_batch)[0]
-    let cb = generateLetter(name)
-    const batch = name.split('-')[1]
-    console.log(cb)
+    console.log(course_batch);
+    const { name } = cands.filter((item) => item.value == course_batch)[0];
+    let cb = generateLetter(name);
+    const batch = name.split("-")[1];
+    console.log(cb);
     getLastStudent()
       .then((res) => res.json())
       .then((data) => {
@@ -197,18 +195,16 @@ const AddStudents = () => {
         let id;
         // console.log(data)
         if (data.length > 0) {
-          let sid = data[0].id_no
+          let sid = data[0].id_no;
           // console.log(sid)
-          id = parseInt(sid.match(/\d{4}$/))
-          id += 1
-          sid = sid.slice(0, -7)
-          console.log(sid)
-          id = id.toString().padStart(4, "0")
-          id = sid+cb+batch + id
-         
+          id = parseInt(sid.match(/\d{4}$/));
+          id += 1;
+          sid = sid.slice(0, -7);
+          console.log(sid);
+          id = id.toString().padStart(4, "0");
+          id = sid + cb + batch + id;
         } else {
-         
-          id = year[2] + year[3] +cb + batch + "0001";      
+          id = year[2] + year[3] + cb + batch + "0001";
         }
         isReAdmission
           ? setValue("id_no", document.getElementById("student_id").value)
@@ -217,8 +213,8 @@ const AddStudents = () => {
       .catch((err) => {
         console.log(err);
       });
-  }
-  
+  };
+
   const onSubmit = (data) => {
     if (parseInt(fee) == 0 && !isWithoutPayment) {
       toast.error("You have forget to fill admission fee!");
@@ -253,16 +249,15 @@ const AddStudents = () => {
             return res.json();
           })
           .then((d) => {
- 
             if (d.err) throw new Error(d.err);
-              AdmissionDataSend({
-                fee: parseFloat(fee),
-                discount: parseFloat(discount),
-                other: parseFloat(other),
-                studentId: d.created.id,
-                readmission: true,
-              });
-              idGenerate(watch('classId'))
+            AdmissionDataSend({
+              fee: parseFloat(fee),
+              discount: parseFloat(discount),
+              other: parseFloat(other),
+              studentId: d.created.id,
+              readmission: true,
+            });
+            idGenerate(watch("classId"));
             if (image) {
               uploadFile(d.created.id_no.toString());
             }
@@ -289,15 +284,15 @@ const AddStudents = () => {
         })
         .then((d) => {
           if (d.err) throw new Error(d.err);
-            AdmissionDataSend({
-              fee: parseFloat(fee),
-              discount: parseFloat(discount),
-              other: parseFloat(other),
-              studentId: d.created.id,
-              readmission: false,
-            });
+          AdmissionDataSend({
+            fee: parseFloat(fee),
+            discount: parseFloat(discount),
+            other: parseFloat(other),
+            studentId: d.created.id,
+            readmission: false,
+          });
 
-          idGenerate(watch('classId'))
+          idGenerate(watch("classId"));
 
           if (image) {
             uploadFile(d.created.id_no.toString());
@@ -310,9 +305,6 @@ const AddStudents = () => {
       }
     );
   };
-
-
-
 
   useEffect(() => {
     getClasses()
@@ -421,7 +413,6 @@ const AddStudents = () => {
       });
   };
 
-
   return (
     <>
       {isData3 ? (
@@ -458,7 +449,9 @@ const AddStudents = () => {
                         <Tabs defaultValue="admission">
                           <TabsList>
                             <TabsTrigger
-                              onClick={() => {setIsReAdmission(false)}}
+                              onClick={() => {
+                                setIsReAdmission(false);
+                              }}
                               value="admission"
                             >
                               Admission
@@ -469,7 +462,6 @@ const AddStudents = () => {
                             >
                               Re-Admission
                             </TabsTrigger>
-
                           </TabsList>
                           {isReAdmission && (
                             <div className="inline-block ml-10">
@@ -491,17 +483,20 @@ const AddStudents = () => {
                             </div>
                           )}
 
-                              <div className="flex items-center space-x-2 mb-3 mt-3">
-                                <Checkbox onCheckedChange={(checked => {
-                                  setisWithoutPayment(checked)
-                                })} id="pay" />
-                                <label
-                                  htmlFor="pay"
-                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                  Admission without payment.
-                                </label>
-                              </div>
+                          <div className="flex items-center space-x-2 mb-3 mt-3">
+                            <Checkbox
+                              onCheckedChange={(checked) => {
+                                setisWithoutPayment(checked);
+                              }}
+                              id="pay"
+                            />
+                            <label
+                              htmlFor="pay"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              Admission without payment.
+                            </label>
+                          </div>
 
                           <TabsContent value="admission">
                             <div className="border p-5 rounded-lg  mt-5">
@@ -597,7 +592,7 @@ const AddStudents = () => {
                                   <Select
                                     onValueChange={(value) => {
                                       getClass(value);
-                                      idGenerate(value)
+                                      idGenerate(value);
                                       return setValue("classId", value);
                                     }}
                                     required
@@ -629,7 +624,6 @@ const AddStudents = () => {
                                     onValueChange={(value) =>
                                       setValue("group", value)
                                     }
-                                 
                                   >
                                     <SelectTrigger>
                                       <SelectValue placeholder="Select Group" />
@@ -657,7 +651,9 @@ const AddStudents = () => {
                                 >
                                   Session
                                   <Input
-                                    {...register("session", { required: false })}
+                                    {...register("session", {
+                                      required: false,
+                                    })}
                                     type="text"
                                     name="session"
                                     placeholder="Session"
@@ -807,6 +803,21 @@ const AddStudents = () => {
                                     placeholder="Local Guardians Phone Number"
                                   />
                                 </label>
+                                {/* <label
+                                  htmlFor="Local Guardians Phone Number"
+                                  className="md:col-span-1"
+                                >
+                                  Payment Received By
+                                  <Input
+                                    {...register("payment_received", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="payment_received"
+                                    placeholder="Name Of Receiver"
+                                  />
+                                </label> */}
                                 <div>
                                   <div className="">
                                     <label htmlFor="drop-zone">
@@ -842,395 +853,424 @@ const AddStudents = () => {
 
                           <TabsContent value="readmission">
                             <div className="border p-5 rounded mt-5">
-                            <form
-                              onSubmit={handleSubmit(onSubmit)}
-                              className="grid grid-cols-2 gap-3"
-                            >
-                              <label htmlFor="Name" className="md:col-span-1">
-                                Name
-                                <Input
-                                  {...register("name", { required: true })}
-                                  type="text"
-                                  name="name"
-                                  required
-                                  placeholder="Name"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Mobile Number"
-                                className="md:col-span-1"
+                              <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className="grid grid-cols-2 gap-3"
                               >
-                                Mobile Number
-                                <Input
-                                  {...register("phone", { required: true })}
-                                  type="number"
-                                  name="phone"
-                                  required
-                                  placeholder="Mobile Number"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Present Address"
-                                className="md:col-span-1"
-                              >
-                                Present Address
-                                <Input
-                                  {...register("present_address", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="present_address"
-                                  placeholder="Present Address"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Permanent Address"
-                                className="md:col-span-1"
-                              >
-                                Permanent Address
-                                <Input
-                                  {...register("permanent_address", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="permanent_address"
-                                  placeholder="Permanent Address"
-                                />
-                              </label>
-                              <label htmlFor="Email" className="md:col-span-1">
-                                Email
-                                <Input
-                                  {...register("email", { required: true })}
-                                  type="email"
-                                  required
-                                  name="email"
-                                  placeholder="Email"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Date of Birth"
-                                className="md:col-span-1"
-                              >
-                                Date of Birth
-                                <Input
-                                  {...register("date_of_birth", {
-                                    required: true,
-                                  })}
-                                  type="date"
-                                  required
-                                  name="date_of_birth"
-                                />
-                              </label>
-                              <label htmlFor="Class" className="md:col-span-1">
-                                Course & Batch
-                                <Select
-                                  onValueChange={(value) => {
-                                    getClass(value);
-                                    return setValue("classId", value);
-                                  }}
-                                  required
+                                <label htmlFor="Name" className="md:col-span-1">
+                                  Name
+                                  <Input
+                                    {...register("name", { required: true })}
+                                    type="text"
+                                    name="name"
+                                    required
+                                    placeholder="Name"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Mobile Number"
+                                  className="md:col-span-1"
                                 >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select Class & Section" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectGroup>
-                                      <SelectLabel>Select Class</SelectLabel>
-                                      {cands.map((cs) => (
-                                        <SelectItem
-                                          key={cs.name}
-                                          value={cs.value}
-                                        >
-                                          {cs.name}
+                                  Mobile Number
+                                  <Input
+                                    {...register("phone", { required: true })}
+                                    type="number"
+                                    name="phone"
+                                    required
+                                    placeholder="Mobile Number"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Present Address"
+                                  className="md:col-span-1"
+                                >
+                                  Present Address
+                                  <Input
+                                    {...register("present_address", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="present_address"
+                                    placeholder="Present Address"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Permanent Address"
+                                  className="md:col-span-1"
+                                >
+                                  Permanent Address
+                                  <Input
+                                    {...register("permanent_address", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="permanent_address"
+                                    placeholder="Permanent Address"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Email"
+                                  className="md:col-span-1"
+                                >
+                                  Email
+                                  <Input
+                                    {...register("email", { required: true })}
+                                    type="email"
+                                    required
+                                    name="email"
+                                    placeholder="Email"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Date of Birth"
+                                  className="md:col-span-1"
+                                >
+                                  Date of Birth
+                                  <Input
+                                    {...register("date_of_birth", {
+                                      required: true,
+                                    })}
+                                    type="date"
+                                    required
+                                    name="date_of_birth"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Class"
+                                  className="md:col-span-1"
+                                >
+                                  Course & Batch
+                                  <Select
+                                    onValueChange={(value) => {
+                                      getClass(value);
+                                      return setValue("classId", value);
+                                    }}
+                                    required
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Class & Section" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectGroup>
+                                        <SelectLabel>Select Class</SelectLabel>
+                                        {cands.map((cs) => (
+                                          <SelectItem
+                                            key={cs.name}
+                                            value={cs.value}
+                                          >
+                                            {cs.name}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectGroup>
+                                    </SelectContent>
+                                  </Select>
+                                </label>
+                                <label
+                                  htmlFor="Group"
+                                  className="md:col-span-1 hidden"
+                                >
+                                  Group
+                                  <Select
+                                    onValueChange={(value) =>
+                                      setValue("group", value)
+                                    }
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select Group" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectGroup>
+                                        <SelectLabel>Select Class</SelectLabel>
+                                        <SelectItem value="na">N/A</SelectItem>
+                                        <SelectItem value="science">
+                                          Science
                                         </SelectItem>
-                                      ))}
-                                    </SelectGroup>
-                                  </SelectContent>
-                                </Select>
-                              </label>
-                              <label htmlFor="Group" className="md:col-span-1 hidden">
-                                Group
-                                <Select
-                                  onValueChange={(value) =>
-                                    setValue("group", value)
-                                  }
+                                        <SelectItem value="humanity">
+                                          Humanity
+                                        </SelectItem>
+                                        <SelectItem value="business">
+                                          Business Studies
+                                        </SelectItem>
+                                      </SelectGroup>
+                                    </SelectContent>
+                                  </Select>
+                                </label>
+                                <label
+                                  htmlFor="Session"
+                                  className="md:col-span-1 hidden"
                                 >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select Group" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectGroup>
-                                      <SelectLabel>Select Class</SelectLabel>
-                                      <SelectItem value="na">N/A</SelectItem>
-                                      <SelectItem value="science">
-                                        Science
-                                      </SelectItem>
-                                      <SelectItem value="humanity">
-                                        Humanity
-                                      </SelectItem>
-                                      <SelectItem value="business">
-                                        Business Studies
-                                      </SelectItem>
-                                    </SelectGroup>
-                                  </SelectContent>
-                                </Select>
-                              </label>
-                              <label
-                                htmlFor="Session"
-                                className="md:col-span-1 hidden"
-                              >
-                                Session
-                                <Input
-                                  {...register("session", { required: false })}
-                                  type="text"
-                                  name="session"
-                                  placeholder="Session"
-                                />
-                              </label>
-                              <label htmlFor="Gender" className="md:col-span-1">
-                                Gender
-                                <Input
-                                  disabled
-                                  {...register("gender", { required: true })}
-                                  type="text"
-                                  name="gender"
-                                  placeholder="Gender"
-                                />
-                              </label>
-                              <label htmlFor="ID" className="md:col-span-1">
-                                Student ID
-                                <Input
-                                  disabled
-                                  {...register("id_no", { required: true })}
-                                  type="text"
-                                  name="id_no"
-                                  placeholder="ID"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Blood Group"
-                                className="md:col-span-1"
-                              >
-                                Blood Group
-                                <Input
-                                  disabled
-                                  {...register("blood_group", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  name="blood_group"
-                                  placeholder="Blood Group"
-                                />
-                              </label>
-                              <label
-                                htmlFor="B/C Number"
-                                className="md:col-span-1"
-                              >
-                                B/C Number
-                                <Input
-                                  {...register("birth_certificate_no", {
-                                    required: true,
-                                  })}
-                                  type="number"
-                                  required
-                                  name="birth_certificate_no"
-                                  placeholder="Birth Certificate Number"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Parents Name"
-                                className="md:col-span-1"
-                              >
-                                Parents Name
-                                <Input
-                                  {...register("parent_name", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="parent_name"
-                                  placeholder="Parents Name"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Parents Phone"
-                                className="md:col-span-1"
-                              >
-                                Parents Phone
-                                <Input
-                                  {...register("parent_phone", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="parent_phone"
-                                  placeholder="Parents Phone"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Local Guardians"
-                                className="md:col-span-1"
-                              >
-                                L-Guardian Name
-                                <Input
-                                  {...register("local_guardian", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="local_guardian"
-                                  placeholder="Local Guardians"
-                                />
-                              </label>
-                              <label
-                                htmlFor="Local Guardians Phone Number"
-                                className="md:col-span-1"
-                              >
-                                L Guardian&apos;s Phone
-                                <Input
-                                  {...register("local_guardian_phone", {
-                                    required: true,
-                                  })}
-                                  type="text"
-                                  required
-                                  name="local_guardian_phone"
-                                  placeholder="Local Guardians Phone Number"
-                                />
-                              </label>
-                              <div>
-                                <div className="">
-                                  <label htmlFor="drop-zone">
-                                    <div className="h-[100px]  flex flex-col items-center justify-center  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                      <input
-                                        onChange={previewFile}
-                                        className="hidden"
-                                        id="drop-zone"
-                                        type="file"
-                                        accept="image/*"
-                                      />
-                                      <img
-                                        id="logo"
-                                        className="h-[70px]"
-                                        src="https://i.postimg.cc/rF77ZXQj/image.png"
-                                      />
-                                    </div>
-                                  </label>
+                                  Session
+                                  <Input
+                                    {...register("session", {
+                                      required: false,
+                                    })}
+                                    type="text"
+                                    name="session"
+                                    placeholder="Session"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Gender"
+                                  className="md:col-span-1"
+                                >
+                                  Gender
+                                  <Input
+                                    disabled
+                                    {...register("gender", { required: true })}
+                                    type="text"
+                                    name="gender"
+                                    placeholder="Gender"
+                                  />
+                                </label>
+                                <label htmlFor="ID" className="md:col-span-1">
+                                  Student ID
+                                  <Input
+                                    disabled
+                                    {...register("id_no", { required: true })}
+                                    type="text"
+                                    name="id_no"
+                                    placeholder="ID"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Blood Group"
+                                  className="md:col-span-1"
+                                >
+                                  Blood Group
+                                  <Input
+                                    disabled
+                                    {...register("blood_group", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    name="blood_group"
+                                    placeholder="Blood Group"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="B/C Number"
+                                  className="md:col-span-1"
+                                >
+                                  B/C Number
+                                  <Input
+                                    {...register("birth_certificate_no", {
+                                      required: true,
+                                    })}
+                                    type="number"
+                                    required
+                                    name="birth_certificate_no"
+                                    placeholder="Birth Certificate Number"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Parents Name"
+                                  className="md:col-span-1"
+                                >
+                                  Parents Name
+                                  <Input
+                                    {...register("parent_name", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="parent_name"
+                                    placeholder="Parents Name"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Parents Phone"
+                                  className="md:col-span-1"
+                                >
+                                  Parents Phone
+                                  <Input
+                                    {...register("parent_phone", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="parent_phone"
+                                    placeholder="Parents Phone"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Local Guardians"
+                                  className="md:col-span-1"
+                                >
+                                  L-Guardian Name
+                                  <Input
+                                    {...register("local_guardian", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="local_guardian"
+                                    placeholder="Local Guardians"
+                                  />
+                                </label>
+                                <label
+                                  htmlFor="Local Guardians Phone Number"
+                                  className="md:col-span-1"
+                                >
+                                  L Guardian&apos;s Phone
+                                  <Input
+                                    {...register("local_guardian_phone", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="local_guardian_phone"
+                                    placeholder="Local Guardians Phone Number"
+                                  />
+                                </label>
+                              {/*   <label
+                                  htmlFor="Local Guardians Phone Number"
+                                  className="md:col-span-1"
+                                >
+                                  Payment Received By
+                                  <Input
+                                    {...register("payment_received", {
+                                      required: true,
+                                    })}
+                                    type="text"
+                                    required
+                                    name="payment_received"
+                                    placeholder="Name Of Receiver"
+                                  />
+                                </label> */}
+                                <div>
+                                  <div className="">
+                                    <label htmlFor="drop-zone">
+                                      <div className="h-[100px]  flex flex-col items-center justify-center  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <input
+                                          onChange={previewFile}
+                                          className="hidden"
+                                          id="drop-zone"
+                                          type="file"
+                                          accept="image/*"
+                                        />
+                                        <img
+                                          id="logo"
+                                          className="h-[70px]"
+                                          src="https://i.postimg.cc/rF77ZXQj/image.png"
+                                        />
+                                      </div>
+                                    </label>
+                                  </div>
+                                  <div className="mt-3 text-gray-400 font-medium text-center">
+                                    Choose Student Photo
+                                  </div>
                                 </div>
-                                <div className="mt-3 text-gray-400 font-medium text-center">
-                                  Choose Student Photo
-                                </div>
-                              </div>
+                                
 
-                              <Button
-                                size="sm"
-                                className="h-8 gap-1 mt-5 col-span-2 w-full"
-                              >
-                                Submit & Generate Payslip
-                              </Button>
-                            </form>
+                                <Button
+                                  size="sm"
+                                  className="h-8 gap-1 mt-5 col-span-2 w-full"
+                                >
+                                  Submit & Generate Payslip
+                                </Button>
+                              </form>
                             </div>
                           </TabsContent>
                         </Tabs>
                       </div>
-                      {
-                      !isWithoutPayment &&
-                      <div>
-                        <Card
-                          className="overflow-hidden"
-                          x-chunk="dashboard-05-chunk-4"
-                        >
-                          <CardHeader className="text-center bg-muted/50">
-                            <div className="grid gap-0.5">
-                              <CardTitle className="flex flex-col items-center justify-center gap-2 text-lg">
-                                <div className="">
-                                  <img
-                                    alt="logo"
-                                    className="h-[80px]"
-                                    src={imageDataURI}
-                                  />
-                                </div>
-
-                                <div className="lg:w-[77%]">
-                                  <div>{admin?.inst_name}</div>
-                                  <div className="text-sm">
-                                    EIIN: {admin?.inst_eiin}
+                      {!isWithoutPayment && (
+                        <div>
+                          <Card
+                            className="overflow-hidden"
+                            x-chunk="dashboard-05-chunk-4"
+                          >
+                            <CardHeader className="text-center bg-muted/50">
+                              <div className="grid gap-0.5">
+                                <CardTitle className="flex flex-col items-center justify-center gap-2 text-lg">
+                                  <div className="">
+                                    <img
+                                      alt="logo"
+                                      className="h-[80px]"
+                                      src={imageDataURI}
+                                    />
                                   </div>
-                                  <CardDescription>
-                                    Date: {dateTime(new Date())}
-                                  </CardDescription>
-                                </div>
-                              </CardTitle>
 
-                              <div className="text-xl mt-2 font-bold">
-                                Addmission Payment Receipt
+                                  <div className="lg:w-[77%]">
+                                    {/*  <div>{admin?.inst_name}</div> */}
+                                    <div className="text-sm">
+                                      EIIN: {admin?.inst_eiin}
+                                    </div>
+                                    <CardDescription>
+                                      Date: {dateTime(new Date())}
+                                    </CardDescription>
+                                  </div>
+                                </CardTitle>
+
+                                <div className="text-xl mt-2 font-bold">
+                                  Admission Payment Receipt
+                                </div>
                               </div>
-                            </div>
-                          </CardHeader>
-                          <CardContent className="p-6 text-sm">
-                            <div className="grid gap-3">
-                              <div className="font-semibold">
-                                Student Informations
-                              </div>
-                              <ul className="grid gap-3">
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Name
-                                  </span>
-                                  <span>{watch("name")}</span>
-                                </li>
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Class
-                                  </span>
-                                  <span> {class_} </span>
-                                </li>
-                                {sec && (
+                            </CardHeader>
+                            <CardContent className="p-6 text-sm">
+                              <div className="grid gap-3">
+                                <div className="font-semibold">
+                                  Student Information's
+                                </div>
+                                <ul className="grid gap-3">
                                   <li className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
-                                      Section
+                                      Student Name
                                     </span>
-                                    <span> {sec} </span>
+                                    <span>{watch("name")}</span>
                                   </li>
-                                )}
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    #ID
-                                  </span>
-                                  <span> {watch("id_no")} </span>
-                                </li>
+                                  <li className="flex items-center justify-between">
+                                    <span className="text-muted-foreground">
+                                      Course Name
+                                    </span>
+                                    <span> {class_} </span>
+                                  </li>
+                                  {sec && (
+                                    <li className="flex items-center justify-between">
+                                      <span className="text-muted-foreground">
+                                        Course Batch
+                                      </span>
+                                      <span> {sec} </span>
+                                    </li>
+                                  )}
+                                  <li className="flex items-center justify-between">
+                                    <span className="text-muted-foreground">
+                                      Student Id No
+                                    </span>
+                                    <span> {watch("id_no")} </span>
+                                  </li>
 
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Session
-                                  </span>
-                                  <span> {watch("session")} </span>
-                                </li>
-                              </ul>
-                              <Separator className="my-2" />
-                              <ul className="grid gap-3">
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Addmission Fee
-                                  </span>
-                                  <span>
-                                    <input
-                                      onChange={(e) =>
-                                        setFee(
-                                          !e.target.value == ""
-                                            ? parseFloat(e.target.value)
-                                            : 0
-                                        )
-                                      }
-                                      defaultValue={0}
-                                      className="border dark:bg-black rounded-xl w-[100px] text-center"
-                                      type="number"
-                                      placeholder="00"
-                                    />
-                                  </span>
-                                </li>
-                                <li className="flex items-center justify-between">
+                                  <li className="flex items-center justify-between">
+                                    <span className="text-muted-foreground">
+                                      Student Phone
+                                    </span>
+                                    <span> {watch("phone")} </span>
+                                  </li>
+                                </ul>
+                                <Separator className="my-2" />
+                                <ul className="grid gap-3">
+                                  <li className="flex items-center justify-between">
+                                    <span className="text-muted-foreground">
+                                      Admission Fee
+                                    </span>
+                                    <span>
+                                      <input
+                                        onChange={(e) =>
+                                          setFee(
+                                            !e.target.value == ""
+                                              ? parseFloat(e.target.value)
+                                              : 0
+                                          )
+                                        }
+                                        defaultValue={0}
+                                        className="border dark:bg-black rounded-xl w-[100px] text-right"
+                                        type="number"
+                                        placeholder="00"
+                                      />
+                                    </span>
+                                  </li>
+                                  {/* <li className="flex items-center justify-between">
                                   <span className="text-muted-foreground">
                                     Discount
                                   </span>
@@ -1249,64 +1289,112 @@ const AddStudents = () => {
                                       placeholder="00"
                                     />
                                   </span>
+                                </li> */}
+                                  <li className="flex items-center justify-between">
+                                    <span className="text-muted-foreground">
+                                      Other
+                                    </span>
+                                    <span>
+                                      <input
+                                        onChange={(e) =>
+                                          setOther(
+                                            !e.target.value == ""
+                                              ? parseFloat(e.target.value)
+                                              : 0
+                                          )
+                                        }
+                                        defaultValue={0}
+                                        className="border dark:bg-black  rounded-xl w-[100px] text-right"
+                                        type="number"
+                                        placeholder="00"
+                                      />
+                                    </span>
+                                  </li>
+                                  <li className="flex items-center justify-between font-semibold">
+                                    <span className="text-muted-foreground">
+                                      Total
+                                    </span>
+                                    <span>
+                                      {fee +
+                                        other -
+                                        (fee + other) * (discount / 100)}{" "}
+                                      ৳
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+
+                              <Separator className="my-4" />
+                              <div className="grid gap-3">
+                                <div className="font-semibold">
+                                  Payment Information
+                                </div>
+                                <dl className="grid gap-3">
+                                  <div className="flex items-center justify-between">
+                                    <dt className="flex items-center gap-1 text-muted-foreground">
+                                      <CreditCard className="h-4 w-4" />
+                                      Type
+                                    </dt>
+                                    <dd>Cash</dd>
+                                  </div>
+                                </dl>
+                              </div>
+                            </CardContent>
+                            <hr></hr>
+                            {/* Admission Condition */}
+                            <div
+                              className="p-5"
+                              style={{ fontFamily: "Hind Siliguri" }}
+                            >
+                              <h1 className="text-center text-2xl mb-3">
+                                ভর্তির শর্তাবলী{" "}
+                              </h1>
+                              <ul>
+                                <li className="mb-3">
+                                  ১। কোর্স ফি দুই বা তিন কিস্তিতে পরিশোধ করা
+                                  যাবে ।
                                 </li>
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Other
-                                  </span>
-                                  <span>
-                                    <input
-                                      onChange={(e) =>
-                                        setOther(
-                                          !e.target.value == ""
-                                            ? parseFloat(e.target.value)
-                                            : 0
-                                        )
-                                      }
-                                      defaultValue={0}
-                                      className="border dark:bg-black  rounded-xl w-[100px] text-center"
-                                      type="number"
-                                      placeholder="00"
-                                    />
-                                  </span>
+                                <li className="mb-3">
+                                  ২। কোর্স ফি কোন ভাবেই ফেরত যোগ্য নয় ।{" "}
                                 </li>
-                                <li className="flex items-center justify-between font-semibold">
-                                  <span className="text-muted-foreground">
-                                    Total
-                                  </span>
-                                  <span>
-                                    {fee +
-                                      other -
-                                      (fee + other) * (discount / 100)}
-                                  </span>
+                                <li className="mb-3">
+                                  ৩। অনিয়মিত প্রশিক্ষণার্থীদের সার্টিফিকেট
+                                  প্রদান করা হবে নাহ ।{" "}
+                                </li>
+                                <li>
+                                  ৪। আপনার যে কোন অসংগতি ব্যবহারের জন্য
+                                  কর্তৃপক্ষ আপনার ভর্তি বাতিল করতে পারে ।{" "}
                                 </li>
                               </ul>
                             </div>
-
-                            <Separator className="my-4" />
-                            <div className="grid gap-3">
-                              <div className="font-semibold">
-                                Payment Information
+                            <hr></hr>
+                            {/* Signature */}
+                            <div className="flex flex-row justify-between p-5 text-center">
+                              <div>
+                                <p>{/* {watch('payment_received')} */}Atif Islam</p>
+                                <hr></hr>
+                                <b>Received By</b>
                               </div>
-                              <dl className="grid gap-3">
-                                <div className="flex items-center justify-between">
-                                  <dt className="flex items-center gap-1 text-muted-foreground">
-                                    <CreditCard className="h-4 w-4" />
-                                    Type
-                                  </dt>
-                                  <dd>Cash</dd>
-                                </div>
-                              </dl>
+                              <div>
+                                <p>সৈয়দ মুহীউদ্দীন ফাহাদ</p>
+                                <hr></hr>
+                                <b>Founder</b>
+                              </div>
                             </div>
-                          </CardContent>
-                          <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-                            <div className="text-xs text-muted-foreground"></div>
-                          </CardFooter>
-                        </Card>
-                      </div>
-                      }
-
-
+                            <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3 justify-between bg-[#2b74ba] text-white">
+                              <div className="text-xs">
+                                <h1>{admin.inst_address} || </h1>
+                              </div>
+                              <div className="text-xs">
+                                <h1>|| {admin.inst_email} || </h1>
+                              </div>
+                              <div className="text-xs ">
+                                <h1>|| {admin.inst_phone}</h1>
+                              </div>
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      )}
                     </div>
                   )}
                   {/* Downloadable payslip */}
@@ -1329,7 +1417,7 @@ const AddStudents = () => {
                                 </div>
 
                                 <div className="">
-                                  <div>{admin?.inst_name}</div>
+                                  {/* <div>{admin?.inst_name}</div> */}
                                   <div className="text-sm">
                                     EIIN: {admin?.inst_eiin}
                                   </div>
@@ -1340,39 +1428,39 @@ const AddStudents = () => {
                               </CardTitle>
 
                               <div className="text-xl mt-2 font-bold">
-                                Addmission Payment Receipt
+                                Admission Payment Receipt
                               </div>
                             </div>
                           </CardHeader>
                           <CardContent className="p-6 text-sm">
                             <div className="grid gap-3">
-                              <div className="font-semibold">
-                                Student Informations
+                              <div className="font-semibold text-2xl">
+                                Student Information's
                               </div>
                               <ul className="grid gap-3">
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Name
+                                <li className="flex items-center justify-between font-semibold">
+                                  <span className="">
+                                    Student Name
                                   </span>
                                   <span>{watch("name")}</span>
-                                </li>
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    Class
+                                </li> <hr></hr>
+                                <li className="flex items-center justify-between font-semibold">
+                                  <span className="">
+                                    Course Name
                                   </span>
                                   <span> {class_} </span>
-                                </li>
+                                </li><hr></hr>
                                 {sec && (
-                                  <li className="flex items-center justify-between">
-                                    <span className="text-muted-foreground">
-                                      Section
+                                  <li className="flex items-center justify-between font-semibold">
+                                    <span className="">
+                                      Course Batch
                                     </span>
                                     <span> {sec} </span>
                                   </li>
-                                )}
-                                <li className="flex items-center justify-between">
-                                  <span className="text-muted-foreground">
-                                    #ID
+                                )}<hr></hr>
+                                <li className="flex items-center justify-between font-semibold">
+                                  <span className="">
+                                    Student Id No
                                   </span>
                                   <span> {watch("id_no")} </span>
                                 </li>
@@ -1384,10 +1472,10 @@ const AddStudents = () => {
                                   <span>Admission Fee</span>
                                   <span>{fee} tk</span>
                                 </li>
-                                <li className="flex items-center justify-between font-semibold">
+                                {/*  <li className="flex items-center justify-between font-semibold">
                                   <span>Discount(Flat)</span>
                                   <span>{discount}%</span>
-                                </li>
+                                </li> */}
 
                                 <li className="flex items-center justify-between font-semibold">
                                   <span>Other</span>
@@ -1397,9 +1485,7 @@ const AddStudents = () => {
                                 <li className="flex items-center justify-between font-semibold">
                                   <span>Total</span>
                                   <span>
-                                    {(fee +
-                                      other )- discount
-                                    }
+                                    {fee + other - discount}
                                     tk
                                   </span>
                                 </li>
@@ -1414,7 +1500,7 @@ const AddStudents = () => {
                               <dl className="grid gap-3">
                                 <div className="flex items-center justify-between">
                                   <dt className="flex items-center gap-1 text-muted-foreground">
-                                    <CreditCard className="h-4 w-4" />
+                                    {/* <CreditCard className="h-4 w-4" /> */}
                                     Type
                                   </dt>
                                   <dd>Cash</dd>
@@ -1422,9 +1508,60 @@ const AddStudents = () => {
                               </dl>
                             </div>
                           </CardContent>
-                          <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-                            <div className="text-xs text-muted-foreground"></div>
-                          </CardFooter>
+                         
+                          <hr></hr>
+                            {/* Admission Condition */}
+                            <div
+                              className="p-5"
+                              style={{ fontFamily: "Hind Siliguri" }}
+                            >
+                              <h1 className="text-center text-2xl mb-3">
+                                ভর্তির শর্তাবলী{" "}
+                              </h1>
+                              <ul>
+                                <li className="mb-3">
+                                  ১। কোর্স ফি দুই বা তিন কিস্তিতে পরিশোধ করা
+                                  যাবে ।
+                                </li>
+                                <li className="mb-3">
+                                  ২। কোর্স ফি কোন ভাবেই ফেরত যোগ্য নয় ।{" "}
+                                </li>
+                                <li className="mb-3">
+                                  ৩। অনিয়মিত প্রশিক্ষণার্থীদের সার্টিফিকেট
+                                  প্রদান করা হবে নাহ ।{" "}
+                                </li>
+                                <li>
+                                  ৪। আপনার যে কোন অসংগতি ব্যবহারের জন্য
+                                  কর্তৃপক্ষ আপনার ভর্তি বাতিল করতে পারে ।{" "}
+                                </li>
+                              </ul>
+                            </div>
+                            <hr></hr>
+                            {/* Signature */}
+                            <div className="flex flex-row justify-between p-5 text-center">
+                              <div>
+                                <p>{/* {watch('payment_received')} */}Atif Islam</p>
+                                <Separator className="my-2" />
+                                <b>Received By</b>
+                              </div>
+                              <div>
+                                <p>সৈয়দ মুহীউদ্দীন ফাহাদ</p>
+                                <Separator className="my-2" />
+                                <b>Founder</b>
+                              </div>
+                            </div>
+                            <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 pt-2 justify-between bg-[#2b74ba] text-white">
+                              <div className="text-xs">
+                                <h1>|| {admin.inst_address} || </h1>
+                              </div>
+                              <div className="text-xs">
+                                <h1>|| {admin.inst_email} || </h1>
+                              </div>
+                              <div className="text-xs ">
+                                <h1>|| {admin.inst_phone} ||</h1>
+                              </div>
+                            </CardFooter>
+                            {/* End Footer */}
                         </Card>
                       </div>
                     </div>

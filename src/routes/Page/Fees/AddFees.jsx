@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
 import { useContext, useEffect, useState } from "react";
 import {
+  dateTime,
   fetchImageAndConvertToDataURI,
   getCount,
   getStudentById,
@@ -16,10 +23,12 @@ import { useForm } from "react-hook-form";
 import { Search } from "lucide-react";
 import { AuthContext } from "@/Providers/AuthProvider";
 import Alert from "@/components/app_components/Alert";
+import { usePDF } from "react-to-pdf";
+
 
 const AddFees = () => {
   const { admin } = useContext(AuthContext);
-
+  const { targetRef } = usePDF();
   const { register, handleSubmit } = useForm();
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
@@ -64,7 +73,7 @@ const AddFees = () => {
       {
         loading: "Searching....",
         success: <b>Found!</b>,
-        error: (error) => <b>{error.message}</b>,
+        error: (error) => <b>No Data Found</b>,
       }
     );
 
@@ -75,7 +84,7 @@ const AddFees = () => {
 
     loadImageDataURI();
   };
-
+  console.log(student);
   const onSubmit = (data) => {
     data = {
       regular_fee: regularFee,
@@ -94,6 +103,7 @@ const AddFees = () => {
         .then((data) => {
           console.log(data);
           // SetLoadData(true)
+          //setIsData(false)
           if (data.err) {
             throw new Error("Something went wrong!");
           }
@@ -101,7 +111,7 @@ const AddFees = () => {
       {
         loading: "Searching....",
         success: <b>Fee added successfully!</b>,
-        error: (error) => <b>{error.message}</b>,
+        error: (error) => <b>No Data Found</b>,
       }
     );
   };
@@ -129,6 +139,7 @@ const AddFees = () => {
                 type="text"
                 id="idNumber"
                 placeholder="ID Search..."
+                required
               />
               <Button size="sm">
                 <Search size={18} /> <span className="ml-2">Search</span>
@@ -142,7 +153,7 @@ const AddFees = () => {
                 className="border p-5 rounded-lg"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-4 gap-3">
                   <label htmlFor="Name" className="md:col-span-1">
                     Regular Fee
                     <Input
@@ -172,7 +183,7 @@ const AddFees = () => {
                       placeholder="Fine"
                     />
                   </label>
-                  <label htmlFor="Present Address" className="md:col-span-1">
+                  {/*   <label htmlFor="Present Address" className="md:col-span-1">
                     Transport Fee
                     <Input
                       {...register("transport_fee")}
@@ -185,7 +196,7 @@ const AddFees = () => {
                       name="transport_fee"
                       placeholder="Transport Fee"
                     />
-                  </label>
+                  </label> */}
 
                   <label htmlFor="Permanent Address" className="md:col-span-1">
                     ID Card Fee
@@ -201,7 +212,7 @@ const AddFees = () => {
                       placeholder="ID Card Fee"
                     />
                   </label>
-                  <label htmlFor="Email" className="md:col-span-1">
+                  {/* <label htmlFor="Email" className="md:col-span-1">
                     Uniform Fee
                     <Input
                       {...register("uniform_fee")}
@@ -214,7 +225,7 @@ const AddFees = () => {
                       name="uniform_fee"
                       placeholder="Uniform Fee"
                     />
-                  </label>
+                  </label> */}
                   <label htmlFor="Date of Birth" className="md:col-span-1">
                     Others
                     <Input
@@ -229,7 +240,7 @@ const AddFees = () => {
                       placeholder="Others"
                     />
                   </label>
-                  <label htmlFor="discount_fee" className="md:col-span-1">
+                  {/*  <label htmlFor="discount_fee" className="md:col-span-1">
                     Discount Fee
                     <Input
                       {...register("discount_fee")}
@@ -242,7 +253,7 @@ const AddFees = () => {
                       name="discount_fee"
                       placeholder="Discount Fee"
                     />
-                  </label>
+                  </label> */}
                 </div>
                 <Button size="sm" className="mt-5">
                   Submit
@@ -253,17 +264,20 @@ const AddFees = () => {
           )}
         </div>
         {isData && student && (
-          <div>
+          <div ref={targetRef}>
             <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
               <CardHeader className="flex flex-row items-start bg-muted/50">
                 <div className="flex flex-col items-center w-full">
                   <img className="h-10" src={imageDataURI}></img>
                   {admin && (
                     <div className="mt-3 text-center">
-                      <div className="font-bold text-xl">{admin.inst_name}</div>
+                      {/* <div className="font-bold text-xl">{admin.inst_name}</div> */}
                       <div className="font-bold text-sm">
                         EIIN: {admin.inst_eiin}
                       </div>
+                      <CardDescription>
+                        Date: {dateTime(new Date())}
+                      </CardDescription>
                       <div className="font-bold mt-2">
                         Payment Money Reciept
                       </div>
@@ -283,31 +297,23 @@ const AddFees = () => {
                       <span>{student.name}</span>
                     </li>
                     <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Class</span>
+                      <span className="text-muted-foreground">Course Name</span>
                       <span>{student.class.name}</span>
                     </li>
 
                     {student.section && (
                       <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Section</span>
+                        <span className="text-muted-foreground">
+                          Course Batch
+                        </span>
                         <span>{student.section.name}</span>
                       </li>
                     )}
                     <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">#ID</span>
+                      <span className="text-muted-foreground">
+                        Student Id No
+                      </span>
                       <span>{student.id_no}</span>
-                    </li>
-                    {student.group && (
-                      <li className="flex items-center justify-between">
-                        <span className="text-muted-foreground font-semibold">
-                          Group
-                        </span>
-                        <span className="uppercase">{student.group}</span>
-                      </li>
-                    )}
-                    <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Session</span>
-                      <span>{student.session}</span>
                     </li>
                   </ul>
                 </div>
@@ -328,33 +334,15 @@ const AddFees = () => {
                       </dd>
                     </div>
                     <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Transport Fee</dt>
-                      <dd className="font-semibold">
-                        {transportFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">ID Card Fee</dt>
                       <dd className="font-semibold">
                         {idCardFee.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
                     <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Uniform Fee</dt>
-                      <dd className="font-semibold">
-                        {uniformFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Others</dt>
                       <dd className="font-semibold">
                         {othersFee.toString().padStart(2, "0")} ৳
-                      </dd>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <dt className="text-muted-foreground">Discount Fee</dt>
-                      <dd className="font-semibold">
-                        {discountFee.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
                   </dl>
@@ -377,7 +365,7 @@ const AddFees = () => {
                 </div>
                 <div className="flex items-center justify-between mt-3 font-bold">
                   <dt className="text-muted-foreground text-red-700">
-                    Course/Class fee (৳)
+                    Course fee (৳)
                   </dt>
                   <dd className="font-bold">{student.class.fee} ৳</dd>
                 </div>
@@ -398,6 +386,33 @@ const AddFees = () => {
                   </dd>
                 </div>
               </CardContent>
+              <hr></hr>
+              {/* Admission Condition */}
+              {/* Signature */}
+              <div className="flex flex-row justify-between p-5 text-center">
+                <div>
+                  <p>{/* {watch('payment_received')} */}Atif Islam</p>
+                  <Separator className="my-2" />
+                  <b>Received By</b>
+                </div>
+                <div>
+                  <p>সৈয়দ মুহীউদ্দীন ফাহাদ</p>
+                  <Separator className="my-2" />
+                  <b>Founder</b>
+                </div>
+              </div>
+              <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 pt-2 justify-between bg-[#2b74ba] text-white">
+                <div className="text-xs">
+                  <h1>|| {admin.inst_address} || </h1>
+                </div>
+                <div className="text-xs">
+                  <h1>|| {admin.inst_email} || </h1>
+                </div>
+                <div className="text-xs ">
+                  <h1>|| {admin.inst_phone} ||</h1>
+                </div>
+              </CardFooter>
+              {/* End Footer */}
             </Card>
           </div>
         )}

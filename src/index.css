@@ -253,3 +253,12 @@
 .\[\&\:has\(\[aria-selected\]\)\]\:bg-accent:has([aria-selected]) {
   background-color: none !important;
 }
+
+
+
+/* Admission Pay Slip */
+.admission-pay-slip{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

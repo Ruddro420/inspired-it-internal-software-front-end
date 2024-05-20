@@ -276,7 +276,7 @@ const Dashboard = () => {
                     </NavLink>
                     <NavLink
                       to="/dashboard/id-cards"
-                      className={`flex items-center rounded-lg px-3 py-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
+                      className={`flex items-center rounded-lg px-3 py-1 mb-1 ml-3 text-muted-foreground transition-all hover:text-white hover:bg-primary`}
                       onClick={() => setSelectedMenu("id-cards")}
                     >
                       <Dot className="h-8 w-8 hover:bg-[#f2f2f2]" />

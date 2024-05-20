@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+} from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
 import { useContext, useEffect, useState } from "react";
 import {
+  dateTime,
   fetchImageAndConvertToDataURI,
   getCount,
   getTeacherOrStaffById,
@@ -44,16 +50,14 @@ const PaySalary = () => {
       .then((data) => setCheckData(data));
   }, [setCheckData]);
 
-  console.log(checkData);
-
   //const [dataLoad,SetLoadData] = useState(false)
 
   const [imageDataURI, setImageDataURI] = useState(null);
 
   const feeDataHandler = (e) => {
     e.preventDefault();
-    console.log(e.target.id_no.value)
-    setEmployeeType(e.target.employee.value)
+    console.log(e.target.id_no.value);
+    setEmployeeType(e.target.employee.value);
 
     toast.promise(
       getTeacherOrStaffById(e.target.id_no.value, e.target.employee.value)
@@ -65,7 +69,6 @@ const PaySalary = () => {
           setEmployee(data);
           setEmployeeId(data.id);
           setIsData(true);
-          
         }),
       {
         loading: "Searching....",
@@ -90,7 +93,7 @@ const PaySalary = () => {
         staffId: employeeId,
       };
       toast.promise(
-        SalaryAdd(data, 'Staff')
+        SalaryAdd(data, "Staff")
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -112,7 +115,7 @@ const PaySalary = () => {
         teacherId: employeeId,
       };
       toast.promise(
-        SalaryAdd(data, 'Teacher')
+        SalaryAdd(data, "Teacher")
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -129,23 +132,24 @@ const PaySalary = () => {
     }
   };
 
+  console.log(employee);
   return (
     <>
       <div className="grid grid-cols-3 gap-3">
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-3">Pay Salary</h1>
           {checkData.teacher != 0 || checkData.staff != 0 ? (
-          <form
-            className="mb-5 flex items-center gap-2"
-            onSubmit={feeDataHandler}
-          >
-            <Input
-              className="max-w-[200px]"
-              type="text"
-              id="id"
-              name="id_no"
-              placeholder="ID"
-            />
+            <form
+              className="mb-5 flex items-center gap-2"
+              onSubmit={feeDataHandler}
+            >
+              <Input
+                className="max-w-[200px]"
+                type="text"
+                id="id"
+                name="id_no"
+                placeholder="ID"
+              />
 
               <label htmlFor="type">
                 <Select id="type" name="employee" required>
@@ -192,6 +196,8 @@ const PaySalary = () => {
                       name="monthly_salary"
                       required
                       placeholder="Monthly Salary"
+                      value={employee.fixed_salary}
+                      disabled
                     />
                   </label>
                   <label htmlFor="Mobile Number" className="md:col-span-1">
@@ -225,10 +231,13 @@ const PaySalary = () => {
                   <img className="h-10" src={imageDataURI}></img>
                   {admin && (
                     <div className="mt-3 text-center">
-                      <div className="font-bold text-xl">{admin.inst_name}</div>
+                      {/*  <div className="font-bold text-xl">{admin.inst_name}</div> */}
                       <div className="font-bold text-sm">
                         EIIN: {admin.inst_eiin}
                       </div>
+                      <CardDescription>
+                        Date: {dateTime(new Date())}
+                      </CardDescription>
                       <div className="font-bold mt-2">
                         Payment Money Reciept
                       </div>
@@ -239,7 +248,7 @@ const PaySalary = () => {
               <CardContent className=" text-sm">
                 <div className="grid gap-3">
                   <Separator className="my-2" />
-                  <div className="font-semibold">Employee Infromation</div>
+                  <div className="font-semibold">Employee Information</div>
                   <ul className="grid gap-3 font-semibold">
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">
@@ -249,7 +258,9 @@ const PaySalary = () => {
                     </li>
 
                     <li className="flex items-center justify-between">
-                      <span className="text-muted-foreground">#ID</span>
+                      <span className="text-muted-foreground">
+                        Instructor Id No
+                      </span>
                       <span>{employee.id_no}</span>
                     </li>
                   </ul>

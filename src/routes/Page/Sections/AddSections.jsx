@@ -32,7 +32,7 @@ const AddSections = () => {
         return res.json();
       }),
       {
-        loading: "Creating section...",
+        loading: "Creating section...", 
         success: <b>Successfully created!</b>,
         error: <b>Failed to create section.</b>,
       }
@@ -73,19 +73,19 @@ const AddSections = () => {
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <label htmlFor="name" className="md:col-span-1">
-                Name/Batch No
+                Batch No
                 <Input
                   {...register("name", { required: true })}
-                  type="text"
+                  type="number"
                   id="name"
-                  placeholder="Batch No/Name"
+                  placeholder="Batch No"
                   disabled={classes.length === 0 ? true : false}
                   required
                 />
               </label>
 
               <label htmlFor="Class">
-                Class/Course Name
+                Course Name
                 <Select
                   onValueChange={(value) => setValue("classId", value)}
                   id="Class"
@@ -93,7 +93,7 @@ const AddSections = () => {
                   required
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Course Name/Class" />
+                    <SelectValue placeholder="Select Course Name" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>

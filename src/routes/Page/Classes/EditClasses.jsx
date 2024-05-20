@@ -22,53 +22,49 @@ const EditClasses = () => {
         console.log(err);
       });
   }, [classId]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setClasses((prevClasses) => ({
+      ...prevClasses,
+      [name]: value,
+    }));
+  };
   console.log(classes);
   return (
     <div style={{ overflow: "hidden" }}>
-      <h1 className="text-2xl font-bold mb-3">Add Class/Batch</h1>
+      <h1 className="text-2xl font-bold mb-3">Update Data</h1>
       {!isData ? (
         <Loading />
       ) : (
         <form className="border p-5 rounded">
-          <div className="grid grid-cols-1 md:grid-cols-3 mt-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 mt-3 gap-4">
             <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-              Class/Batch Name
+              Batch Name
               <Input
                 //{...register("name", { required: true })}
                 type="text"
                 name="name"
                 placeholder="Class/Batch Name"
-                value={classes.name}
+                value={classes.name || ""}
+                onChange={handleChange}
               />
             </label>
             <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-              Tuition/Course Fee
+              Course Fee
               <Input
                 //{...register("fee", { required: true })}
                 type="number"
                 name="fee"
                 placeholder="Tuition Fee"
-                value={classes.fee}
-              />
-            </label>
-            <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-              Section
-              <Input
-                //{...register("fee", { required: true })}
-                type="text"
-                name="section"
-                placeholder="Section"
-                value={
-                  classes.sections && classes.sections.length > 0
-                    ? classes.sections[0].name
-                    : "N/A"
-                }
+                value={classes.fee || ""}
+                onChange={handleChange}
               />
             </label>
           </div>
 
           <Button type="submit" className="mt-3">
-            Update Class/Batch
+            Update Data
           </Button>
         </form>
       )}

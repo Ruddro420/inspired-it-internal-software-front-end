@@ -56,7 +56,7 @@ export default function IdCards() {
           return res.json();
         })
         .then((d) => {
-          // console.log(d);
+          setStudent("");
           if (!d) throw new Error("Student not found!");
           if (d.err) throw new Error(d.err);
           setStudent(d);
@@ -64,7 +64,7 @@ export default function IdCards() {
       {
         loading: "Generating...",
         success: <b>Generated!</b>,
-        error: (error) => <b>{error.message}</b>,
+        error: (error) => <b>No Data Found</b>,
       }
     );
 
@@ -103,6 +103,7 @@ export default function IdCards() {
     loadImageDataURI();
   }, []);
 
+  console.log(student);
 
   return (
     <>
@@ -232,7 +233,9 @@ export default function IdCards() {
                 </div>
                 <div className="mt-1 text-md">{student.class.name}</div>
                 {student.section && (
-                  <div className="mt-1 text-md">Batch-{student.section.name}</div>
+                  <div className="mt-1 text-md">
+                    Batch-{student.section.name}
+                  </div>
                 )}
                 <div className="mt-1 text-md ">
                   ID: <b>{student.id_no}</b>

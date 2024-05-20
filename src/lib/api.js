@@ -345,6 +345,17 @@ const accountReportByDate = (startDate, endDate) => {
   );
 };
 
+/* Salary Report By Date */
+
+const salaryReportByDate = (startDate, endDate) => {
+  return fetch(api_key + `salaries?startDate=${startDate}&endDate=${endDate}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+};
+
 //count
 const getCount = () => {
   return fetch(api_key + "count", {
@@ -531,5 +542,6 @@ export {
   SalaryAdd,
   getCount,
   accountReportByDate,
-  deleteAccounts
+  deleteAccounts,
+  salaryReportByDate
 };

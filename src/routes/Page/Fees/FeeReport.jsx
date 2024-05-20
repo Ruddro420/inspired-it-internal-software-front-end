@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { accountReportByDate, salaryReportByDate } from "@/lib/api";
-import GenerateSallaryReport from "./GenerateSallaryReport";
-const SalaryReport = () => {
+import GenerateFeeReport from "./GenerateFeeReport";
+const FeeReport = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [reportData, setReportData] = useState([]);
@@ -70,7 +70,7 @@ const SalaryReport = () => {
         </form>
       </div>
       {/* View Account */}
-      <GenerateSallaryReport
+      <GenerateFeeReport
         reportData={reportData}
         start={start}
         end={end}
@@ -81,4 +81,4 @@ const SalaryReport = () => {
   );
 };
 
-export default SalaryReport;
+export default FeeReport;
