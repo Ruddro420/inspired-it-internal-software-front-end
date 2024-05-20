@@ -1,5 +1,6 @@
 import Alert from "@/components/app_components/Alert";
 import Loading from "@/components/app_components/Loading";
+import Spinner from "@/components/app_components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,10 +18,11 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const AddSections = () => {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, watch } = useForm();
 
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = (data) => {
     toast.promise(
@@ -29,6 +31,7 @@ const AddSections = () => {
         if (!res.ok) {
           throw new Error("Failed to create class");
         }
+        getClass(watch('classId'))
         return res.json();
       }),
       {
@@ -40,6 +43,7 @@ const AddSections = () => {
   };
 
   useEffect(() => {
+    
     getClasses()
       .then((res) => res.json())
       .then((data) => {
@@ -54,11 +58,14 @@ const AddSections = () => {
 
 
   const getClass = (id) => {
+    setValue("name", "Loading...")
+    setIsLoading(true)
     getClassById(id)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data.sections);
         setValue('name', data.sections.length + 1)
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err);
@@ -117,7 +124,7 @@ const AddSections = () => {
                 Batch No
                 <Input
                   {...register("name", { required: true })}
-                  type="number"
+                  type="text"
                   id="name"
                   placeholder="Batch No"
                   disabled={true}
@@ -125,13 +132,19 @@ const AddSections = () => {
                 />
               </label>
             </div>
-            <Button
+            {isLoading ? <Button
               size="sm"
-              className="h-8 gap-1 mt-5"
-              disabled={classes.length === 0 ? true : false}
+              className="h-8 mt-5 flex items-center gap-2"
+              disabled={true}
             >
-              Add Batch
-            </Button>
+             <Spinner styles="h-4 w-4"/> Add Batch
+            </Button> : <Button
+            size="sm"
+            className="h-8 gap-1 mt-5"
+            disabled={classes.length === 0 ? true : false}
+          >
+            Add Batch
+          </Button>}
           </form>
         </div>
       )}

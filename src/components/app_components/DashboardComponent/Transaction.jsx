@@ -51,7 +51,7 @@ const Transaction = () => {
     getData('transactions/all')
     .then(res=>res.json())
     .then(data=> {
-      console.log(data)
+      // console.log(data)
       setTransactions(data)
       setIsData(true)
       
