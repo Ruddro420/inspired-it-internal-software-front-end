@@ -34,7 +34,7 @@ const AddSections = () => {
       {
         loading: "Creating section...", 
         success: <b>Successfully created!</b>,
-        error: <b>Failed to create section.</b>,
+        error: <b>Failed to create</b>,
       }
     );
   };
