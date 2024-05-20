@@ -34,7 +34,7 @@ import Alert from "@/components/app_components/Alert";
 const PaySalary = () => {
   const { admin } = useContext(AuthContext);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [employee, setEmployee] = useState(null);
   const [isData, setIsData] = useState(false);
   const [employeeId, setEmployeeId] = useState(null);
@@ -66,6 +66,7 @@ const PaySalary = () => {
           if (!data) {
             throw new Error("Employee not Found!");
           }
+          setValue("monthly_salary", data.fixed_salary);
           setEmployee(data);
           setEmployeeId(data.id);
           setIsData(true);
@@ -86,10 +87,11 @@ const PaySalary = () => {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     if (employeeType == "staff") {
       data = {
-        monthly_salary: monthlySalary,
-        bonus: bonus,
+        monthly_salary: parseFloat(data.monthly_salary),
+        bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         staffId: employeeId,
       };
       toast.promise(
@@ -110,8 +112,8 @@ const PaySalary = () => {
       );
     } else {
       data = {
-        monthly_salary: monthlySalary,
-        bonus: bonus,
+        monthly_salary:  parseFloat(data.monthly_salary),
+        bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         teacherId: employeeId,
       };
       toast.promise(
@@ -187,16 +189,12 @@ const PaySalary = () => {
                     Monthly Salary
                     <Input
                       {...register("monthly_salary", { required: true })}
-                      onChange={(e) =>
-                        setMonthlySalary(
-                          !e.target.value == "" ? parseFloat(e.target.value) : 0
-                        )
-                      }
+                      
                       type="number"
                       name="monthly_salary"
                       required
                       placeholder="Monthly Salary"
-                      value={employee.fixed_salary}
+                      //value={employee.fixed_salary}
                       disabled
                     />
                   </label>
@@ -272,7 +270,7 @@ const PaySalary = () => {
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Monthly Salary</dt>
                       <dd className="font-semibold">
-                        {monthlySalary.toString().padStart(2, "0")} ৳
+                        {employee.fixed_salary.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
                     <div className="flex items-center justify-between">
@@ -288,7 +286,7 @@ const PaySalary = () => {
                   <dt className="text-muted-foreground font-bold">
                     Paying This Time (৳)
                   </dt>
-                  <dd className="font-bold">{monthlySalary + bonus}৳</dd>
+                  <dd className="font-bold">{employee.fixed_salary + bonus}৳</dd>
                 </div>
               </CardContent>
             </Card>

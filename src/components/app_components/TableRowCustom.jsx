@@ -28,6 +28,7 @@ const TableRowCustom = ({ data, handleDelete, nameFile }) => {
           width="64"
         />
       </TableCell>
+      <TableCell className="font-medium">{id_no}</TableCell>
       <TableCell className="font-medium">{name}</TableCell>
       <TableCell>{phone}</TableCell>
       {/* <TableCell className="hidden md:table-cell">
