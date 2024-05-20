@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getClasses, sectionAdd } from "@/lib/api";
+import { getClassById, getClasses, sectionAdd } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -45,11 +45,25 @@ const AddSections = () => {
       .then((data) => {
         setClasses(data);
         setIsData(true);
+        
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+
+  const getClass = (id) => {
+    getClassById(id)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data.sections);
+        setValue('name', data.sections.length + 1)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <>
@@ -72,22 +86,14 @@ const AddSections = () => {
               />
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-              <label htmlFor="name" className="md:col-span-1">
-                Batch No
-                <Input
-                  {...register("name", { required: true })}
-                  type="number"
-                  id="name"
-                  placeholder="Batch No"
-                  disabled={classes.length === 0 ? true : false}
-                  required
-                />
-              </label>
-
               <label htmlFor="Class">
                 Course Name
                 <Select
-                  onValueChange={(value) => setValue("classId", value)}
+                  onValueChange={(value) =>{ 
+                    setValue("classId", value)
+                    getClass(value)
+
+                  }}
                   id="Class"
                   disabled={classes.length === 0 ? true : false}
                   required
@@ -106,6 +112,17 @@ const AddSections = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </label>
+              <label htmlFor="name" className="md:col-span-1">
+                Batch No
+                <Input
+                  {...register("name", { required: true })}
+                  type="number"
+                  id="name"
+                  placeholder="Batch No"
+                  disabled={true}
+                  required
+                />
               </label>
             </div>
             <Button

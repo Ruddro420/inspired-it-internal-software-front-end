@@ -1,8 +1,6 @@
-import { ArrowUpRight, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 import { TbCurrencyTaka } from "react-icons/tb";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,13 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link,  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { dateTime, formDate, getStudentById } from "@/lib/api";
+import { dateTime,  getStudentById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
-import Spinner from "@/components/app_components/Spinner";
+// import Spinner from "@/components/app_components/Spinner";
 
 const StudentProfile = () => {
   const [student, setStudent] = useState(null);
@@ -43,6 +41,7 @@ const StudentProfile = () => {
       .then((data) => {
         setStudent(data);
         setIsData(true);
+        console.log(data.admissionFee)
         
         setAdmissionFee(data.admissionFee)
         setRegularFee(data.regularFee)
@@ -140,7 +139,7 @@ const StudentProfile = () => {
                           admissionFee.map(fee=>
                             <TableRow key={fee.id}>
                             <TableCell>
-                              <div className="font-medium">Admission Fee</div>
+                              <div className="font-medium">{fee.readmission ? "Re-Admission Fee" : "Admission Fee"}</div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
                                 {dateTime(new Date(fee.collectionDate))}
                               </div>
@@ -156,7 +155,15 @@ const StudentProfile = () => {
                           regularFee.map(fee=>
                             <TableRow key={fee.id}>
                             <TableCell>
-                              <div className="font-medium">Regular Fee</div>
+                              <div className="font-medium">
+                                {fee.regular_fee > 0 ? "Regular Fee " : ""}
+                                {(fee.regular_fee !== 0 && fee.id_card_fee !== 0) ? "+" : ""}
+                                {fee.id_card_fee > 0 ?  " ID Card" : ""}
+                                {(fee.id_card_fee !== 0 && fee.fine_fee !== 0) ? "+" : ""}
+                                {fee.fine  > 0 ?  " Fine" : ""}
+                                {(fee.fine !== 0 && fee.others_fee !== 0) ? "+" : ""}
+                                {fee.others_fee  > 0 ?  " Other" : ""}
+                              </div>
                               <div className="hidden text-sm text-muted-foreground md:inline">
                                 {dateTime(new Date(fee.collectionDate))}
                               </div>
