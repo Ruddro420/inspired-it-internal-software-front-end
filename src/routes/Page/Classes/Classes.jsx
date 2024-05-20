@@ -111,7 +111,7 @@ export default function Class() {
               <TabsContent value="all">
                 <Card x-chunk="dashboard-06-chunk-0">
                   <CardHeader>
-                    <CardTitle>Classes/Courses</CardTitle>
+                    <CardTitle>Courses</CardTitle>
                     <CardDescription>Manage your classes here.</CardDescription>
                   </CardHeader>
                   {classes.length == 0 ? (
@@ -126,8 +126,8 @@ export default function Class() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Class/Batch Name</TableHead>
-                            <TableHead>Section(s)/Batch</TableHead>
+                            <TableHead>Course</TableHead>
+                            <TableHead>Batch</TableHead>
                             {/* <TableHead>Subject(s)</TableHead> */}
                             <TableHead>Tuition Fee</TableHead>
                             {/* <TableHead className="hidden md:table-cell">

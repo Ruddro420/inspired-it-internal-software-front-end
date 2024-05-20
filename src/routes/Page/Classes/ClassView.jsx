@@ -2,8 +2,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PiStudent } from "react-icons/pi";
 import { MdOutlineSafetyDivider } from "react-icons/md";
-import { IoBookOutline } from "react-icons/io5";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -127,7 +126,7 @@ const ClassView = () => {
             <Card x-chunk="dashboard-01-chunk-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Total Batch / Sections
+                  Total Batches
                 </CardTitle>
                 <MdOutlineSafetyDivider className="h-6 w-6 text-muted-foreground" />
               </CardHeader>

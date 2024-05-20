@@ -607,7 +607,7 @@ const AddStudents = () => {
                                     </SelectTrigger>
                                     <SelectContent>
                                       <SelectGroup>
-                                        <SelectLabel>Select Class</SelectLabel>
+                                        <SelectLabel>Class - Batch</SelectLabel>
                                         {cands.map((cs) => (
                                           <SelectItem
                                             key={cs.name}
@@ -736,7 +736,7 @@ const AddStudents = () => {
                                   htmlFor="B/C Number"
                                   className="md:col-span-1"
                                 >
-                                  B/C No./NID No.
+                                  B/C No. or NID No.
                                   <Input
                                     {...register("birth_certificate_no", {
                                       required: true,
@@ -744,7 +744,7 @@ const AddStudents = () => {
                                     type="number"
                                     required
                                     name="birth_certificate_no"
-                                    placeholder="Birth Certificate Number"
+                                    placeholder="NID or Birth certificate number"
                                   />
                                 </label>
                                 <label
@@ -781,7 +781,7 @@ const AddStudents = () => {
                                   htmlFor="Local Guardians"
                                   className="md:col-span-1"
                                 >
-                                  L-Guardian Name
+                                  Local Guardian&apos;s Name
                                   <Input
                                     {...register("local_guardian", {
                                       required: true,
@@ -796,7 +796,7 @@ const AddStudents = () => {
                                   htmlFor="Local Guardians Phone Number"
                                   className="md:col-span-1"
                                 >
-                                  L Guardian&apos;s Phone
+                                  Local Guardian&apos;s Phone
                                   <Input
                                     {...register("local_guardian_phone", {
                                       required: true,
@@ -933,11 +933,11 @@ const AddStudents = () => {
                                   required
                                 >
                                   <SelectTrigger>
-                                    <SelectValue placeholder="Select Class & Section" />
+                                    <SelectValue placeholder="Select Course & Batch" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     <SelectGroup>
-                                      <SelectLabel>Select Class</SelectLabel>
+                                      <SelectLabel>Course - Batch</SelectLabel>
                                       {cands.map((cs) => (
                                         <SelectItem
                                           key={cs.name}
@@ -1182,14 +1182,14 @@ const AddStudents = () => {
                                 </li>
                                 <li className="flex items-center justify-between">
                                   <span className="text-muted-foreground">
-                                    Class
+                                    Course
                                   </span>
                                   <span> {class_} </span>
                                 </li>
                                 {sec && (
                                   <li className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
-                                      Section
+                                      Batch
                                     </span>
                                     <span> {sec} </span>
                                   </li>
@@ -1201,7 +1201,7 @@ const AddStudents = () => {
                                   <span> {watch("id_no")} </span>
                                 </li>
 
-                                <li className="flex items-center justify-between">
+                                <li className=" items-center justify-between hidden">
                                   <span className="text-muted-foreground">
                                     Session
                                   </span>
@@ -1275,9 +1275,8 @@ const AddStudents = () => {
                                     Total
                                   </span>
                                   <span>
-                                    {fee +
-                                      other -
-                                      (fee + other) * (discount / 100)}
+                                    {
+                                      (fee + other) - discount}
                                   </span>
                                 </li>
                               </ul>
@@ -1358,14 +1357,14 @@ const AddStudents = () => {
                                 </li>
                                 <li className="flex items-center justify-between">
                                   <span className="text-muted-foreground">
-                                    Class
+                                    Course
                                   </span>
                                   <span> {class_} </span>
                                 </li>
                                 {sec && (
                                   <li className="flex items-center justify-between">
                                     <span className="text-muted-foreground">
-                                      Section
+                                      Batch
                                     </span>
                                     <span> {sec} </span>
                                   </li>
@@ -1386,7 +1385,7 @@ const AddStudents = () => {
                                 </li>
                                 <li className="flex items-center justify-between font-semibold">
                                   <span>Discount(Flat)</span>
-                                  <span>{discount}%</span>
+                                  <span>{discount} tk</span>
                                 </li>
 
                                 <li className="flex items-center justify-between font-semibold">

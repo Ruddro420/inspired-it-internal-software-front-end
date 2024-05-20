@@ -73,19 +73,19 @@ const AddSections = () => {
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <label htmlFor="name" className="md:col-span-1">
-                Name/Batch No
+                Batch
                 <Input
                   {...register("name", { required: true })}
                   type="text"
                   id="name"
-                  placeholder="Batch No/Name"
+                  placeholder="Batch"
                   disabled={classes.length === 0 ? true : false}
                   required
                 />
               </label>
 
               <label htmlFor="Class">
-                Class/Course Name
+               Course Name
                 <Select
                   onValueChange={(value) => setValue("classId", value)}
                   id="Class"
@@ -93,11 +93,11 @@ const AddSections = () => {
                   required
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Course Name/Class" />
+                    <SelectValue placeholder="Select Course" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Course Name/Class</SelectLabel>
+                      <SelectLabel>Select Course</SelectLabel>
                       {classes.map((cls) => (
                         <SelectItem key={cls.id} value={cls.id.toString()}>
                           {cls.name}
