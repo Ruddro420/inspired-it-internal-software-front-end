@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { accountReportByDate, salaryReportByDate } from "@/lib/api";
+import { feeReportByDate } from "@/lib/api";
 import GenerateFeeReport from "./GenerateFeeReport";
 const FeeReport = () => {
   const [start, setStart] = useState("");
@@ -13,7 +13,7 @@ const FeeReport = () => {
   //useEffect(() => {}, [end, start]);
   const reportHandler = (e) => {
     e.preventDefault();
-    salaryReportByDate(start, end)
+    feeReportByDate(start, end)
       .then((res) => res.json())
       .then((data) => setReportData(data));
   };

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { accountReportByDate, salaryReportByDate } from "@/lib/api";
+import { salaryReportByDate } from "@/lib/api";
 import GenerateSallaryReport from "./GenerateSallaryReport";
 const SalaryReport = () => {
   const [start, setStart] = useState("");
@@ -21,25 +21,23 @@ const SalaryReport = () => {
   useEffect(() => {
     // Calculate total income
     const totalIncome = reportData.reduce((acc, curr) => {
-      if (curr.type === "income") {
-        return acc + parseFloat(curr.amount);
-      } else {
-        return acc;
-      }
+      return acc + parseFloat(curr.monthly_salary)
     }, 0);
     console.log(totalIncome);
     setIncome(totalIncome);
 
     // Calculate total expense
-    const totalExpense = reportData.reduce((acc, curr) => {
+    /*    const totalExpense = reportData.reduce((acc, curr) => {
       if (curr.type === "expense") {
         return acc + parseFloat(curr.amount);
       } else {
         return acc;
       }
     }, 0);
-    setExpense(totalExpense);
+    setExpense(totalExpense); */
   }, [reportData]);
+
+  //console.log((reportData,start,end));
   return (
     <>
       {" "}
@@ -75,7 +73,6 @@ const SalaryReport = () => {
         start={start}
         end={end}
         income={income}
-        expense={expense}
       />
     </>
   );

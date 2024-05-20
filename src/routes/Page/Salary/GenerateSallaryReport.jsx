@@ -15,7 +15,7 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
     // setTimeout(() => {
     //const id = parseInt(document.getElementById("student_id2").value);
     generatePDF(targetRef, {
-      filename: `TRANSACTION_REPORT.pdf`,
+      filename: `SALARY_REPORT.pdf`,
       method: open,
       resolution: Resolution.HIGH,
       page: {
@@ -40,7 +40,7 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                     <div className="flex justify-center mt-2 mx-auto items-center">
                       <div className="text-center">
                         <h1 className="text-4xl font-bold	mb-5">
-                          Account Report
+                          Salary Report
                         </h1>
                       </div>
                     </div>
@@ -57,26 +57,22 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                           <div key={item.id}>
                             <b>DATE</b>
                             <p>=========</p>
-                            <p>{dateTime(new Date(item.date))}</p>
+                            <p>{dateTime(new Date(item.paid_date))}</p>
                           </div>
                           <div>
-                            <b>TRN/TYPE</b>
+                            <b>TYPE</b>
                             <p>===================</p>
-                            <p>{item.transaction_type}</p>
+                            <p>Salary</p>
                           </div>
                           <div>
-                            <b>TRANSACTION PURPOSE</b>
+                            <b>SALARY HOLDER</b>
                             <p>===================</p>
-                            {item.type == "income" ? (
-                              <p>Income</p>
-                            ) : (
-                              <p>Expense</p>
-                            )}
+                            {item.teacher.name} - {item.teacher.id_no}
                           </div>
 
                           <div>
                             <b>BALANCE</b>
-                            <p>{item.amount} ৳</p>
+                            <p>{item.monthly_salary} ৳</p>
                           </div>
                         </div>
                       ))}
@@ -84,11 +80,10 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                       <div>
                         <div className="ml-6 flex justify-between border-b-2 border-black items-center font-bold align-middle"></div>
                         <div className="flex justify-between ml-6 border-b-2 border-black items-center font-bold">
-                          <p>TOTAL EXPENSE/INCOME</p>
+                          <p>TOTAL SALARY</p>
                           <div className="flex justify-between gap-6 lg:mr-20 mb-10 mt-10 ">
-                            <p className="lg:mr-16">EXPENSE: {expense} ৳</p>
-                            <p className="lg:mr-20">INCOME: {income} ৳</p>
-                            <p className="">TOTAL: {income - expense} ৳</p>
+                            <p className="lg:mr-16">EXPENSE: {income} ৳</p>
+                            <p className="">TOTAL: {income} ৳</p>
                           </div>
                         </div>
                       </div>
