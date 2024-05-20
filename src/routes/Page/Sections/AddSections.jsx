@@ -97,7 +97,7 @@ const AddSections = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Course Name/Class</SelectLabel>
+                      <SelectLabel>Select Course</SelectLabel>
                       {classes.map((cls) => (
                         <SelectItem key={cls.id} value={cls.id.toString()}>
                           {cls.name}
