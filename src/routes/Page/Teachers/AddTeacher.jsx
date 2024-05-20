@@ -223,8 +223,8 @@ const AddTeacher = () => {
           <>
             {classes.length == 0 ? (
               <Alert
-                title="You have not added class yet!"
-                subtitle="To add teachers, create class first!"
+                title="You have not added course yet!"
+                subtitle="To add teacher, create course first!"
                 link="/dashboard/add-classes"
                 linktitle="Add"
               />

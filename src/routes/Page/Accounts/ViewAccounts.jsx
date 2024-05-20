@@ -73,7 +73,7 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
               </CardHeader>
               <CardContent>
                 {account.length == 0 ? (
-                  <Alert title="No Data Found!" />
+                  <Alert title="No data found!" />
                 ) : (
                   <Table>
                     <TableHeader>

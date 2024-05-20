@@ -114,7 +114,7 @@ const AddFees = () => {
           {checkData == 0 ? (
             <Alert
               title="You have not added any Students yet!"
-              subtitle="Here you can manage students!"
+              subtitle="Here you can add fees!"
               link="/dashboard/add-students"
               linktitle="Add"
             />

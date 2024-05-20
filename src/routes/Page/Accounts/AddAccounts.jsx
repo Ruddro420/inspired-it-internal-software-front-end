@@ -49,11 +49,11 @@ const AddAccounts = () => {
     <>
       {" "}
       <div style={{ overflow: "hidden" }}>
-        <h1 className="text-2xl font-bold mb-3">Add Accounts</h1>
+        <h1 className="text-2xl font-bold mb-3">Add to Account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
           <div className="grid grid-cols-1 md:grid-cols-6 mt-3 gap-4">
             <label htmlFor="Name" className="md:col-span-1">
-              Name Of Purpose
+              Name of purpose
               <Input
                 type="text"
                 name="purpose"
@@ -80,7 +80,7 @@ const AddAccounts = () => {
               </Select>
             </label>
             <label htmlFor="Tuition Fee" className="md:col-span-1">
-              Transactions Type
+              Transactions type
               <Select
                 onValueChange={(value) => {
                   setCheckType(value);

@@ -116,8 +116,8 @@ export default function Class() {
                   </CardHeader>
                   {classes.length == 0 ? (
                     <Alert
-                      title="No class is added yet!"
-                      subtitle="You can manage your class after adding."
+                      title="No course is added yet!"
+                      subtitle="You can manage courses after adding them."
                       link="/dashboard/add-classes"
                       linktitle="Add"
                     />

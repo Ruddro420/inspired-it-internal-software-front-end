@@ -26,7 +26,7 @@ const GenerateReport = ({ reportData, start, end, income, expense }) => {
   return (
     <TooltipProvider>
       {reportData.length == 0 ? (
-        <Alert title="Please Select The Range Of The Report!" />
+        <Alert title="Please select the range of the report!" />
       ) : (
         <main className="">
           <Tabs defaultValue="all">

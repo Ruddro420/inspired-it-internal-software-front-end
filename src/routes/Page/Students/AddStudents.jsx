@@ -447,8 +447,8 @@ const AddStudents = () => {
                   </h1>
                   {cands.length == 0 ? (
                     <Alert
-                      title="You have not added class yet!"
-                      subtitle="To add students, create class first!"
+                      title="You have not added course yet!"
+                      subtitle="To add students, create course first!"
                       link="/dashboard/add-classes"
                       linktitle="Add"
                     />

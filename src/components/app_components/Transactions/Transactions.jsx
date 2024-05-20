@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import{ useEffect, useState } from "react";
 
 import {
   Table,
@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,

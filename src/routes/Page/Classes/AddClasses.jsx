@@ -49,16 +49,16 @@ const AddClasses = () => {
 
   return (
     <div style={{ overflow: "hidden" }}>
-      <h1 className="text-2xl font-bold mb-3">Add Class/Course Name </h1>
+      <h1 className="text-2xl font-bold mb-3">Add Course</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="border p-5 rounded">
         <div className="grid grid-cols-1 md:grid-cols-2 mt-3 gap-4">
           <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-            Class/Course Name
+            Course Name
             <Input
               {...register("name", { required: true })}
               type="text"
               name="name"
-              placeholder="Class/Course Name "
+              placeholder="Course Name "
             />
           </label>
           <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
@@ -73,7 +73,7 @@ const AddClasses = () => {
         </div>
 
         <Button type="submit" className="mt-3">
-          Add Class/Course
+          Add Course
         </Button>
       </form>
     </div>

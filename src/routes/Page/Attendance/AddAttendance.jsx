@@ -18,13 +18,12 @@ import {
   getStudentsByClassAndSection,
   setClassAbsent,
 } from "@/lib/api";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const AddAttendance = () => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
 
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
@@ -198,8 +197,8 @@ const AddAttendance = () => {
           >
             {classes.length == 0 && (
               <Alert
-                title="You have not added any class yet!"
-                subtitle="To create section, create class first!"
+                title="You have not added any course yet!"
+                subtitle="To create section, create course first!"
                 link="/dashboard/add-classes"
                 linktitle="Add"
               />
@@ -207,7 +206,7 @@ const AddAttendance = () => {
            
             <div className="grid grid-cols-1 md:grid-cols-3 mt-3 gap-4">
               <label htmlFor="Name" className="md:col-span-1">
-                Section/Batch No
+                Batch
                 <Select
                   onValueChange={(value) => setValue("classAndSection", value)}
                 >

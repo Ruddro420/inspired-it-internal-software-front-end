@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const AddSections = () => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
 
   const [classes, setClasses] = useState([]);
   const [isData, setIsData] = useState(false);
@@ -57,7 +57,7 @@ const AddSections = () => {
         <Loading />
       ) : (
         <div style={{ overflow: "hidden" }}>
-          <h1 className="text-2xl font-bold mb-3">Add Sections/Batch No</h1>
+          <h1 className="text-2xl font-bold mb-3">Add Batch</h1>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -65,8 +65,8 @@ const AddSections = () => {
           >
             {classes.length == 0 && (
               <Alert
-                title="You have not added class yet!"
-                subtitle="To create section, create class first!"
+                title="You have not added any course yet!"
+                subtitle="To create batch, create course first!"
                 link="/dashboard/add-classes"
                 linktitle="Add"
               />
@@ -113,7 +113,7 @@ const AddSections = () => {
               className="h-8 gap-1 mt-5"
               disabled={classes.length === 0 ? true : false}
             >
-              Add Section/Batch No
+              Add Batch
             </Button>
           </form>
         </div>

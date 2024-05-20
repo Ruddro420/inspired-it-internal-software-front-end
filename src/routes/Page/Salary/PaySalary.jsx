@@ -167,8 +167,8 @@ const PaySalary = () => {
             </form>
           ) : (
             <Alert
-              title="You have not added any Teachers/Staff yet!"
-              subtitle="Create Teachers and Staff First"
+              title="You have not added any Teacher or Staff yet!"
+              subtitle="Add Teacher or Staff first!"
             />
           )}
 

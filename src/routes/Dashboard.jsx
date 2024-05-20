@@ -12,7 +12,7 @@ import {
   Package2,
   Percent,
   Plus,
-  ShieldCheck,
+  // ShieldCheck,
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -227,7 +227,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("sections")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Batch No
+                      Add Batch
                     </NavLink>
                   </div>
                 ) : (
@@ -487,7 +487,7 @@ const Dashboard = () => {
                       onClick={() => setSelectedMenu("add-accounts")}
                     >
                       <Dot className="h-8 w-8" />
-                      Add Accounts
+                      Add to Account
                     </NavLink>
                     <NavLink
                       to="/dashboard/view-accounts-report"
