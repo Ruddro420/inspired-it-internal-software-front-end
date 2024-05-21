@@ -111,7 +111,6 @@ const AddStudents = () => {
             }, 1000);
             setTimeout(() => {
               setIsGenerate(false);
-              // updatedCount();
             }, 2000);
           }
         }),
@@ -257,7 +256,9 @@ const AddStudents = () => {
               studentId: d.created.id,
               readmission: true,
             });
-            idGenerate(watch("classId"));
+            setTimeout(()=> {
+              idGenerate(watch("classId"));
+            }, 3000)
             if (image) {
               uploadFile(d.created.id_no.toString());
             }

@@ -10,6 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -23,7 +35,20 @@ import { useEffect, useState } from "react";
 import { dateTime, deleteAccounts, getAccounts } from "@/lib/api";
 import toast from "react-hot-toast";
 import Alert from "@/components/app_components/Alert";
+import ShowDialog from "@/components/app_components/Dialog";
 const ViewAccounts = ({ dataLoad, setDataLoad }) => {
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const openModal = () => {
+    setIsOpen(true)
+  }
+  
+  const closeModal = () => {
+    setIsOpen(false)
+  }
+
+
   const [account, setAccount] = useState([]);
   /* Get Account Data */
   useEffect(() => {
@@ -41,16 +66,15 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
 
   /* Delete Class */
   const deleteHandler = (id) => {
-    // Prompt the user for confirmation
-    if (window.confirm("Are you sure you want to delete this?")) {
-      // If the user confirms, proceed with the deletion
       toast.promise(
         deleteAccounts(id).then((res) => {
           if (!res.ok) {
+            setIsOpen(false)
             throw new Error("Failed to delete!");
           }
           const acnt = account.filter((item) => item.id != id);
           setAccount(acnt);
+          setIsOpen(false)
           return res.json();
         }),
         {
@@ -59,17 +83,17 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
           error: <b>Failed to delete.</b>,
         }
       );
-    }
   };
 
   return (
     <TooltipProvider>
+    
       <main className="">
         <Tabs defaultValue="all">
           <TabsContent value="all">
             <Card x-chunk="dashboard-06-chunk-0">
               <CardHeader>
-                <CardTitle>View Account Details</CardTitle>
+                <CardTitle>Account Details</CardTitle>
               </CardHeader>
               <CardContent>
                 {account.length == 0 ? (
@@ -78,9 +102,9 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Name Of Purpose</TableHead>
+                        <TableHead>Purpose</TableHead>
                         <TableHead>Type</TableHead>
-                        <TableHead>Transactions Type</TableHead>
+                        <TableHead className="lg:block md:hidden">In</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead className="hidden md:table-cell">
                           Date
@@ -91,20 +115,20 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                       {account.map((item) => {
                         return (
                           <>
-                            <TableRow>
+                            <TableRow key={item.id}>
                               <TableCell className="font-medium">
                                 {item.purpose}
                               </TableCell>
                               <TableCell>{item.type}</TableCell>
-                              <TableCell>{item.transaction_type}</TableCell>
+                              <TableCell className="lg:block md:hidden">{item.transaction_type}</TableCell>
                               <TableCell>{item.amount}</TableCell>
                               <div className="flex items-center">
                                 <TableCell>
                                   {dateTime(new Date(item.date))}
                                 </TableCell>
                               </div>
-                              <TableCell>
-                                <DropdownMenu>
+                              <TableCell className="gap-2">
+                                {/* <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
                                     <Button
                                       aria-haspopup="true"
@@ -122,13 +146,34 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                                       Actions
                                     </DropdownMenuLabel>
                                     <DropdownMenuItem>Edit</DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={() => deleteHandler(item.id)}
-                                    >
-                                      Delete
-                                    </DropdownMenuItem>
+                                   
+                                   
+                                    <DropdownMenuItem>  <ShowDialog name="Delete" title="Delete Accoount" message="Are you sure?" isOpen={isOpen} openModal={openModal} closeModal={closeModal} handler={()=>deleteHandler(item.id)} buttonText="Delete"/> </DropdownMenuItem>
+                                  
+                                   
                                   </DropdownMenuContent>
-                                </DropdownMenu>
+                                </DropdownMenu> */}
+                                <div className="grid lg:grid-cols-2 gap-2 md:grid-cols-1">
+                                <Button>Edit</Button>
+                                <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                <Button className="" variant="destructive">Delete</Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. This will permanently delete your
+                                      account and remove your data from our servers.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={()=> deleteHandler(item.id)}>Delete</AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                                </div>
                               </TableCell>
                             </TableRow>
                           </>
