@@ -111,7 +111,6 @@ const AddStudents = () => {
             }, 1000);
             setTimeout(() => {
               setIsGenerate(false);
-              // updatedCount();
             }, 2000);
           }
         }),

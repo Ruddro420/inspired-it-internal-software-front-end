@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { accountsAdd } from "@/lib/api";
 import toast from "react-hot-toast";
 const AddAccounts = () => {
+ 
+
   const [dataLoad, setDataLoad] = useState(true);
   const [checkType, setCheckType] = useState("");
   const {
