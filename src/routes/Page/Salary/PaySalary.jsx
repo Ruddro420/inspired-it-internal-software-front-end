@@ -93,6 +93,7 @@ const PaySalary = () => {
         monthly_salary: parseFloat(data.monthly_salary),
         bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         staffId: employeeId,
+        paid_date:data.paid_date
       };
       toast.promise(
         SalaryAdd(data, "Staff")
@@ -115,6 +116,7 @@ const PaySalary = () => {
         monthly_salary:  parseFloat(data.monthly_salary),
         bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         teacherId: employeeId,
+        paid_date:data.paid_date
       };
       toast.promise(
         SalaryAdd(data, "Teacher")
@@ -167,6 +169,7 @@ const PaySalary = () => {
                   </SelectContent>
                 </Select>
               </label>
+             
               <Button size="sm">
                 <Search size={18} /> <span className="ml-2">Search</span>
               </Button>
@@ -184,7 +187,7 @@ const PaySalary = () => {
                 className="border p-5 rounded-lg"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   <label htmlFor="Name" className="md:col-span-1">
                     Monthly Salary
                     <Input
@@ -212,6 +215,14 @@ const PaySalary = () => {
                       placeholder="Bonus"
                     />
                   </label>
+                  <label htmlFor="Assign Teacher" className="md:col-span-1">
+              Date
+              <Input
+                type="date"
+                name="paid_date"
+                {...register("paid_date", { required: true })}
+              />
+            </label>
                 </div>
                 <Button size="sm" className="mt-5">
                   Submit

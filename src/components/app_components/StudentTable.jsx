@@ -119,7 +119,7 @@ const StudentTable = ({ students, studentFetchHandler }) => {
                       </Link>
                       <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() => handleDelete(parseInt(student.id_no))}
+                        onClick={() => handleDelete((student.id_no))}
                       >
                         Delete
                       </DropdownMenuItem>

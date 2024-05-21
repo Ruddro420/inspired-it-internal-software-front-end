@@ -257,7 +257,9 @@ const AddStudents = () => {
               studentId: d.created.id,
               readmission: true,
             });
-            idGenerate(watch("classId"));
+            setTimeout(()=>{
+              idGenerate(watch("classId"));
+            },3000)
             if (image) {
               uploadFile(d.created.id_no.toString());
             }
@@ -292,7 +294,11 @@ const AddStudents = () => {
             readmission: false,
           });
 
-          idGenerate(watch("classId"));
+          setTimeout(()=>{
+            idGenerate(watch("classId"));
+          },3000)
+
+          
 
           if (image) {
             uploadFile(d.created.id_no.toString());
