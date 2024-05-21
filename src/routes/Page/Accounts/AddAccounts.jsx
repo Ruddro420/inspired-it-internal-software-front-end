@@ -19,6 +19,7 @@ const AddAccounts = () => {
 
   const [dataLoad, setDataLoad] = useState(true);
   const [checkType, setCheckType] = useState("");
+ 
   const {
     register,
     handleSubmit,
@@ -35,18 +36,25 @@ const AddAccounts = () => {
       amount: parseInt(data.amount),
     };
 
-    accountsAdd(data)
-      .then(function (response) {
-        toast.success("Add Successfully");
-        setDataLoad(data);
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+    toast.promise(
+      accountsAdd(data)
+        .then((res) => res.json())
+        .then((data) => {
+          setDataLoad(data);
+          if (data.err) {
+            throw new Error("Something went wrong!");
+          }
+        }),
+      {
+        loading: "Adding to account....",
+        success: <b>Added successfully!</b>,
+        error: (error) => <b>{error.message}</b>,
+      }
+    );
 
-  console.log(checkType);
+  }
+
+  // console.log(checkType);
   return (
     <>
       {" "}

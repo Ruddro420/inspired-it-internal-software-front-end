@@ -102,11 +102,11 @@ const PaySalary = () => {
             console.log(data);
             // SetLoadData(true)
             if (data.err) {
-              throw new Error("Something went wrong!");
+              throw new Error(data.err);
             }
           }),
         {
-          loading: "Searching....",
+          loading: "Paying....",
           success: <b>Fee added successfully!</b>,
           error: (error) => <b>{error.message}</b>,
         }

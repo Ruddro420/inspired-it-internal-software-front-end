@@ -1,8 +1,6 @@
 import {
   Edit,
   Eye,
-  File,
-  MoreHorizontal,
   PlusCircle,
   Trash,
 } from "lucide-react";
@@ -14,13 +12,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import {
   Table,
   TableBody,
@@ -168,7 +179,7 @@ export default function Class() {
                         Laser Lemonade
                       </TableCell> */}
                               <TableCell>
-                                <div className="block lg:hidden">
+                                {/* <div className="block lg:hidden">
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button
@@ -205,8 +216,8 @@ export default function Class() {
                                       </DropdownMenuItem>
                                     </DropdownMenuContent>
                                   </DropdownMenu>
-                                </div>
-                                <div className="hidden lg:block">
+                                </div> */}
+                                <div >
                                   <div className="flex items-center justify-center gap-3">
                                     <Link
                                       to={`/dashboard/class-view/${cls.id}`}
@@ -218,13 +229,31 @@ export default function Class() {
                                     <Button onClick={() => editHandler(cls.id)}>
                                       <Edit size={20} className="mr-2" /> Edit
                                     </Button>
-                                    <Button
-                                      onClick={() => deleteHandler(cls.id)}
+                                   
+
+                                    <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                <Button
+                                    
                                       variant="destructive"
                                     >
                                       <Trash size={20} className="mr-2" />
                                       Delete
                                     </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. This will permanently delete and remove your data from our server.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={()=> deleteHandler(cls.id)}>Delete</AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
                                   </div>
                                 </div>
                               </TableCell>

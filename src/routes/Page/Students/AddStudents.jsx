@@ -74,21 +74,6 @@ const AddStudents = () => {
 
   const { admin } = useContext(AuthContext);
 
-  // const updatedCount = () => {
-  //   getStudentCount()
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       // console.log(data)
-  //       setStudentCount(data.count);
-  //       setIsData2(true);
-  //       const year = new Date().getFullYear().toString();
-  //       setValue("id_no", `${year[2]}${year[3]}0${studentCount + 1}`);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
   const AdmissionDataSend = (data) => {
     // console.log(data)
     toast.promise(
@@ -121,8 +106,6 @@ const AddStudents = () => {
       }
     );
   };
-
-  console.log(admin);
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);

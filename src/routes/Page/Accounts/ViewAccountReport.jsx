@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import GenereateReport from "./GenerateReport";
 import { useEffect, useState } from "react";
 import { accountReportByDate } from "@/lib/api";
+import toast from "react-hot-toast";
 const ViewAccountReport = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -13,10 +14,26 @@ const ViewAccountReport = () => {
   //useEffect(() => {}, [end, start]);
   const reportHandler = (e) => {
     e.preventDefault();
-    accountReportByDate(start, end)
-      .then((res) => res.json())
-      .then((data) => setReportData(data));
+      toast.promise(
+        accountReportByDate(start, end)
+        .then((res) => res.json())
+      .then((data) =>{ 
+        if(data.err) {
+          throw new Error("Failed to generate reoprt!");
+        }
+
+        setReportData(data)
+      }),
+        {
+          loading: "Generating Report...",
+          success: <b>Successfully generated!</b>,
+          error: <b>Failed to generate.</b>,
+        }  
+      );
+
   };
+
+
   useEffect(() => {
     // Calculate total income
     const totalIncome = reportData.reduce((acc, curr) => {
@@ -26,7 +43,7 @@ const ViewAccountReport = () => {
         return acc;
       }
     }, 0);
-    console.log(totalIncome);
+    // console.log(totalIncome);
     setIncome(totalIncome);
 
     // Calculate total expense

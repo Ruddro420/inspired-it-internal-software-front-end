@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { dateTime,  getStudentById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
+import { Badge } from "@/components/ui/badge";
 // import Spinner from "@/components/app_components/Spinner";
 
 const StudentProfile = () => {
@@ -31,6 +32,7 @@ const StudentProfile = () => {
   const [admissionFee, setAdmissionFee] = useState([])
   const [regularFee, setRegularFee] = useState([])
   let id = useParams();
+  const [attendance, setAddendance] = useState(0)
 
   const [totalPaid, setTotalPaid] = useState(0)
 
@@ -41,8 +43,6 @@ const StudentProfile = () => {
       .then((data) => {
         setStudent(data);
         setIsData(true);
-        console.log(data.admissionFee)
-        
         setAdmissionFee(data.admissionFee)
         setRegularFee(data.regularFee)
 
@@ -56,6 +56,15 @@ const StudentProfile = () => {
           total += data.regularFee[i].total
         }
         setTotalPaid(total)
+
+
+        let count_attendance = 0
+        for(let i=0; i<data.attendance.length; i++) {
+          if(data.attendance[i].isPresent) {
+            count_attendance++
+          }
+        }
+        setAddendance(count_attendance)
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +91,7 @@ const StudentProfile = () => {
                         <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
-                        <div className="text-2xl font-bold">{student.attendance.length}</div>
+                        <div className="text-2xl font-bold">{attendance}</div>
                       </CardContent>
                     </Card>
                     <Card x-chunk="dashboard-01-chunk-1">
@@ -95,7 +104,7 @@ const StudentProfile = () => {
                       <CardContent>
                         <div className="text-2xl font-bold">৳ {totalPaid}</div>
                          <div className="text-xs text-red-500 text-muted-foreground">
-                Due ৳{student.due}
+                {student.due == 0 ? <Badge className="bg-green-500">Paid</Badge> : `Due ৳ ${student.due}`}
               </div>
                       </CardContent>
                     </Card>

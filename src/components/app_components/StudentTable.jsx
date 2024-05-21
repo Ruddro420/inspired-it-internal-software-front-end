@@ -15,8 +15,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { deleteStudent } from "@/lib/api";
 import { useState } from "react";
@@ -102,7 +114,7 @@ const StudentTable = ({ students, studentFetchHandler }) => {
                   </TableCell>
                 )}
                 <TableCell>
-                  <DropdownMenu>
+                  {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button aria-haspopup="true" size="icon" variant="ghost">
                         <MoreHorizontal className="h-4 w-4" />
@@ -119,12 +131,54 @@ const StudentTable = ({ students, studentFetchHandler }) => {
                       </Link>
                       <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() => handleDelete((student.id_no))}
+                        onClick={() => handleDelete(student.id_no)}
                       >
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
-                  </DropdownMenu>
+                  </DropdownMenu> */}
+
+                  <div>
+                    <div className="flex items-center justify-center gap-3">
+                      <Link to={`/dashboard/student-profile/${student.id_no}`}>
+                        <Button>
+                          <Eye size={20} className="mr-2" /> View
+                        </Button>
+                      </Link>
+                      <Button>
+                        <Edit size={20} className="mr-2" /> Edit
+                      </Button>
+
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive">
+                            <Trash size={20} className="mr-2" />
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete and remove your data from our
+                              server.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(student.id_no)}
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

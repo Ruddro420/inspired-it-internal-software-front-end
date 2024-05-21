@@ -24,12 +24,13 @@ import { DownloadIcon, Search } from "lucide-react";
 import { AuthContext } from "@/Providers/AuthProvider";
 import Alert from "@/components/app_components/Alert";
 import generatePDF, { Margin, Resolution, usePDF } from "react-to-pdf";
+import Loading from "@/components/app_components/Loading";
 
 
 const AddFees = () => {
   const { admin } = useContext(AuthContext);
   const { targetRef } = usePDF();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
   const [studentId, setStudentId] = useState(null);
@@ -45,10 +46,14 @@ const AddFees = () => {
 
   /* Check Student */
   const [checkData, setCheckData] = useState([]);
+  const [isData2, setIsData2] = useState(false)
   useEffect(() => {
     getCount()
       .then((res) => res.json())
-      .then((data) => setCheckData(data.student));
+      .then((data) =>{ 
+        setCheckData(data.student)
+        setIsData2(true)
+      });
   }, [setCheckData]);
 
   //const [dataLoad,SetLoadData] = useState(false)
@@ -102,11 +107,13 @@ const AddFees = () => {
       RegularFeeAdd(data)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          // SetLoadData(true)
-          //setIsData(false)
           if (data.err) {
             throw new Error("Something went wrong!");
+          }
+          if(prevDue == regularFee) {
+            setPrevDue(0)   
+            setValue('regular_fee', 0)
+            setRegularFee(0)
           }
         }),
       {
@@ -129,7 +136,7 @@ const AddFees = () => {
   }
 
   return (
-    <>
+    <> { isData2 ? <>
       <div className="grid grid-cols-3 gap-3">
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-3">Add Fee</h1>
@@ -180,7 +187,8 @@ const AddFees = () => {
                       }
                       type="number"
                       name="regular_fee"
-                      required
+                      disabled={prevDue == 0}
+                      required = {prevDue != 0}
                       placeholder="Regular Fee"
                     />
                   </label>
@@ -586,6 +594,7 @@ const AddFees = () => {
             </Card>
           </div>
         )}
+        </> : <Loading/>}
     </>
   );
 };

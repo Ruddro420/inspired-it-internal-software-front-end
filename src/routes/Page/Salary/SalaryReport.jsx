@@ -3,27 +3,38 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { salaryReportByDate } from "@/lib/api";
 import GenerateSallaryReport from "./GenerateSallaryReport";
+import toast from "react-hot-toast";
 const SalaryReport = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [reportData, setReportData] = useState([]);
   const [income, setIncome] = useState("");
-  const [expense, setExpense] = useState("");
   /* Fetch Data */
   //useEffect(() => {}, [end, start]);
   const reportHandler = (e) => {
     e.preventDefault();
-    salaryReportByDate(start, end)
-      .then((res) => res.json())
-      .then((data) => setReportData(data));
+    toast.promise(
+      salaryReportByDate(start, end)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.err) {
+            throw new Error("Failed to generate reoprt!");
+          }
+
+          setReportData(data);
+        }),
+      {
+        loading: "Generating Report...",
+        success: <b>Successfully generated!</b>,
+        error: <b>Failed to generate.</b>,
+      }
+    );
   };
-  console.log(reportData);
   useEffect(() => {
     // Calculate total income
     const totalIncome = reportData.reduce((acc, curr) => {
-      return acc + parseFloat(curr.monthly_salary)
+      return acc + parseFloat(curr.monthly_salary);
     }, 0);
-    console.log(totalIncome);
     setIncome(totalIncome);
 
     // Calculate total expense
@@ -37,10 +48,8 @@ const SalaryReport = () => {
     setExpense(totalExpense); */
   }, [reportData]);
 
-  //console.log((reportData,start,end));
   return (
     <>
-      {" "}
       <div style={{ overflow: "hidden" }}>
         <h1 className="text-2xl font-bold mb-3">Report Details</h1>
         <form className="border p-5 rounded" onSubmit={reportHandler}>

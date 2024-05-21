@@ -92,7 +92,7 @@ export default function IdCards() {
         margin: Margin.SMALL,
       },
     });
-    // }, 1000);
+
   };
 
   useEffect(() => {
@@ -103,7 +103,6 @@ export default function IdCards() {
     loadImageDataURI();
   }, []);
 
-  console.log(student);
 
   return (
     <>

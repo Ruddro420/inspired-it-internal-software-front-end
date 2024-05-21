@@ -1,14 +1,6 @@
 /* eslint-disable react/prop-types */
-import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,18 +27,10 @@ import { useEffect, useState } from "react";
 import { dateTime, deleteAccounts, getAccounts } from "@/lib/api";
 import toast from "react-hot-toast";
 import Alert from "@/components/app_components/Alert";
-import ShowDialog from "@/components/app_components/Dialog";
+import Loading from "@/components/app_components/Loading";
 const ViewAccounts = ({ dataLoad, setDataLoad }) => {
 
-  const [isOpen, setIsOpen] = useState(false)
-
-  const openModal = () => {
-    setIsOpen(true)
-  }
-  
-  const closeModal = () => {
-    setIsOpen(false)
-  }
+  const [isData, setIsData] = useState(false)
 
 
   const [account, setAccount] = useState([]);
@@ -56,6 +40,7 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
       .then((res) => res.json())
       .then((data) => {
         setAccount(data);
+        setIsData(true);
         //setDataLoad(false);
       })
       .catch((error) => {
@@ -69,12 +54,10 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
       toast.promise(
         deleteAccounts(id).then((res) => {
           if (!res.ok) {
-            setIsOpen(false)
             throw new Error("Failed to delete!");
           }
           const acnt = account.filter((item) => item.id != id);
           setAccount(acnt);
-          setIsOpen(false)
           return res.json();
         }),
         {
@@ -95,10 +78,13 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
               <CardHeader>
                 <CardTitle>Account Details</CardTitle>
               </CardHeader>
+                     
               <CardContent>
-                {account.length == 0 ? (
+               { isData ?  <> 
+                {(!account  && account.length == 0 ) ? (
                   <Alert title="No data found!" />
                 ) : (
+          
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -181,7 +167,9 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                       })}
                     </TableBody>
                   </Table>
+                
                 )}
+                </> : <Loading/> }
               </CardContent>
             </Card>
           </TabsContent>

@@ -9,15 +9,14 @@ const FeeReport = () => {
   const [reportData, setReportData] = useState([]);
   const [income, setIncome] = useState("");
   const [expense, setExpense] = useState("");
-  /* Fetch Data */
-  //useEffect(() => {}, [end, start]);
+
   const reportHandler = (e) => {
     e.preventDefault();
     feeReportByDate(start, end)
       .then((res) => res.json())
       .then((data) => setReportData(data));
   };
-  console.log(reportData);
+  
   useEffect(() => {
     // Calculate total income
     const totalIncome = reportData.reduce((acc, curr) => {
@@ -27,7 +26,6 @@ const FeeReport = () => {
         return acc;
       }
     }, 0);
-    console.log(totalIncome);
     setIncome(totalIncome);
 
     // Calculate total expense
