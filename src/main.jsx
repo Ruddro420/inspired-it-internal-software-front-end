@@ -47,6 +47,7 @@ import TeacherProfile from "./routes/Page/Profile/TeacherProfile";
 import TsProfile from "./routes/Page/Profile/TeacherProfile";
 import StaffProfile from "./routes/Page/Profile/StaffProfile";
 import Home from "./routes/Home";
+import EditStudents from "./routes/Page/Students/EditStudents";
 
 const router = createBrowserRouter([
   {
@@ -210,6 +211,10 @@ const router = createBrowserRouter([
         path: "/dashboard/editClass/:id",
         element: <EditClasses />,
       },
+      {
+        path: "/dashboard/editStudent/:id",
+        element: <EditStudents />,
+      },
 
       /*       {
               path: '/dashboard',
@@ -239,7 +244,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Home/>,
+    element: <Home />,
   },
 ]);
 

@@ -65,7 +65,7 @@ const Transaction = () => {
     height: 240,
     series: [
       {
-        name: "Sales",
+        name: "Transaction",
         data: monthly.map(entry => entry.netProfit),
       },
     ],
@@ -81,7 +81,7 @@ const Transaction = () => {
       dataLabels: {
         enabled: false,
       },
-      colors: ["#020617"],
+      colors: ["#00A86B"],
       stroke: {
         lineCap: "round",
         curve: "smooth",

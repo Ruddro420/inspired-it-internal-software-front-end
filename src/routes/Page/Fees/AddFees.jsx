@@ -179,7 +179,7 @@ const AddFees = () => {
                   <label htmlFor="Name" className="md:col-span-1">
                     Regular Fee
                     <Input
-                      {...register("regular_fee", { required: true })}
+                      {...register("regular_fee", { required: prevDue!=0 })}
                       onChange={(e) =>
                         setRegularFee(
                           !e.target.value == "" ? parseFloat(e.target.value) : 0

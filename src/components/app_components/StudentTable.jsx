@@ -145,9 +145,11 @@ const StudentTable = ({ students, studentFetchHandler }) => {
                           <Eye size={20} className="mr-2" /> View
                         </Button>
                       </Link>
-                      <Button>
-                        <Edit size={20} className="mr-2" /> Edit
-                      </Button>
+                      <Link to={`/dashboard/editStudent/${student.id_no}`}>
+                        <Button>
+                          <Edit size={20} className="mr-2" /> Edit
+                        </Button>
+                      </Link>
 
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
