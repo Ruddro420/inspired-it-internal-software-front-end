@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Alert from "@/components/app_components/Alert";
+import History from "./History";
 
 const PaySalary = () => {
   const { admin } = useContext(AuthContext);
@@ -38,9 +39,10 @@ const PaySalary = () => {
   const [employee, setEmployee] = useState(null);
   const [isData, setIsData] = useState(false);
   const [employeeId, setEmployeeId] = useState(null);
-  const [monthlySalary, setMonthlySalary] = useState(0);
+  const [monthlySalary, setMonthlySalary] = useState([]);
   const [bonus, setBonus] = useState(0);
   const [employeeType, setEmployeeType] = useState(null);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   /* Check Student */
   const [checkData, setCheckData] = useState([]);
@@ -70,6 +72,7 @@ const PaySalary = () => {
           setEmployee(data);
           setEmployeeId(data.id);
           setIsData(true);
+          setBtnDisabled(false);
         }),
       {
         loading: "Searching....",
@@ -86,6 +89,7 @@ const PaySalary = () => {
     loadImageDataURI();
   };
 
+  /* Staff Pay Salary */
   const onSubmit = (data) => {
     console.log(data);
     if (employeeType == "staff") {
@@ -93,14 +97,14 @@ const PaySalary = () => {
         monthly_salary: parseFloat(data.monthly_salary),
         bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         staffId: employeeId,
-        paid_date:data.paid_date
+        paid_date: data.paid_date,
       };
       toast.promise(
         SalaryAdd(data, "Staff")
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            // SetLoadData(true)
+            setBtnDisabled(true);
             if (data.err) {
               throw new Error(data.err);
             }
@@ -113,16 +117,18 @@ const PaySalary = () => {
       );
     } else {
       data = {
-        monthly_salary:  parseFloat(data.monthly_salary),
+        monthly_salary: parseFloat(data.monthly_salary),
         bonus: parseFloat(data.bonus) ? parseFloat(data.bonus) : 0,
         teacherId: employeeId,
-        paid_date:data.paid_date
+        paid_date: data.paid_date,
       };
+      /* Teacher Salary Add */
       toast.promise(
         SalaryAdd(data, "Teacher")
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
+            setBtnDisabled(true);
             if (data.err) {
               throw new Error(data.err);
             }
@@ -169,7 +175,7 @@ const PaySalary = () => {
                   </SelectContent>
                 </Select>
               </label>
-             
+
               <Button size="sm">
                 <Search size={18} /> <span className="ml-2">Search</span>
               </Button>
@@ -180,7 +186,6 @@ const PaySalary = () => {
               subtitle="Add Teacher or Staff first!"
             />
           )}
-
           {isData && employee && (
             <div>
               <form
@@ -192,7 +197,6 @@ const PaySalary = () => {
                     Monthly Salary
                     <Input
                       {...register("monthly_salary", { required: true })}
-                      
                       type="number"
                       name="monthly_salary"
                       required
@@ -216,19 +220,25 @@ const PaySalary = () => {
                     />
                   </label>
                   <label htmlFor="Assign Teacher" className="md:col-span-1">
-              Date
-              <Input
-                type="date"
-                name="paid_date"
-                {...register("paid_date", { required: true })}
-              />
-            </label>
+                    Date
+                    <Input
+                      type="date"
+                      name="paid_date"
+                      {...register("paid_date", { required: true })}
+                    />
+                  </label>
                 </div>
-                <Button size="sm" className="mt-5">
+                <Button disabled={btnDisabled} size="sm" className="mt-5">
                   Submit
                 </Button>
               </form>
               {/* <Transactions getData={getData} dataLoad={dataLoad} /> */}
+            </div>
+          )}
+          {isData && employee && (
+            <div>
+              {/* Transactions histor */}
+              <History data={employee.salary} feeDataHandler={feeDataHandler}/>
             </div>
           )}
         </div>
@@ -297,7 +307,9 @@ const PaySalary = () => {
                   <dt className="text-muted-foreground font-bold">
                     Paying This Time (৳)
                   </dt>
-                  <dd className="font-bold">{employee.fixed_salary + bonus}৳</dd>
+                  <dd className="font-bold">
+                    {employee.fixed_salary + bonus}৳
+                  </dd>
                 </div>
               </CardContent>
             </Card>

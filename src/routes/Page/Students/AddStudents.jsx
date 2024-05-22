@@ -243,7 +243,7 @@ const AddStudents = () => {
               idGenerate(watch("classId"));
             },3000)
             if (image) {
-              uploadFile(d.created.id_no.toString());
+              uploadFile(d.updated.id_no.toString());
             }
           }),
         {

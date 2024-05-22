@@ -2,7 +2,7 @@
 
 import { TableCell, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,18 @@ import {
 } from "../ui/dropdown-menu";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 const TableRowCustom = ({ data, handleDelete, nameFile }) => {
   const { id_no, name, phone, designation, department } = data;
@@ -37,25 +49,43 @@ const TableRowCustom = ({ data, handleDelete, nameFile }) => {
       <TableCell className="hidden md:table-cell">{designation}</TableCell>
       <TableCell className="hidden md:table-cell">{department}</TableCell>
       <TableCell>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button aria-haspopup="true" size="icon" variant="ghost">
-              <MoreHorizontal className="h-4 w-4" />
-              <span className="sr-only">Toggle menu</span>
+       
+        <div className="flex items-center justify-center gap-3">
+          <Link to={`/dashboard/${nameFile}-profile/${id_no}`}>
+            <Button>
+              <Eye size={20} className="mr-2" /> View
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link to={`/dashboard/${nameFile}-profile/${id_no}`}>
-              {" "}
-              <DropdownMenuItem>View</DropdownMenuItem>
-            </Link>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(id_no)}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </Link>
+          <Link to={`/dashboard/${nameFile}-edit/${id_no}`}>
+            <Button>
+              <Edit size={20} className="mr-2" /> Edit
+            </Button>
+          </Link>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                <Trash size={20} className="mr-2" />
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete and
+                  remove your data from our server.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleDelete(id_no)}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </TableCell>
     </TableRow>
   );

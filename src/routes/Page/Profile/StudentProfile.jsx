@@ -20,7 +20,7 @@ import {
 import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { dateTime,  getStudentById } from "@/lib/api";
+import { dateTime, getStudentById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
 import { Badge } from "@/components/ui/badge";
@@ -29,12 +29,12 @@ import { Badge } from "@/components/ui/badge";
 const StudentProfile = () => {
   const [student, setStudent] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [admissionFee, setAdmissionFee] = useState([])
-  const [regularFee, setRegularFee] = useState([])
+  const [admissionFee, setAdmissionFee] = useState([]);
+  const [regularFee, setRegularFee] = useState([]);
   let id = useParams();
-  const [attendance, setAddendance] = useState(0)
+  const [attendance, setAddendance] = useState(0);
 
-  const [totalPaid, setTotalPaid] = useState(0)
+  const [totalPaid, setTotalPaid] = useState(0);
 
   /* Fetch students Data */
   useEffect(() => {
@@ -43,35 +43,33 @@ const StudentProfile = () => {
       .then((data) => {
         setStudent(data);
         setIsData(true);
-        setAdmissionFee(data.admissionFee)
-        setRegularFee(data.regularFee)
+        setAdmissionFee(data.admissionFee);
+        setRegularFee(data.regularFee);
 
         let total = 0;
-        for(let i=0; i<data.admissionFee.length; i++) {
-          let fee = data.admissionFee[i]
-          total += (fee.fee + fee.other) - fee.discount
+        for (let i = 0; i < data.admissionFee.length; i++) {
+          let fee = data.admissionFee[i];
+          total += fee.fee + fee.other - fee.discount;
         }
 
-        for(let i=0; i<data.regularFee.length; i++) {
-          total += data.regularFee[i].total
+        for (let i = 0; i < data.regularFee.length; i++) {
+          total += data.regularFee[i].total;
         }
-        setTotalPaid(total)
+        setTotalPaid(total);
 
-
-        let count_attendance = 0
-        for(let i=0; i<data.attendance.length; i++) {
-          if(data.attendance[i].isPresent) {
-            count_attendance++
+        let count_attendance = 0;
+        for (let i = 0; i < data.attendance.length; i++) {
+          if (data.attendance[i].isPresent) {
+            count_attendance++;
           }
         }
-        setAddendance(count_attendance)
+        setAddendance(count_attendance);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
-  
   return (
     <>
       {!isData ? (
@@ -103,9 +101,13 @@ const StudentProfile = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">৳ {totalPaid}</div>
-                         <div className="text-xs text-red-500 text-muted-foreground">
-                {student.due == 0 ? <Badge className="bg-green-500">Paid</Badge> : `Due ৳ ${student.due}`}
-              </div>
+                        <div className="text-xs text-red-500 text-muted-foreground">
+                          {student.due == 0 ? (
+                            <Badge className="bg-green-500">Paid</Badge>
+                          ) : (
+                            `Due ৳ ${student.due}`
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
                   </div>
@@ -115,9 +117,7 @@ const StudentProfile = () => {
                     <CardHeader className="flex flex-row items-center">
                       <div className="grid gap-2">
                         <CardTitle>Transactions</CardTitle>
-                        <CardDescription>
-                          Recent transactions.
-                        </CardDescription>
+                        <CardDescription>Recent transactions.</CardDescription>
                       </div>
                       {/* <Button asChild size="sm" className="ml-auto gap-1">
                         <Link to="#">
@@ -127,7 +127,7 @@ const StudentProfile = () => {
                       </Button> */}
                     </CardHeader>
                     <CardContent>
-                       <Table>
+                      <Table>
                         <TableHeader>
                           <TableRow>
                             <TableHead>Fee Type</TableHead>
@@ -144,48 +144,54 @@ const StudentProfile = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {
-                          admissionFee.map(fee=>
+                          {admissionFee.map((fee) => (
                             <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">{fee.readmission ? "Re-Admission Fee" : "Admission Fee"}</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{(fee.fee + fee.other) - fee.discount}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        }
+                              <TableCell>
+                                <div className="font-medium">
+                                  {fee.readmission
+                                    ? "Re-Admission Fee"
+                                    : "Admission Fee"}
+                                </div>
+                                <div className="hidden text-sm text-muted-foreground md:inline">
+                                  {dateTime(new Date(fee.collectionDate))}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                ৳{fee.fee + fee.other - fee.discount}
+                              </TableCell>
+                            </TableRow>
+                          ))}
 
-                        {
-                          regularFee.map(fee=>
+                          {regularFee.map((fee) => (
                             <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">
-                                {fee.regular_fee > 0 ? "Regular Fee " : ""}
-                                {(fee.regular_fee !== 0 && fee.id_card_fee !== 0) ? "+" : ""}
-                                {fee.id_card_fee > 0 ?  " ID Card" : ""}
-                                {(fee.id_card_fee !== 0 && fee.fine_fee !== 0) ? "+" : ""}
-                                {fee.fine  > 0 ?  " Fine" : ""}
-                                {(fee.fine !== 0 && fee.others_fee !== 0) ? "+" : ""}
-                                {fee.others_fee  > 0 ?  " Other" : ""}
-                              </div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{fee.total}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        }
+                              <TableCell>
+                                <div className="font-medium">
+                                  {fee.regular_fee > 0 ? "Regular Fee " : ""}
+                                  {fee.regular_fee !== 0 &&
+                                  fee.id_card_fee !== 0
+                                    ? "+"
+                                    : ""}
+                                  {fee.id_card_fee > 0 ? " ID Card" : ""}
+                                  {fee.id_card_fee !== 0 && fee.fine_fee !== 0
+                                    ? "+"
+                                    : ""}
+                                  {fee.fine > 0 ? " Fine" : ""}
+                                  {fee.fine !== 0 && fee.others_fee !== 0
+                                    ? "+"
+                                    : ""}
+                                  {fee.others_fee > 0 ? " Other" : ""}
+                                </div>
+                                <div className="hidden text-sm text-muted-foreground md:inline">
+                                  {dateTime(new Date(fee.collectionDate))}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                ৳{fee.total}
+                              </TableCell>
+                            </TableRow>
+                          ))}
                         </TableBody>
                       </Table>
-                     
                     </CardContent>
                   </div>
                 </div>
@@ -200,10 +206,11 @@ const StudentProfile = () => {
                       <CardHeader className="flex flex-row items-start bg-muted/50">
                         <div className="grid gap-0.5">
                           <CardTitle className="group flex items-center gap-2 text-lg">
-                            {student.name } 
+                            {student.name}
                           </CardTitle>
                           <CardDescription>
-                            {student.class.name}  {student.section &&  `- ${student.section.name}`}
+                            {student.class.name}{" "}
+                            {student.section && `- ${student.section.name}`}
                           </CardDescription>
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">
@@ -218,9 +225,8 @@ const StudentProfile = () => {
                       </CardHeader>
                       <CardContent className="p-6 text-sm">
                         <div className="grid gap-3">
-                          
                           <ul className="grid gap-3">
-                          {/* {
+                            {/* {
                               (student.group != "na") && <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Group
@@ -231,7 +237,7 @@ const StudentProfile = () => {
                             </li>
                             } */}
 
-                           {/*  {
+                            {/*  {
                               (student.section) && <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Section / Batch
@@ -242,7 +248,7 @@ const StudentProfile = () => {
                             </li>
                             }
  */}
-                         
+
                             <li className="flex items-center justify-between font-semibold">
                               <span className="text-muted-foreground">
                                 ID NO
@@ -270,7 +276,9 @@ const StudentProfile = () => {
                               <span className="text-muted-foreground">
                                 Gender
                               </span>
-                              <span className="uppercase">{student.gender}</span>
+                              <span className="uppercase">
+                                {student.gender}
+                              </span>
                             </li>
                           </ul>
 
@@ -281,23 +289,25 @@ const StudentProfile = () => {
                               </span>
                               <span>{student.date_of_birth}</span>
                             </li>
-                           
+
                             <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 B/C Number
                               </span>
                               <span>{student.birth_certificate_no}</span>
                             </li>
-                            
+
                             <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Blood Group
                               </span>
-                              <span className="uppercase">{student.blood_group }</span>
+                              <span className="uppercase">
+                                {student.blood_group}
+                              </span>
                             </li>
                           </ul>
                         </div>
-                      
+
                         <Separator className="my-4" />
                         <div className="grid gap-3">
                           <div className="font-semibold">
@@ -338,28 +348,25 @@ const StudentProfile = () => {
                         </div>
                         <Separator className="my-4" />
                         <ul className="grid gap-3">
-                        <li className="flex items-center justify-between font-semibold">
-                              <span className="text-muted-foreground">
+                          <li className="flex items-center justify-between font-semibold">
+                            <span className="text-muted-foreground">
                               Present Address
-                              </span>
-                              <span>{student.present_address }</span>
-                            </li>
+                            </span>
+                            <span>{student.present_address}</span>
+                          </li>
 
-                            <li className="flex items-center justify-between font-semibold">
-                              <span className="text-muted-foreground">
+                          <li className="flex items-center justify-between font-semibold">
+                            <span className="text-muted-foreground">
                               Permanent Address
-                              </span>
-                              <span>{student.permanent_address }</span>
-                            </li>
-
+                            </span>
+                            <span>{student.permanent_address}</span>
+                          </li>
                         </ul>
                         <Separator className="my-4" />
                       </CardContent>
                     </Card>
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
