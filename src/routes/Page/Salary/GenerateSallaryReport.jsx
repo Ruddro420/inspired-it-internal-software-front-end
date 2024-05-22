@@ -67,7 +67,7 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                           <div>
                             <b>SALARY HOLDER</b>
                             <p>===================</p>
-                            {item.teacher && item.teacher.name} - {item.teacher &&  item.teacher.id_no}
+                            {item.teacher && item.teacher.name} {item.teacher && "-"} {item.teacher &&  item.teacher.id_no}
                             {item.staff && item.staff.name} {item.staff && "-"} {item.staff &&  item.staff.id_no}
                           </div>
 

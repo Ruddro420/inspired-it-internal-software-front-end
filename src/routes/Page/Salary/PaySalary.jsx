@@ -41,6 +41,7 @@ const PaySalary = () => {
   const [monthlySalary, setMonthlySalary] = useState(0);
   const [bonus, setBonus] = useState(0);
   const [employeeType, setEmployeeType] = useState(null);
+  const [btnDisabled,setBtnDisabled] = useState(false)
 
   /* Check Student */
   const [checkData, setCheckData] = useState([]);
@@ -70,6 +71,7 @@ const PaySalary = () => {
           setEmployee(data);
           setEmployeeId(data.id);
           setIsData(true);
+          setBtnDisabled(false)
         }),
       {
         loading: "Searching....",
@@ -86,6 +88,7 @@ const PaySalary = () => {
     loadImageDataURI();
   };
 
+  /* Staff Pay Salary */
   const onSubmit = (data) => {
     console.log(data);
     if (employeeType == "staff") {
@@ -100,7 +103,7 @@ const PaySalary = () => {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            // SetLoadData(true)
+            setBtnDisabled(true)
             if (data.err) {
               throw new Error(data.err);
             }
@@ -118,13 +121,15 @@ const PaySalary = () => {
         teacherId: employeeId,
         paid_date:data.paid_date
       };
+      /* Teacher Salary Add */
       toast.promise(
         SalaryAdd(data, "Teacher")
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
+            setBtnDisabled(true)
             if (data.err) {
-              throw new Error("Something went wrong!");
+              throw new Error(data.err);
             }
           }),
         {
@@ -224,7 +229,7 @@ const PaySalary = () => {
               />
             </label>
                 </div>
-                <Button size="sm" className="mt-5">
+                <Button  disabled={btnDisabled} size="sm" className="mt-5">
                   Submit
                 </Button>
               </form>

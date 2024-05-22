@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import QRCode from "react-qr-code";
 import { AuthContext } from "@/Providers/AuthProvider";
 import Alert from "@/components/app_components/Alert";
+import Loading from "@/components/app_components/Loading";
 
 // const fetchImageAndConvertToDataURI = async (imageUrl) => {
 //   const response = await fetch(imageUrl, {credentials: "include"});
@@ -40,10 +41,14 @@ export default function IdCards() {
 
   /* Check Student */
   const [checkData, setCheckData] = useState([]);
+  const [isData, setIsData] = useState(false)
   useEffect(() => {
     getCount()
       .then((res) => res.json())
-      .then((data) => setCheckData(data.student));
+      .then((data) =>{ 
+        setCheckData(data.student)
+        setIsData(true)
+      });
   }, [setCheckData]);
 
   /* Find Student For Generate ID CARD */
@@ -106,9 +111,11 @@ export default function IdCards() {
 
   return (
     <>
+    { isData ? 
+    <>
       <div style={{ overflow: "hidden", padding: "10px" }}>
         <h1 className="text-2xl font-bold mb-3">ID Card Generate</h1>
-        {checkData == 0 ? (
+        {checkData.length == 0 ? (
           <Alert
             title="You have not added any Students yet!"
             subtitle="Here you can manage students!"
@@ -386,6 +393,8 @@ export default function IdCards() {
           </div>
         </div>
       )}
+      </> : <Loading/>
+    }
     </>
   );
 }

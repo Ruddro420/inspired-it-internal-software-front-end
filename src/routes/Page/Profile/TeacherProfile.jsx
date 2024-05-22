@@ -41,6 +41,7 @@ const TeacherProfile = () => {
     getTeacherById(id.id)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setTeacher(data);
         setIsData(true);
       })

@@ -411,6 +411,18 @@ const studentUpdate = (data, id) => {
   });
 };
 
+const classUpdate = (data, id) => {
+  return fetch(api_key + "class_update/" + id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+
 /* Settings Update */
 
 const settingsUpdate = (data, id) => {
@@ -555,5 +567,6 @@ export {
   accountReportByDate,
   deleteAccounts,
   salaryReportByDate,
-  feeReportByDate
+  feeReportByDate,
+  classUpdate
 };

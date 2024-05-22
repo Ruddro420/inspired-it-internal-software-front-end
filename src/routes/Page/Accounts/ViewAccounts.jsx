@@ -140,7 +140,7 @@ const ViewAccounts = ({ dataLoad, setDataLoad }) => {
                                   </DropdownMenuContent>
                                 </DropdownMenu> */}
                                 <div className="grid lg:grid-cols-2 gap-2 md:grid-cols-1">
-                                <Button>Edit</Button>
+                                {/* <Button>Edit</Button> */}
                                 <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                 <Button className="" variant="destructive">Delete</Button>

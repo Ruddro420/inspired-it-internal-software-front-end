@@ -189,8 +189,6 @@ const ClassView = () => {
                   <div className="flex items-center">
                     <TabsList>
                       <TabsTrigger value="all">All</TabsTrigger>
-                      <TabsTrigger value="active">Leave</TabsTrigger>
-                      <TabsTrigger value="draft">Replace</TabsTrigger>
                     </TabsList>
                   </div>{" "}
                   <br></br>

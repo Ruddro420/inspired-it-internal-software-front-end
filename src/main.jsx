@@ -48,6 +48,8 @@ import TsProfile from "./routes/Page/Profile/TeacherProfile";
 import StaffProfile from "./routes/Page/Profile/StaffProfile";
 import Home from "./routes/Home";
 import EditStudents from "./routes/Page/Students/EditStudents";
+import EditTeacher from "./routes/Page/Teachers/EditTeacher";
+import EditStuff from "./routes/Page/Staffs/EditStuff";
 
 const router = createBrowserRouter([
   {
@@ -214,6 +216,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/editStudent/:id",
         element: <EditStudents />,
+      },
+      {
+        path: "/dashboard/teachers-edit/:id",
+        element: <EditTeacher />,
+      },
+      {
+        path: "/dashboard/staffs-edit/:id",
+        element: <EditStuff />,
       },
 
       /*       {
