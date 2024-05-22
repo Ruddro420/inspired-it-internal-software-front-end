@@ -124,7 +124,7 @@ const PaySalary = () => {
           .then((data) => {
             console.log(data);
             if (data.err) {
-              throw new Error("Something went wrong!");
+              throw new Error(data.err);
             }
           }),
         {

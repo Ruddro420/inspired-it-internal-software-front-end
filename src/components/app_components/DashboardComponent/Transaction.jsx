@@ -91,10 +91,10 @@ const Transaction = () => {
       },
       xaxis: {
         axisTicks: {
-          show: false,
+          show: true,
         },
         axisBorder: {
-          show: false,
+          show: true,
         },
         labels: {
           style: {
@@ -108,6 +108,7 @@ const Transaction = () => {
       },
       yaxis: {
         labels: {
+          
           style: {
             colors: "#616161",
             fontSize: "12px",

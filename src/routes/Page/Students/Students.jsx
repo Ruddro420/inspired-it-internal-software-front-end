@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,9 +18,16 @@ import StudentTable from "@/components/app_components/StudentTable";
 import Loading from "@/components/app_components/Loading";
 import Alert from "@/components/app_components/Alert";
 
+const api_key = import.meta.env.VITE_apiKey;
+
+
 export default function Students() {
   const [students, setStudents] = useState([]);
   const [isData, setIsData] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
+
 
   /* Fetch students Data */
   const studentFetchHandler = () => {
@@ -37,24 +45,55 @@ export default function Students() {
 
 
 
+  // useEffect(() => {
+  //   viewStudentsData()
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // console.log(data)
+  //       setStudents(data);
+  //       setIsData(true);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    viewStudentsData()
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data)
-        setStudents(data);
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch(`${api_key}students_per_page?page=${currentPage}&limit=${limit}`);
+        const data = await response.json();
+        console.log(data);
+        setStudents(data.students);
+        setTotalPages(data.totalPages);
         setIsData(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      }
+    };
+
+    fetchStudents();
+  }, [currentPage]);
+
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setIsData(false)
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setIsData(false)
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
 
   return (
     <>
-      {!isData ? (
-        <Loading />
-      ) : (
+     
         <TooltipProvider>
           <main className="">
             <Tabs defaultValue="all">
@@ -93,6 +132,9 @@ export default function Students() {
                       Manage your students here.
                     </CardDescription>
                   </CardHeader>
+                  {!isData ? (
+        <Loading />
+      ) : (
                   <CardContent>
                     {students.length == 0 ? (
                       <Alert
@@ -104,13 +146,21 @@ export default function Students() {
                     ) : (
                       <StudentTable studentFetchHandler={studentFetchHandler} students={students} />
                     )}
-                  </CardContent>
+                    
+                  </CardContent>)}
+                  <CardFooter>
+                  <div className="flex items-center gap-5 justify-center">
+                        <Button variant="outline" size="sm" onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</Button>
+                        <div className="text-sm ">Page {currentPage} of {totalPages}</div>
+                        <Button variant="outline" size="sm" onClick={handleNextPage} disabled={currentPage === totalPages}>Next</Button>
+                      </div>
+                  </CardFooter>
                 </Card>
               </TabsContent>
             </Tabs>
           </main>
         </TooltipProvider>
-      )}
+      
     </>
   );
 }

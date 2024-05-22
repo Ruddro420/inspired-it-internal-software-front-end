@@ -266,6 +266,7 @@ const getStudents = () => {
   });
 };
 
+
 const getLastStudent = () => {
   return fetch(api_key + "last_student", {
     method: "GET",
