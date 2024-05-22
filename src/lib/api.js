@@ -513,8 +513,17 @@ const deleteAccounts = (id) => {
   });
 };
 /* Accounts Report */
+/* Salary Delete */
+/* Teacher Delete */
+const deleteSalary = (id) => {
+  return fetch(api_key + "salary/" + id, {
+    method: "DELETE",
+    credentials: "include",
+  });
+};
 
 export {
+  deleteSalary,
   getTeacherOrStaffById,
   adminLogin,
   adminLogout,

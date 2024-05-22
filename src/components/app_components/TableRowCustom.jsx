@@ -49,41 +49,7 @@ const TableRowCustom = ({ data, handleDelete, nameFile }) => {
       <TableCell className="hidden md:table-cell">{designation}</TableCell>
       <TableCell className="hidden md:table-cell">{department}</TableCell>
       <TableCell>
-        {/*  <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button aria-haspopup="true" size="icon" variant="ghost">
-              <MoreHorizontal className="h-4 w-4" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link to={`/dashboard/${nameFile}-profile/${id_no}`}>
-              {" "}
-              <DropdownMenuItem>View</DropdownMenuItem>
-            </Link>
-            <Link to={`/dashboard/${nameFile}-edit/${id_no}`}>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-            </Link>
-            <DropdownMenuItem>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleDelete(id_no)}>
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu> */}
+       
         <div className="flex items-center justify-center gap-3">
           <Link to={`/dashboard/${nameFile}-profile/${id_no}`}>
             <Button>
