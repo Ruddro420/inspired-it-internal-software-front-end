@@ -31,7 +31,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import Alert from "@/components/app_components/Alert";
 
-const History = ({ data }) => {
+const History = ({ data}) => {
   /* Delete Tans */
   const handleDelete = (id) => {
     toast.promise(
@@ -39,6 +39,7 @@ const History = ({ data }) => {
         if (!res.ok) {
           throw new Error("Failed to delete!");
         }
+        //loadingFunction()
         window.location.reload();
         return res.json();
       }),
