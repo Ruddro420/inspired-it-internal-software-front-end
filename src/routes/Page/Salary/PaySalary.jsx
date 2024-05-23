@@ -30,8 +30,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Alert from "@/components/app_components/Alert";
-import History from "./History";
-
 const PaySalary = () => {
   const { admin } = useContext(AuthContext);
 
@@ -39,7 +37,6 @@ const PaySalary = () => {
   const [employee, setEmployee] = useState(null);
   const [isData, setIsData] = useState(false);
   const [employeeId, setEmployeeId] = useState(null);
-  const [monthlySalary, setMonthlySalary] = useState([]);
   const [bonus, setBonus] = useState(0);
   const [employeeType, setEmployeeType] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -58,7 +55,6 @@ const PaySalary = () => {
 
   const feeDataHandler = (e) => {
     e.preventDefault();
-    console.log(e.target.id_no.value);
     setEmployeeType(e.target.employee.value);
 
     toast.promise(
@@ -105,6 +101,7 @@ const PaySalary = () => {
           .then((data) => {
             console.log(data);
             setBtnDisabled(true);
+            //loadingFunction()
             if (data.err) {
               throw new Error(data.err);
             }
@@ -122,7 +119,7 @@ const PaySalary = () => {
         teacherId: employeeId,
         paid_date: data.paid_date,
       };
-      /* Teacher Salary Add */
+      /* Teacher Staff Salary Add */
       toast.promise(
         SalaryAdd(data, "Teacher")
           .then((res) => res.json())
@@ -142,7 +139,6 @@ const PaySalary = () => {
     }
   };
 
-  console.log(employee);
   return (
     <>
       <div className="grid grid-cols-3 gap-3">
@@ -233,12 +229,6 @@ const PaySalary = () => {
                 </Button>
               </form>
               {/* <Transactions getData={getData} dataLoad={dataLoad} /> */}
-            </div>
-          )}
-          {isData && employee && (
-            <div>
-              {/* Transactions histor */}
-              <History data={employee.salary} feeDataHandler={feeDataHandler}/>
             </div>
           )}
         </div>

@@ -114,30 +114,6 @@ const StudentTable = ({ students, studentFetchHandler }) => {
                   </TableCell>
                 )}
                 <TableCell>
-                  {/* <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <Link to={`/dashboard/student-profile/${student.id_no}`}>
-                        {" "}
-                        <DropdownMenuItem className="cursor-pointer">
-                          View
-                        </DropdownMenuItem>
-                      </Link>
-                      <DropdownMenuItem
-                        className="cursor-pointer"
-                        onClick={() => handleDelete(student.id_no)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu> */}
-
                   <div>
                     <div className="flex items-center justify-center gap-3">
                       <Link to={`/dashboard/student-profile/${student.id_no}`}>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import { ArrowUpRight, Users } from "lucide-react";
 
 import { TbCurrencyTaka } from "react-icons/tb";
@@ -18,25 +19,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { getTeacherById } from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
 import { Users } from "lucide-react";
+import History from "../Salary/History";
 // import Spinner from "@/components/app_components/Spinner";
 
 const TeacherProfile = () => {
   const [teacher, setTeacher] = useState(null);
   const [isData, setIsData] = useState(false);
+  const [totalSalary, setTotalSalary] = useState(0);
   // const [admissionFee, setAdmissionFee] = useState([]);
   // const [regularFee, setRegularFee] = useState([]);
   let id = useParams();
 
-  // const [totalPaid, setTotalPaid] = useState(0);
-
-  /* Fetch students Data */
   useEffect(() => {
     getTeacherById(id.id)
       .then((res) => res.json())
@@ -44,13 +44,18 @@ const TeacherProfile = () => {
         console.log(data);
         setTeacher(data);
         setIsData(true);
+        // Calculate total monthly salary including bonuses
+        let totalMonthlySalary = 0;
+        data.salary.forEach((entry) => {
+          totalMonthlySalary += entry.monthly_salary + entry.bonus;
+        });
+        setTotalSalary(totalMonthlySalary);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
-  // console.log(teacher);
   return (
     <>
       {!isData ? (
@@ -67,10 +72,11 @@ const TeacherProfile = () => {
                         <CardTitle className="text-sm font-medium">
                           Total Attendances
                         </CardTitle>
-                        <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
+                        <Users className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">
+                          Coming Soon ...
                           {/* {student.attendance.length} */}
                         </div>
                       </CardContent>
@@ -80,83 +86,18 @@ const TeacherProfile = () => {
                         <CardTitle className="text-sm font-medium">
                           Total Payment
                         </CardTitle>
-                        <Users className="h-4 w-4 text-muted-foreground" />
+                        <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">
-                          ৳{/*  {totalPaid} */}
+                          ৳ {totalSalary}
                         </div>
                       </CardContent>
                     </Card>
                   </div>
 
-                  {/* container */}
-                  <div className="border mt-4 rounded-md">
-                    <CardHeader className="flex flex-row items-center">
-                      <div className="grid gap-2">
-                        <CardTitle>Transactions</CardTitle>
-                        <CardDescription>Recent transactions.</CardDescription>
-                      </div>
-                      {/* <Button asChild size="sm" className="ml-auto gap-1">
-                        <Link to="#">
-                          View All
-                          <ArrowUpRight className="h-4 w-4" />
-                        </Link>
-                      </Button> */}
-                    </CardHeader>
-                    <CardContent>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Salary Type</TableHead>
-                            {/* <TableHead className="hidden xl:table-column">
-                              Type
-                            </TableHead> */}
-                            {/* <TableHead className="hidden xl:table-column">
-                              Status
-                            </TableHead> */}
-                            {/* <TableHead className="hidden xl:table-column">
-                              Date
-                            </TableHead> */}
-                            <TableHead className="text-right">Amount</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {/* {
-                          admissionFee.map(fee=>
-                            <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">Admission Fee</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{(fee.fee + fee.other) - fee.discount}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        }
-
-                        {
-                          regularFee.map(fee=>
-                            <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">Regular Fee</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{fee.total}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        } */}
-                        </TableBody>
-                      </Table>
-                    </CardContent>
-                  </div>
+                  {/* Trans History */}
+                  <History data={teacher.salary} />
                 </div>
 
                 {/* Profile Section */}
@@ -188,28 +129,6 @@ const TeacherProfile = () => {
                       <CardContent className="p-6 text-sm">
                         <div className="grid gap-3">
                           <ul className="grid gap-3">
-                            {/* {
-                              (teacher.group != "na") && <li className="flex items-center justify-between">
-                              <span className="text-muted-foreground">
-                                Group
-                              </span>
-                              <span>
-                                {teacher.group}
-                              </span>
-                            </li>
-                            } */}
-
-                            {/*  {
-                              (teacher.section) && <li className="flex items-center justify-between">
-                              <span className="text-muted-foreground">
-                                Section / Batch
-                              </span>
-                              <span>
-                                {teacher.section.name}
-                              </span>
-                            </li>
-                            } */}
-
                             <li className="flex items-center justify-between">
                               <span className="text-muted-foreground">
                                 Designation
