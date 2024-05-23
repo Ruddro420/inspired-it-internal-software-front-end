@@ -1,4 +1,4 @@
-import { File, PlusCircle } from "lucide-react";
+import { File, PlusCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,6 +17,7 @@ import { viewStudentsData } from "@/lib/api";
 import StudentTable from "@/components/app_components/StudentTable";
 import Loading from "@/components/app_components/Loading";
 import Alert from "@/components/app_components/Alert";
+import { Input } from "@/components/ui/input";
 
 const api_key = import.meta.env.VITE_apiKey;
 
@@ -27,6 +28,7 @@ export default function Students() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
+  const [search, setSearch] = useState('');
 
 
   /* Fetch students Data */
@@ -45,25 +47,13 @@ export default function Students() {
 
 
 
-  // useEffect(() => {
-  //   viewStudentsData()
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       // console.log(data)
-  //       setStudents(data);
-  //       setIsData(true);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch(`${api_key}students_per_page?page=${currentPage}&limit=${limit}`);
+        const response = await fetch(`${api_key}students_per_page?page=${currentPage}&limit=${limit}&search=${search}`);
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setStudents(data.students);
         setTotalPages(data.totalPages);
         setIsData(true);
@@ -73,7 +63,7 @@ export default function Students() {
     };
 
     fetchStudents();
-  }, [currentPage]);
+  }, [currentPage, search]);
 
 
   const handlePreviousPage = () => {
@@ -90,6 +80,12 @@ export default function Students() {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setIsData(false)
+    setSearch(event.target.value);
+    setCurrentPage(1); // Reset to the first page on new search
+  };
+
 
   return (
     <>
@@ -102,17 +98,19 @@ export default function Students() {
                   <TabsTrigger value="all">All</TabsTrigger>
                 </TabsList>
                 <div className="ml-auto flex items-center gap-2">
-                  <Button
-                    disabled
+                  <div className="flex border rounded-md pl-3 gap-2 justify-center items-center">
+                  <Search className="text-muted-foreground" size={20} />
+                  <Input
+                    onChange={handleSearchChange}
+                    value={search}
                     size="sm"
                     variant="outline"
-                    className="h-8 gap-1"
-                  >
-                    <File className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                      Export
-                    </span>
-                  </Button>
+                    className="h-8 gap-1 outline-none border-none focus:outline-none focus:border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    placeholder="Search..."
+                  />
+                  
+                  </div>
+                 
                   <Button size="sm" className="h-8 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
                     <Link

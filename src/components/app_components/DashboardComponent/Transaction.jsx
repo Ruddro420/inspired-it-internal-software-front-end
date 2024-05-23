@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -25,7 +26,8 @@ import { getData } from '@/lib/GET';
 import Spinner from '../Spinner';
 import Loading from "../Loading";
 import { dateTime } from "@/lib/api";
-import { ArrowUpRight } from "lucide-react";
+import { MdAnalytics } from "react-icons/md";
+const api_key = import.meta.env.VITE_apiKey;
 
 
 
@@ -37,7 +39,13 @@ const Transaction = () => {
   const [transactions, setTransactions] = useState([])
   const [isData, setIsData] = useState(false)
 
-  useEffect(() => {
+  const [isDate2, setIsData2] = useState(false)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const limit = 10
+
+  useEffect(()=> {
     getData('transactions/with-month')
     .then(res=>res.json())
     .then(data=> {
@@ -48,16 +56,41 @@ const Transaction = () => {
       setMonthly(data)
     })
 
-    getData('transactions/all')
-    .then(res=>res.json())
-    .then(data=> {
-      // console.log(data)
-      setTransactions(data)
-      setIsData(true)
-      
-    })
-
   }, [])
+
+  useEffect(() => {
+  
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch(`${api_key}transactions_per_page?page=${currentPage}&limit=${limit}`);
+        const data = await response.json();
+        setTransactions(data.transactions);
+        setTotalPages(data.totalPages);
+        setIsData(true)
+        setIsData2(true)
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      }
+    };
+
+    fetchStudents();
+
+  }, [currentPage])
+
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setIsData2(false)
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setIsData2(false)
+      setCurrentPage(currentPage + 1);
+    }
+  };
   
 
   const chartConfig = {
@@ -157,8 +190,8 @@ const Transaction = () => {
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
                 <Link href="#">
-                  View All
-                  <ArrowUpRight className="h-4 w-4" />
+                  Report
+                  <MdAnalytics className="h-4 w-4" />
                 </Link>
               </Button>
             </CardHeader>
@@ -166,7 +199,11 @@ const Transaction = () => {
               {!isData ? <Loading /> :
               <>
               {
-                transactions.length > 0 ? <Table>
+                transactions.length > 0 ? 
+                <>
+                {
+                  isDate2 ?
+                <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Purpose</TableHead>
@@ -195,11 +232,19 @@ const Transaction = () => {
                   </TableRow>)}              
                  
                 </TableBody>
-              </Table> : "No Data"
+              </Table> : <Loading/>}
+              </> : "No Data"
               }
               </>
 }
             </CardContent>
+            <CardFooter>
+                  <div className="flex items-center gap-5 justify-center">
+                        <Button variant="outline" size="sm" onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</Button>
+                        <div className="text-sm ">Page {currentPage} of {totalPages}</div>
+                        <Button variant="outline" size="sm" onClick={handleNextPage} disabled={currentPage === totalPages}>Next</Button>
+                      </div>
+                  </CardFooter>
           </Card>
         
         </div>
