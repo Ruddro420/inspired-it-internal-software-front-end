@@ -92,9 +92,8 @@ export default function IdCards() {
     generatePDF(targetRef, {
       filename: `ID_Card_${id}.pdf`,
       method: open,
-      resolution: Resolution.HIGH,
       page: {
-        margin: Margin.SMALL,
+        margin: Margin.MEDIUM,
       },
     });
 
@@ -213,8 +212,9 @@ export default function IdCards() {
       </div>
 
       {student.length !== 0 && (
-        <div ref={targetRef}>
-          <div className=" flex justify-center flex-wrap gap-10 mt-10">
+        <>
+        <div className="flex items-center justify-center" >
+          <div className="grid grid-cols-1 gap-10 mt-10">
             <div
               id="id_card"
               className="shadow-lg p-5 relative h-[700px] w-[500px] border"
@@ -392,6 +392,184 @@ export default function IdCards() {
             </div>
           </div>
         </div>
+        <div className="flex items-center justify-center" ref={targetRef}>
+          <div className="grid grid-cols-1 gap-5 mt-5">
+            <div
+              id="id_card"
+              className="shadow-lg p-5 relative w-fullborder w-[1400px] h-[2000px]"
+            >
+              <div className="bg-black h-[40%] text-8xl font-black justify-center flex items-center text-white">
+                <span className="mb-[20%]"> {admin?.inst_name}</span>
+              </div>
+
+              <div className="h-[550px] w-[550px] border-[10px] border-white bg-black rounded-full absolute top-[27%] left-[30%] overflow-hidden">
+                <img
+                  className="h-[550px] w-[550px]"
+                  src={
+                    studentURI
+                      ? studentURI
+                      : "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg"
+                  }
+                />
+              </div>
+              <div className=" text-center   text-black flex flex-col justify-center gap-5">
+                <div className="mt-[22%]  text-black text-7xl font-bold">
+                  {student.name}
+                </div>
+                <div className="mt-1 text-6xl">{student.class.name}</div>
+                {student.section && (
+                  <div className="mt-1 text-4xl">
+                    Batch-{student.section.name}
+                  </div>
+                )}
+                <div className="mt-1 text-4xl ">
+                  ID: <b>{student.id_no}</b>
+                </div>
+                <div className="mt-[25%] mb-20 flex justify-center grayscale">
+                  <img className="h-[200px]" src={imageDataURI} />
+                </div>
+              </div>
+            </div>
+
+            <div className="shadow-lg p-5 relative w-[1400px] h-[2000px] border text-center">
+              <div className="uppercase text-center mt-7 font-bold text-7xl">
+                {watch("type")} Details
+              </div>
+
+              <div className="flex justify-center mt-5 flex-col items-center text-6xl text-left">
+                <table>
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td>Parent</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.parent_name}</td>
+                    </tr>
+                    <tr>
+                      <td>Local Guardian</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.local_guardian}</td>
+                    </tr>
+
+                    <tr>
+                      <td>Blood Group</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5 uppercase">{student.blood_group}</td>
+                    </tr>
+
+                    <tr>
+                      <td>Mobile Number</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.phone}</td>
+                    </tr>
+                    <tr>
+                      <td>Present Address</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.present_address}</td>
+                    </tr>
+
+                    <tr>
+                      <td>Permanent Address</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{student.permanent_address}</td>
+                    </tr>
+                    <tr>
+                      <td>Issue Date</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{watch("issue_date")}</td>
+                    </tr>
+                    <tr>
+                      <td>Expiry Date</td>
+                      <td className="pl-5">:</td>
+                      <td className="pl-5">{watch("expiry_date")}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div className="absolute bottom-[100px]   flex flex-col items-center justify-center w-full">
+                  <div className="font-bold text-6xl text-center ">
+                    Institution Information
+                  </div>
+                  <div className="flex justify-center w-full text-4xl items-center">
+                    <div className="mt-2 grid grid-cols-2 gap-3  px-3 ">
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Mail size={50} />
+                        </div>
+                        <div>{admin?.inst_email}</div>
+                      </div>
+
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Home size={50} />
+                        </div>
+                        <div className="max-w-[500px]">
+                          {admin?.inst_address}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <Earth size={50} />
+                        </div>
+                        <div>{admin?.inst_eiin}</div>
+                      </div>
+
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <PhoneCall size={50} />
+                        </div>
+                        <div>{admin?.inst_phone}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    className="h-[200px] mt-10"
+                    src={imageDataURI2}
+                    alt="signature"
+                  />
+                  <div className="h-1 bg-black w-[200px]  mb-10"></div>
+                  <div className="font-bold">{watch("issuer")}</div>
+
+                  <div
+                    style={{
+                      borderTopLeftRadius: "80px",
+                      borderTopRightRadius: "80px",
+                    }}
+                    className=" w-full bg-black left-0 mt-7 flex justify-center py-3"
+                  >
+                    {/* <img
+                      className="h-[80px] bg-white"
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png"
+                    /> */}
+                    <div
+                      style={{
+                        height: "auto",
+                        margin: "0 auto",
+                        maxWidth: 64,
+                        width: "100%",
+                      }}
+                      className="bg-white p-2"
+                    >
+                      <QRCode
+                        size={500}
+                        style={{
+                          height: "100px",
+                          maxWidth: "150px",
+                          width: "100px",
+                        }}
+                        value="inspiredIt"
+                        viewBox={`0 0 256 256`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </>
+        
       )}
       </> : <Loading/>
     }

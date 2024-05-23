@@ -28,30 +28,41 @@ const GenerateReport = ({ reportData, start, end, income, expense }) => {
       {reportData.length == 0 ? (
         <Alert title="Please select the range of the report!" />
       ) : (
+        <>
+        <div className="mt-5">
+                <Button
+                  onClick={downloadHandler}
+                  variant="destructive"
+                  size="sm"
+                  className="flex gap-2 float-end"
+                >
+                  <Download size={19} /> Download as PDF
+                </Button>
+              </div>
         <main className="">
-          <Tabs defaultValue="all">
-            <TabsContent value="all">
+            
               <Card x-chunk="dashboard-06-chunk-0">
+              
                 <div ref={targetRef}>
                   <div className="mx-auto my-10">
                     <center>
                       <img src="https://i0.wp.com/inspireditbd.com/wp-content/uploads/2023/07/logo-scaled.webp?fit=512%2C120&ssl=1" />
                     </center>
-                    <div className="flex justify-center mt-2 mx-auto items-center">
+                    <div className="flex justify-center mt-2 mx-auto items-center mb-6">
                       <div className="text-center">
-                        <h1 className="text-4xl font-bold	mb-5">
+                        <h1 className="text-4xl font-bold">
                           Account Report
                         </h1>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center m-6">
-                      <b>STATEMENT FOR THE PERIOD :</b>
-                      <p>{dateTime(new Date(start))}</p>
-                      <b>TO</b>
-                      <p>{dateTime(new Date(end))}</p>
+                    <div className="flex justify-center items-center mb-6">
+                      <div className="font-bold">
+                        <span>{dateTime(new Date(start))} - {dateTime(new Date(end))}</span>
+                      </div>
+                     
                     </div>
                     <hr></hr>
-                    <div>
+                    <div className="text-2xl">
                       {reportData.map((item) => (
                         <div className="lg:flex grid grid-cols-2 gap-6 justify-between items-center m-6 ">
                           <div key={item.id}>
@@ -96,19 +107,8 @@ const GenerateReport = ({ reportData, start, end, income, expense }) => {
                   </div>
                 </div>
               </Card>
-              <div className="mt-5">
-                <Button
-                  onClick={downloadHandler}
-                  variant="destructive"
-                  size="sm"
-                  className="flex gap-2 float-end"
-                >
-                  <Download size={19} /> Download as PDF
-                </Button>
-              </div>
-            </TabsContent>
-          </Tabs>
         </main>
+        </>
       )}
     </TooltipProvider>
   );

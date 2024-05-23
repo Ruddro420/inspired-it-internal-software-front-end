@@ -174,6 +174,8 @@ const Transaction = () => {
   };
 
 
+  console.log(date)
+
 
   return (
     <div>
