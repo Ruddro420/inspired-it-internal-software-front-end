@@ -412,6 +412,28 @@ const studentUpdate = (data, id) => {
   });
 };
 
+const teacherUpdate = (data, id) => {
+  return fetch(api_key + "teacher_update/" + id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const staffUpdate = (data, id) => {
+  return fetch(api_key + "staff_update/" + id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 const classUpdate = (data, id) => {
   return fetch(api_key + "class_update/" + id, {
     method: "PUT",
@@ -570,13 +592,13 @@ export {
   getStaffById,
   accountsAdd,
   getAccounts,
-  // teacherSalaryAdd,
-  // staffSalaryAdd,
   SalaryAdd,
   getCount,
   accountReportByDate,
   deleteAccounts,
   salaryReportByDate,
   feeReportByDate,
-  classUpdate
+  classUpdate,
+  teacherUpdate,
+  staffUpdate,
 };

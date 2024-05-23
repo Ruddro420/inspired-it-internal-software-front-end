@@ -2,39 +2,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   formDate,
-  getClasses,
   getImage,
-  getLastTeacher,
   getStaffById,
-  getStudentById,
-  getTeacherById,
-  teacherAdd,
+  staffUpdate,
 } from "../../../lib/api";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useForm } from "react-hook-form";
-import { CheckCircle, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "@/components/app_components/Loading";
-import Alert from "@/components/app_components/Alert";
 import axios from "axios";
 import UploadDialog from "@/components/app_components/UploadDialog";
-import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+const api_key = import.meta.env.VITE_apiKey;
 
 const EditStuff = () => {
   const { register, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
   const [isData, setIsData] = useState(false);
 
-  const [stdId, setStdID] = useState("");
   const [tableId, setTableId] = useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -53,7 +38,7 @@ const EditStuff = () => {
     formData.append("image", renamedFile);
     try {
       const response = await axios.post(
-        "http://localhost:5000/student_upload",
+        `${api_key}staff_upload`,
         formData,
         {
           withCredentials: true,
@@ -67,7 +52,7 @@ const EditStuff = () => {
       );
       console.log("File uploaded:", response.data);
       setIsDialogOpen(false);
-      navigate("/dashboard/students");
+      navigate("/dashboard/stuffs");
       window.location.reload();
     } catch (error) {
       setIsDialogOpen(false);
@@ -99,25 +84,23 @@ const EditStuff = () => {
   };
 
   const onSubmit = (data) => {
-   /*  toast.promise(
-      studentUpdate(data, tableId)
+     toast.promise(
+      staffUpdate(data, tableId)
         .then((res) => {
           return res.json();
         })
         .then((d) => {
           if (d.err) throw new Error(d.err);
-          console.log(d);
-
           if (image) {
             uploadFile(d.updated.id_no.toString());
           }
         }),
       {
-        loading: "Updating student...",
+        loading: "Updating staff...",
         success: <b>Successfully updated!</b>,
         error: (error) => <b>{error.message}</b>,
       }
-    ); */
+    ); 
   };
 
   const id = useParams();
@@ -127,11 +110,9 @@ const EditStuff = () => {
         return res.json();
       })
       .then((d) => {
-        console.log(d);
         setTableId(d.id);
         if (!d) throw new Error("Staff not found!");
         if (d.err) throw new Error(d.err);
-        setStdID(d.id);
         setValue("name", d.name);
         setValue("phone", d.phone);
         setValue("present_address", d.present_address);
@@ -181,7 +162,7 @@ const EditStuff = () => {
             isOpen={isDialogOpen}
             onClose={handleCloseDialog}
           />
-          <h1 className="text-2xl font-bold mb-3">Add Teacher</h1>
+          <h1 className="text-2xl font-bold mb-3">Update Staff</h1>
           <>
             <form
               onSubmit={handleSubmit(onSubmit)}

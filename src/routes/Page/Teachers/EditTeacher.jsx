@@ -4,35 +4,25 @@ import {
   formDate,
   getClasses,
   getImage,
-  getLastTeacher,
   getTeacherById,
-  teacherAdd,
+  teacherUpdate,
 } from "../../../lib/api";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { useForm } from "react-hook-form";
 import { CheckCircle, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "@/components/app_components/Loading";
-import Alert from "@/components/app_components/Alert";
 import axios from "axios";
 import UploadDialog from "@/components/app_components/UploadDialog";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+const api_key = import.meta.env.VITE_apiKey;
 
 const EditTeacher = () => {
   const { register, handleSubmit, setValue } = useForm();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [isData, setIsData] = useState(false);
-
-  const [stdId, setStdID] = useState("");
+  const [classes, setClasses] = useState([]);
   const [tableId, setTableId] = useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -51,7 +41,7 @@ const EditTeacher = () => {
     formData.append("image", renamedFile);
     try {
       const response = await axios.post(
-        "http://localhost:5000/student_upload",
+        `${api_key}teacher_upload`,
         formData,
         {
           withCredentials: true,
@@ -65,7 +55,7 @@ const EditTeacher = () => {
       );
       console.log("File uploaded:", response.data);
       setIsDialogOpen(false);
-      navigate("/dashboard/students");
+      navigate("/dashboard/teachers");
       window.location.reload();
     } catch (error) {
       setIsDialogOpen(false);
@@ -97,39 +87,82 @@ const EditTeacher = () => {
   };
 
   const onSubmit = (data) => {
-   /*  toast.promise(
-      studentUpdate(data, tableId)
-        .then((res) => {
-          return res.json();
-        })
-        .then((d) => {
-          if (d.err) throw new Error(d.err);
-          console.log(d);
 
-          if (image) {
-            uploadFile(d.updated.id_no.toString());
-          }
-        }),
-      {
-        loading: "Updating student...",
-        success: <b>Successfully updated!</b>,
-        error: (error) => <b>{error.message}</b>,
-      }
-    ); */
+    let _data = { ...data, password: "123",};
+    let selectedClasses = classes.filter((cls) => cls.selected == true);
+
+    // if(selectedClasses.length == 0) {
+    //   toast.error("Please select class to assign!")
+    //   return
+    // }
+
+    selectedClasses = selectedClasses.map((cls) => {
+      if (cls.selected)
+        return {
+          class: {
+            connect: {
+              id: cls.id,
+            },
+          },
+        };
+    });
+
+
+
+    _data = {
+      ...data,
+      classes: { create: selectedClasses },
+      fixed_salary: parseInt(data.fixed_salary),
+      id_no: data.id_no
+    };
+  
+      toast.promise(
+        teacherUpdate(_data, tableId)
+      .then((res) => res.json())
+      .then((d) => {
+        console.log(d)
+        if (d.err) throw new Error(d.err);
+        if(image){
+          uploadFile(d.updated.id_no.toString())
+        }
+     
+
+      }),
+        {
+          loading: "Updating teacher...",
+          success: <b>Successfully updated!</b>,
+          error: (error) => <b>{error.message}</b>,
+        }
+      );
   };
 
   const id = useParams();
   useEffect(() => {
+
+    getClasses()
+    .then((res) => res.json())
+    .then((data) => {
+      let _data = [];
+      for (let d in data) {
+        _data.push({ ...data[d], selected: false });
+      }
+      setClasses(_data);
+      setIsData(true);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+
+
     getTeacherById(id.id)
       .then((res) => {
         return res.json();
       })
       .then((d) => {
-        //console.log(d);
         setTableId(d.id);
         if (!d) throw new Error("Teacher not found!");
         if (d.err) throw new Error(d.err);
-        setStdID(d.id);
         setValue("name", d.name);
         setValue("phone", d.phone);
         setValue("present_address", d.present_address);
@@ -168,6 +201,14 @@ const EditTeacher = () => {
     }, 1500);
   }, [id, setValue]);
 
+
+  
+  const handleClassSelect = (id) => {
+    classes[id]["selected"] = !classes[id]["selected"];
+    setClasses([...classes]);
+  };
+
+
   return (
     <>
       {!isData ? (
@@ -179,7 +220,7 @@ const EditTeacher = () => {
             isOpen={isDialogOpen}
             onClose={handleCloseDialog}
           />
-          <h1 className="text-2xl font-bold mb-3">Add Teacher</h1>
+          <h1 className="text-2xl font-bold mb-3">Update Teacher</h1>
           <>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -353,7 +394,7 @@ const EditTeacher = () => {
                   Select classes to assign:
                 </div>
                 <div className="mt-3 font-medium flex gap-4">
-                {/*   {classes.map((cls, index) => (
+                  {classes.map((cls, index) => (
                     <div
                       key={cls.id}
                       onClick={() => handleClassSelect(index)}
@@ -366,7 +407,7 @@ const EditTeacher = () => {
                         <PlusCircle size={18} />
                       )}
                     </div>
-                  ))} */}
+                  ))}
                 </div>
 
                 <div className="mt-5">
