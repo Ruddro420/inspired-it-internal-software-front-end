@@ -1,4 +1,4 @@
-import generatePDF, { Margin, Resolution, usePDF } from "react-to-pdf";
+import generatePDF, { Margin, usePDF } from "react-to-pdf";
 import { Download, Earth, Home, Mail, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
@@ -69,7 +69,7 @@ export default function IdCards() {
       {
         loading: "Generating...",
         success: <b>Generated!</b>,
-        error: (error) => <b>No Data Found</b>,
+        error: () => <b>No Data Found</b>,
       }
     );
 
@@ -396,7 +396,7 @@ export default function IdCards() {
           <div className="grid grid-cols-1 gap-5 mt-5">
             <div
               id="id_card"
-              className="shadow-lg p-5 relative w-fullborder w-[1400px] h-[2000px]"
+              className="shadow-lg p-5 relative w-fullborder w-[1300px] h-[2000px]"
             >
               <div className="bg-black h-[40%] text-8xl font-black justify-center flex items-center text-white">
                 <span className="mb-[20%]"> {admin?.inst_name}</span>
@@ -431,7 +431,7 @@ export default function IdCards() {
               </div>
             </div>
 
-            <div className="shadow-lg p-5 relative w-[1400px] h-[2000px] border text-center">
+            <div className="shadow-lg p-5 relative w-[1300px] h-[2000px] border text-center">
               <div className="uppercase text-center mt-7 font-bold text-7xl">
                 {watch("type")} Details
               </div>
@@ -486,7 +486,7 @@ export default function IdCards() {
                   </tbody>
                 </table>
 
-                <div className="absolute bottom-[100px]   flex flex-col items-center justify-center w-full">
+                <div className="absolute bottom-[150px]   flex flex-col items-center justify-center w-full">
                   <div className="font-bold text-6xl text-center ">
                     Institution Information
                   </div>

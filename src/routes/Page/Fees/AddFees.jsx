@@ -445,25 +445,25 @@ const AddFees = () => {
           <div ref={targetRef}>
             <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
               <CardHeader className="flex flex-row items-start bg-muted/50">
-                <div className="flex flex-col items-center w-full">
-                  <img className="h-10" src={imageDataURI}></img>
+                <div className="flex flex-col items-center w-full text-xl">
+                  <img className="h-24" src={imageDataURI}></img>
                   {admin && (
                     <div className="mt-3 text-center">
                       {/* <div className="font-bold text-xl">{admin.inst_name}</div> */}
-                      <div className="font-bold text-sm">
+                      <div className="font-bold text-xl">
                         EIIN: {admin.inst_eiin}
                       </div>
                       <CardDescription>
                         Date: {dateTime(new Date())}
                       </CardDescription>
-                      <div className="font-bold mt-2">
+                      <div className="font-bold mt-2 text-4xl">
                         Payment Money Reciept
                       </div>
                     </div>
                   )}
                 </div>
               </CardHeader>
-              <CardContent className=" text-sm">
+              <CardContent className=" text-3xl">
                 <div className="grid gap-3">
                   <Separator className="my-2" />
                   <div className="font-semibold">Student Infromation</div>
@@ -474,11 +474,12 @@ const AddFees = () => {
                       </span>
                       <span>{student.name}</span>
                     </li>
+                    <Separator className="my-2" />
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">Course Name</span>
                       <span>{student.class.name}</span>
                     </li>
-
+                    <Separator className="my-2" />
                     {student.section && (
                       <li className="flex items-center justify-between">
                         <span className="text-muted-foreground">
@@ -487,6 +488,7 @@ const AddFees = () => {
                         <span>{student.section.name}</span>
                       </li>
                     )}
+                     <Separator className="my-2" />
                     <li className="flex items-center justify-between">
                       <span className="text-muted-foreground">
                         Student Id No
@@ -505,18 +507,21 @@ const AddFees = () => {
                         {regularFee.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
+                    <Separator className="my-2" />
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Fine</dt>
                       <dd className="font-semibold">
                         {fine.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
+                    <Separator className="my-2" />
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">ID Card Fee</dt>
                       <dd className="font-semibold">
                         {idCardFee.toString().padStart(2, "0")} ৳
                       </dd>
                     </div>
+                    <Separator className="my-2" />
                     <div className="flex items-center justify-between">
                       <dt className="text-muted-foreground">Others</dt>
                       <dd className="font-semibold">
@@ -526,10 +531,12 @@ const AddFees = () => {
                   </dl>
                 </div>
                 <Separator className="my-4" />
+                <Separator className="my-2" />
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground font-bold">
                     Paying This Time (৳)
                   </dt>
+                  
                   <dd className="font-bold">
                     {regularFee +
                       fine +
@@ -541,6 +548,7 @@ const AddFees = () => {
                     ৳
                   </dd>
                 </div>
+                <Separator className="my-2" />
                 <div className="flex items-center justify-between mt-3 font-bold">
                   <dt className="text-muted-foreground text-red-700">
                     Course fee (৳)
@@ -567,7 +575,7 @@ const AddFees = () => {
               <hr></hr>
               {/* Admission Condition */}
               {/* Signature */}
-              <div className="flex flex-row justify-between p-5 text-center">
+              <div className="flex text-xl flex-row justify-between p-5 text-center">
                 <div>
                   <p>{/* {watch('payment_received')} */}Atif Islam</p>
                   <Separator className="my-2" />
@@ -580,13 +588,13 @@ const AddFees = () => {
                 </div>
               </div>
               <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 pt-2 justify-between bg-[#2b74ba] text-white">
-                <div className="text-xs">
+                <div className="text-xl">
                   <h1>|| {admin.inst_address} || </h1>
                 </div>
-                <div className="text-xs">
+                <div className="text-xl">
                   <h1>|| {admin.inst_email} || </h1>
                 </div>
-                <div className="text-xs ">
+                <div className="text-xl ">
                   <h1>|| {admin.inst_phone} ||</h1>
                 </div>
               </CardFooter>

@@ -77,7 +77,7 @@ const CardCount = () => {
           <Card x-chunk="dashboard-01-chunk-3">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Net Profit
+                Net Balance
               </CardTitle>
               <TbCurrencyTaka className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
