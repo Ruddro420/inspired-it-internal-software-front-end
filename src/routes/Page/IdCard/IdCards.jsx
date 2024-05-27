@@ -214,7 +214,7 @@ export default function IdCards() {
       {student.length !== 0 && (
         <>
         <div className="flex items-center justify-center" >
-          <div className="grid grid-cols-1 gap-10 mt-10">
+          <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-10 mt-10">
             <div
               id="id_card"
               className="shadow-lg p-5 relative h-[700px] w-[500px] border"
@@ -396,7 +396,7 @@ export default function IdCards() {
           <div className="grid grid-cols-1 gap-5 mt-5">
             <div
               id="id_card"
-              className="shadow-lg p-5 relative w-fullborder w-[1300px] h-[2000px]"
+              className="shadow-lg p-5 relative w-fullborder w-full h-[2000px] mb-[500px]"
             >
               <div className="bg-black h-[40%] text-8xl font-black justify-center flex items-center text-white">
                 <span className="mb-[20%]"> {admin?.inst_name}</span>
@@ -486,7 +486,7 @@ export default function IdCards() {
                   </tbody>
                 </table>
 
-                <div className="absolute bottom-[150px]   flex flex-col items-center justify-center w-full">
+                <div className="absolute bottom-0 flex flex-col items-center justify-center w-full">
                   <div className="font-bold text-6xl text-center ">
                     Institution Information
                   </div>

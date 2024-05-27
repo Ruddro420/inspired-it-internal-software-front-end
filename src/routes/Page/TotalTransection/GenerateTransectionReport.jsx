@@ -1,21 +1,21 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
-import { Download } from "lucide-react";
+import Alert from "@/components/app_components/Alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { dateTime } from "@/lib/api";
-import Alert from "@/components/app_components/Alert";
+import { Download } from "lucide-react";
+import React from "react";
 import generatePDF, { Margin, Resolution, usePDF } from "react-to-pdf";
-const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
+
+const GenerateTransectionReport = ({ regularFee, start, end, data }) => {
+
   const { targetRef } = usePDF();
   const downloadHandler = () => {
     // setTimeout(() => {
     //const id = parseInt(document.getElementById("student_id2").value);
     generatePDF(targetRef, {
-      filename: `SALARY_REPORT.pdf`,
+      filename: `TOTAL_REPORT.pdf`,
       method: open,
       resolution: Resolution.HIGH,
       page: {
@@ -23,18 +23,18 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
       },
     });
   };
+
+  console.log(regularFee);
   return (
     <TooltipProvider>
-      {reportData.length == 0 ? (
-        <Alert title="Please Select The Range Of The Report!" />
-      ) : (
+      {data.length !== 0 ? (
         <>
           <div className="mt-5">
             <Button
               onClick={downloadHandler}
               variant="destructive"
               size="sm"
-              className="flex gap-2 float-end"
+              className="flex ml-auto gap-2  mt-2 mb-3"
             >
               <Download size={19} /> Download as PDF
             </Button>
@@ -48,7 +48,9 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                   </center>
                   <div className="flex justify-center mt-2 mx-auto items-center">
                     <div className="text-center">
-                      <h1 className="text-4xl font-bold mb-6">Salary Report</h1>
+                      <h1 className="text-4xl font-bold mb-6">
+                        Total Report
+                      </h1>
                     </div>
                   </div>
                   <div className="flex justify-center items-center mb-5 text-md mt-2">
@@ -63,32 +65,31 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                     </div>
                   </div>
                   <hr></hr>
-                  <div className="text-2xl">
-                    {reportData.map((item) => (
-                      <div className="lg:flex grid grid-cols-2 gap-6 justify-between items-center m-6 ">
-                        <div key={item.id}>
+                  <div className="text-xl">
+                    {regularFee?.map((item) => (
+                      <div
+                        key={item.id}
+                        className="lg:flex grid grid-cols-2 gap-6 justify-between items-center m-6 "
+                      >
+                        <div>
                           <b>DATE</b>
                           <p>=========</p>
-                          <p>{dateTime(new Date(item.paid_date))}</p>
+                          <p>{dateTime(new Date(item.date))}</p>
+                        </div>
+                        <div>
+                          <b>PURPOSE </b>
+                          <p>===================</p>
+                          <p>{item.name} </p>
                         </div>
                         <div>
                           <b>TYPE</b>
                           <p>===================</p>
-                          <p>Salary</p>
+                          {item.type} 
                         </div>
                         <div>
-                          <b>SALARY HOLDER</b>
+                          <b>AMOUNT</b>
                           <p>===================</p>
-                          {item.teacher && item.teacher.name}{" "}
-                          {item.teacher && "-"}{" "}
-                          {item.teacher && item.teacher.id_no}
-                          {item.staff && item.staff.name} {item.staff && "-"}{" "}
-                          {item.staff && item.staff.id_no}
-                        </div>
-
-                        <div>
-                          <b>BALANCE</b>
-                          <p>{item.monthly_salary} ৳</p>
+                          {item.amount} ৳
                         </div>
                       </div>
                     ))}
@@ -96,10 +97,11 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
                     <div>
                       <div className="ml-6 flex justify-between border-b-2 border-black items-center font-bold align-middle"></div>
                       <div className="flex justify-between ml-6 border-b-2 border-black items-center font-bold">
-                        <p>TOTAL SALARY</p>
+                        <p>TOTAL HISTORY</p>
                         <div className="flex justify-between gap-6 lg:mr-20 mb-10 mt-10 ">
-                          <p className="lg:mr-16">EXPENSE: {income} ৳</p>
-                          <p className="">TOTAL: {income} ৳</p>
+                          <p className="lg:mr-16">INCOME: {data.totalIncome} ৳</p>
+                          <p className="lg:mr-16">EXPENSE: {data.totalExpense} ৳</p>
+                          <p className="">NET: {data.total} ৳</p>
                         </div>
                       </div>
                     </div>
@@ -109,9 +111,11 @@ const GenerateSallaryReport = ({ reportData, start, end, income, expense }) => {
             </Card>
           </main>
         </>
+      ) : (
+        <Alert title="Please Select The Range Of The Report!" />
       )}
     </TooltipProvider>
   );
 };
 
-export default GenerateSallaryReport;
+export default GenerateTransectionReport;

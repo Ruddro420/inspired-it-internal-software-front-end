@@ -94,10 +94,10 @@ const AddTeacher = () => {
       return
     }
 
-    if(!image) {
-      toast.error("Please select teacher image.")
-      return
-    }
+    // if(!image) {
+    //   toast.error("Please select teacher image.")
+    //   return
+    // }
 
     
 
@@ -127,7 +127,9 @@ const AddTeacher = () => {
         console.log(d)
         if (d.err) throw new Error(d.err);
         updateId()
+       if(image) {
         uploadFile(d.created.id_no.toString())
+       }
 
       }),
         {

@@ -368,6 +368,16 @@ const feeReportByDate = (startDate, endDate) => {
   );
 };
 
+/* ALL  Report By Date */
+const transactions = (startDate, endDate) => {
+  return fetch(api_key + `transactions?startDate=${startDate}&endDate=${endDate}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+};
+
 //count
 const getCount = () => {
   return fetch(api_key + "count", {
@@ -546,6 +556,7 @@ const deleteSalary = (id) => {
 };
 
 export {
+  transactions,
   deleteSalary,
   getTeacherOrStaffById,
   adminLogin,

@@ -22,19 +22,23 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { dateTime, formDate, getStaffById, getStudentById, getTeacherById } from "@/lib/api";
+import {
+  dateTime,
+  formDate,
+  getStaffById,
+  getStudentById,
+  getTeacherById,
+} from "@/lib/api";
 // import { Item } from "@radix-ui/react-dropdown-menu";
 import Loading from "@/components/app_components/Loading";
 import Spinner from "@/components/app_components/Spinner";
+import History from "../Salary/History";
 
 const StaffProfile = () => {
   const [teacher, setTeacher] = useState(null);
   const [isData, setIsData] = useState(false);
-  const [admissionFee, setAdmissionFee] = useState([]);
-  const [regularFee, setRegularFee] = useState([]);
+  const [totalSalary, setTotalSalary] = useState(0);
   let id = useParams();
-
-  const [totalPaid, setTotalPaid] = useState(0);
 
   /* Fetch students Data */
   useEffect(() => {
@@ -44,26 +48,19 @@ const StaffProfile = () => {
         setTeacher(data);
         setIsData(true);
 
-        setAdmissionFee(data.admissionFee);
-        setRegularFee(data.regularFee);
-
-        let total = 0;
-        for (let i = 0; i < data.admissionFee.length; i++) {
-          let fee = data.admissionFee[i];
-          total += fee.fee + fee.other - fee.discount;
-        }
-
-        for (let i = 0; i < data.regularFee.length; i++) {
-          total += data.regularFee[i].total;
-        }
-        setTotalPaid(total);
+        // Calculate total monthly salary including bonuses
+        let totalMonthlySalary = 0;
+        data.salary.forEach((entry) => {
+          totalMonthlySalary += entry.monthly_salary + entry.bonus;
+        });
+        setTotalSalary(totalMonthlySalary);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
-  console.log(teacher);
+  //console.log(teacher);
   return (
     <>
       {!isData ? (
@@ -84,7 +81,7 @@ const StaffProfile = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">
-                          {/* {student.attendance.length} */}
+                          Coming Soon
                         </div>
                       </CardContent>
                     </Card>
@@ -97,79 +94,15 @@ const StaffProfile = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">
-                          ৳{/*  {totalPaid} */}
+                          ৳ {totalSalary}
                         </div>
                       </CardContent>
                     </Card>
                   </div>
 
                   {/* container */}
-                  <div className="border mt-4 rounded-md">
-                    <CardHeader className="flex flex-row items-center">
-                      <div className="grid gap-2">
-                        <CardTitle>Transactions</CardTitle>
-                        <CardDescription>Recent transactions.</CardDescription>
-                      </div>
-                      {/* <Button asChild size="sm" className="ml-auto gap-1">
-                        <Link to="#">
-                          View All
-                          <ArrowUpRight className="h-4 w-4" />
-                        </Link>
-                      </Button> */}
-                    </CardHeader>
-                    <CardContent>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Salary Type</TableHead>
-                            {/* <TableHead className="hidden xl:table-column">
-                              Type
-                            </TableHead> */}
-                            {/* <TableHead className="hidden xl:table-column">
-                              Status
-                            </TableHead> */}
-                            {/* <TableHead className="hidden xl:table-column">
-                              Date
-                            </TableHead> */}
-                            <TableHead className="text-right">Amount</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {/* {
-                          admissionFee.map(fee=>
-                            <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">Admission Fee</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{(fee.fee + fee.other) - fee.discount}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        }
-
-                        {
-                          regularFee.map(fee=>
-                            <TableRow key={fee.id}>
-                            <TableCell>
-                              <div className="font-medium">Regular Fee</div>
-                              <div className="hidden text-sm text-muted-foreground md:inline">
-                                {dateTime(new Date(fee.collectionDate))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              ৳{fee.total}
-                            </TableCell>
-                          </TableRow>
-                          )
-                        } */}
-                        </TableBody>
-                      </Table>
-                    </CardContent>
-                  </div>
+                  {/* Trans History */}
+                  <History data={teacher.salary} />
                 </div>
 
                 {/* Profile Section */}
@@ -190,7 +123,7 @@ const StaffProfile = () => {
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">
                           <img
-                            alt="Product image"
+                            alt="Staff image"
                             className="aspect-square rounded-md object-cover "
                             height="64"
                             src={`http://localhost:5000/image/staffs/${teacher.id_no}`}

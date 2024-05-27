@@ -118,7 +118,7 @@ const TeacherProfile = () => {
                         </div>
                         <div className="ml-auto flex items-center gap-1 border-2 rounded">
                           <img
-                            alt="Product image"
+                            alt="Teacher image"
                             className="aspect-square rounded-md object-cover "
                             height="64"
                             src={`http://localhost:5000/image/teachers/${teacher.id_no}`}

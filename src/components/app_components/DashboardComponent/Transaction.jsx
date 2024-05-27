@@ -27,6 +27,7 @@ import Spinner from '../Spinner';
 import Loading from "../Loading";
 import { dateTime } from "@/lib/api";
 import { MdAnalytics } from "react-icons/md";
+import Alert from "../Alert";
 const api_key = import.meta.env.VITE_apiKey;
 
 
@@ -191,7 +192,7 @@ const Transaction = () => {
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
+                <Link to="/dashboard/all-transection">
                   Report
                   <MdAnalytics className="h-4 w-4" />
                 </Link>
@@ -235,7 +236,7 @@ const Transaction = () => {
                  
                 </TableBody>
               </Table> : <Loading/>}
-              </> : "No Data"
+              </> : <Alert title="No Report Found!" />
               }
               </>
 }

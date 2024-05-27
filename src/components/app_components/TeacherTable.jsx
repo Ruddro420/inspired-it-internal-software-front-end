@@ -25,7 +25,7 @@ const TeacherTable = ({ teachers }) => {
         return res.json();
       }),
       {
-        loading: "Deleting Student...",
+        loading: "Deleting ...",
         success: <b>Successfully deleted!</b>,
         error: <b>Failed to delete.</b>,
       }

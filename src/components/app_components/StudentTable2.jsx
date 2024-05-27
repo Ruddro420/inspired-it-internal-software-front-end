@@ -77,7 +77,7 @@ const StudentTable2 = ({ students ,courseClassHandler}) => {
               <TableRow key={student.email}>
                 <TableCell className="hidden sm:table-cell">
                   <img
-                    alt="Product image"
+                    alt="Student image"
                     className="aspect-square rounded-md object-cover"
                     height="64"
                     src={`http://localhost:5000/image/students/${student.id_no}`}

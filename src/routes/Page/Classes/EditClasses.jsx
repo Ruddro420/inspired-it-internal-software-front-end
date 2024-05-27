@@ -56,14 +56,14 @@ const EditClasses = () => {
   //console.log(classes);
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-3">Update Data</h1>
+      <h1 className="text-2xl font-bold mb-3">Update Course</h1>
       {!isData ? (
         <Loading />
       ) : (
         <form className="border p-5 rounded" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 mt-3 gap-4">
             <label htmlFor="Tuition/Course Fee" className="md:col-span-1">
-              Batch Name
+              Course Name
               <Input
                 {...register("name", { required: true })}
                 type="text"
@@ -87,7 +87,7 @@ const EditClasses = () => {
           </div>
 
           <Button type="submit" className="mt-3">
-            Update Data
+            Update Course
           </Button>
         </form>
       )}

@@ -50,6 +50,9 @@ import Home from "./routes/Home";
 import EditStudents from "./routes/Page/Students/EditStudents";
 import EditTeacher from "./routes/Page/Teachers/EditTeacher";
 import EditStuff from "./routes/Page/Staffs/EditStuff";
+import NotFound from "./routes/Page/NotFound/NotFound";
+import TotalTransection from "./routes/Page/TotalTransection/TotalTransection";
+import Support from "./routes/Page/Support/Support";
 
 const router = createBrowserRouter([
   {
@@ -225,6 +228,18 @@ const router = createBrowserRouter([
         path: "/dashboard/staffs-edit/:id",
         element: <EditStuff />,
       },
+      {
+        path: "/dashboard/all-transection",
+        element: <TotalTransection />,
+      },
+      {
+        path: "/dashboard/support",
+        element: <Support />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
 
       /*       {
               path: '/dashboard',
@@ -255,6 +270,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 

@@ -40,7 +40,7 @@ import { generateLetter } from "@/lib/functions";
 import { AuthContext } from "@/Providers/AuthProvider";
 import axios from "axios";
 import { CreditCard, Search } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -71,11 +71,13 @@ const AddStudents = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isWithoutPayment, setisWithoutPayment] = useState(false);
+  const [incharge, setIncharge] = useState(null)
 
   const { admin } = useContext(AuthContext);
-
+  const api_key = import.meta.env.VITE_apiKey;
   const AdmissionDataSend = (data) => {
     // console.log(data)
+    data = {...data, incharge}
     toast.promise(
       AdmissionFeeAdd(data)
         .then((res) => {
@@ -120,7 +122,7 @@ const AddStudents = () => {
     formData.append("image", renamedFile);
     try {
       const response = await axios.post(
-        "http://localhost:5000/student_upload",
+        `${api_key}student_upload`,
         formData,
         {
           withCredentials: true,
@@ -203,6 +205,11 @@ const AddStudents = () => {
       return;
     }
 
+    if(!incharge) {
+      toast.error("Please specify receiver name.")
+      return 
+    }
+
     let _data;
     let Id;
     if (data.classId.includes("|")) {
@@ -256,10 +263,10 @@ const AddStudents = () => {
       return;
     }
 
-    if (!image) {
-      toast.error("Please select student image");
-      return;
-    }
+    // if (!image) {
+    //   toast.error("Please select student image");
+    //   return;
+    // }
 
     toast.promise(
       studentAdd(_data)
@@ -537,10 +544,10 @@ const AddStudents = () => {
                                   Permanent Address
                                   <Input
                                     {...register("permanent_address", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="text"
-                                    required
+                                    
                                     name="permanent_address"
                                     placeholder="Permanent Address"
                                   />
@@ -723,10 +730,10 @@ const AddStudents = () => {
                                   B/C No. or NID No.
                                   <Input
                                     {...register("birth_certificate_no", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="number"
-                                    required
+                                    
                                     name="birth_certificate_no"
                                     placeholder="NID or Birth certificate number"
                                   />
@@ -738,10 +745,10 @@ const AddStudents = () => {
                                   Parents Name
                                   <Input
                                     {...register("parent_name", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="text"
-                                    required
+                                    
                                     name="parent_name"
                                     placeholder="Parents Name"
                                   />
@@ -753,10 +760,10 @@ const AddStudents = () => {
                                   Parents Phone
                                   <Input
                                     {...register("parent_phone", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="text"
-                                    required
+                                    
                                     name="parent_phone"
                                     placeholder="Parents Phone"
                                   />
@@ -768,10 +775,10 @@ const AddStudents = () => {
                                   Local Guardian&apos;s Name
                                   <Input
                                     {...register("local_guardian", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="text"
-                                    required
+                                    
                                     name="local_guardian"
                                     placeholder="Local Guardians"
                                   />
@@ -783,10 +790,10 @@ const AddStudents = () => {
                                   Local Guardian&apos;s Phone
                                   <Input
                                     {...register("local_guardian_phone", {
-                                      required: true,
+                                      required: false,
                                     })}
                                     type="text"
-                                    required
+                                    
                                     name="local_guardian_phone"
                                     placeholder="Local Guardians Phone Number"
                                   />
@@ -1359,12 +1366,15 @@ const AddStudents = () => {
                             {/* Signature */}
                             <div className="flex flex-row justify-between p-5 text-center">
                               <div>
-                                <p>{/* {watch('payment_received')} */}Atif Islam</p>
+                                <Input type="text" onChange={(e)=> {
+                                  // console.log(e.target.value)
+                                  setIncharge(e.target.value)
+                                }}  placeholder="Name"/>
                                 <hr></hr>
                                 <b>Received By</b>
                               </div>
                               <div>
-                                <p>সৈয়দ মুহীউদ্দীন ফাহাদ</p>
+                                <p className="font-hind">সৈয়দ মুহীউদ্দীন ফাহাদ</p>
                                 <hr></hr>
                                 <b>Founder</b>
                               </div>
@@ -1528,12 +1538,12 @@ const AddStudents = () => {
                             {/* Signature */}
                             <div className="flex flex-row justify-between p-5 text-center">
                               <div>
-                                <p>{/* {watch('payment_received')} */}Atif Islam</p>
+                                <p>{incharge}</p>
                                 <Separator className="my-2" />
                                 <b>Received By</b>
                               </div>
                               <div>
-                                <p>সৈয়দ মুহীউদ্দীন ফাহাদ</p>
+                                <p className="font-hind">সৈয়দ মুহীউদ্দীন ফাহাদ</p>
                                 <Separator className="my-2" />
                                 <b>Founder</b>
                               </div>
